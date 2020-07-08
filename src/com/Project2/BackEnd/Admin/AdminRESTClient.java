@@ -44,11 +44,48 @@ public class AdminRESTClient {
         System.out.println(result);
 	}
 	
+	public void postRequest(){
+        WebResource webResource = client.resource(loadUrl);
+        String inputData =getJsonFile();
+        ClientResponse response = webResource.type("application/json").post(ClientResponse.class,inputData);
+        if(response.getStatus()!=201){
+            throw new RuntimeException("HTTP Error: "+ response.getStatus());
+        }
+         
+        String result = response.getEntity(String.class);
+        System.out.println("Response from the Server: ");
+        System.out.println(result);
+    }
+	
+	public String getJsonFile() {
+		JSONParser parser = new JSONParser();
+		JSONArray usersArray = null;
+		try {
+			usersArray = (JSONArray) parser
+					.parse(new FileReader("src/com/Project2/BackEnd/Admin/users.json"));
+			
+			System.out.println("Reading JSON file...\n"+usersArray.toJSONString());
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return usersArray.toJSONString();
+	}
+	
+	
 	public static void main(String[] args) {
         AdminRESTClient restClient = new AdminRESTClient();
-                //fire the get request on the server
-        restClient.getRequest();
+                //fire the post request on the server
+        restClient.postRequest();
     }
+	
 	
 	
 	public void oldMain() {

@@ -52,7 +52,7 @@ public class UsersResources implements RestResources {
 		System.out.println(incomingData);
 		usersJson = UsersJSON.getInstance(incomingData);
 		
-		return Response.status(200).entity("JSON recieved").build();
+		return Response.status(201).entity("JSON recieved").build();
 	}
 
 	/**
@@ -124,7 +124,7 @@ public class UsersResources implements RestResources {
 			newUser = User.builder().withEmail(email).withName(name).withAge(age).withPassword(password).build();
 			BT.insert(newUser);
 
-			return Response.ok(newUser).build();
+			return Response.status(201).entity(newUser).build();
 		} else {
 			return Response.status(Status.CONFLICT).entity("Email already in use").build();
 		}
