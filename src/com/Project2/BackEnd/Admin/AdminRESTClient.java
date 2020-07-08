@@ -16,6 +16,9 @@ import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
 
 public class AdminRESTClient {
 	/**
@@ -25,8 +28,30 @@ public class AdminRESTClient {
 	 * @version 6/7/2020
 	 */
 	
+	Client client = Client.create();
+	String loadUrl = "http://localhost:8080/CookTime.BackEnd/api/users/load";
+	String getUrl = "http://localhost:8080/CookTime.BackEnd/api/users";
+	
+	public void getRequest() {
+		WebResource webResource = client.resource(getUrl);
+        ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
+        if(response.getStatus()!=200){
+            throw new RuntimeException("HTTP Error: "+ response.getStatus());
+        }
+         
+        String result = response.getEntity(String.class);
+        System.out.println("Response from the Server: ");
+        System.out.println(result);
+	}
 	
 	public static void main(String[] args) {
+        AdminRESTClient restClient = new AdminRESTClient();
+                //fire the get request on the server
+        restClient.getRequest();
+    }
+	
+	
+	public void oldMain() {
 		JSONParser parser = new JSONParser();
 		JSONArray usersArray = null;
 		try {
