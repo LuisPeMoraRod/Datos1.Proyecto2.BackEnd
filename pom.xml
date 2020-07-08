@@ -21,6 +21,9 @@
 	</build>
 
 	<properties>
+		<sonar.projectKey>LuisPeMoraRod_Datos1.Proyecto2.BackEnd</sonar.projectKey>
+		<sonar.organization>luispemorarod</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 		<jersey.version>1.19</jersey.version>
 	</properties>
 	<dependencies>
