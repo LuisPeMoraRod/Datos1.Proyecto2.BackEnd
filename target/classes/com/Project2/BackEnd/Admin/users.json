@@ -1,0 +1,11 @@
+[{
+	"email": "lmorales@estudiantec.cr",
+	"name": "Luis Pedro",
+	"password": "password",
+	"age" : "21"
+},{
+	"email": "mwaterhouse@estudiantec.cr",
+	"name": "Monica",
+	"password": "password",
+	"age": "23"
+}]
