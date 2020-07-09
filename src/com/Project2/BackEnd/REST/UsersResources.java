@@ -1,27 +1,24 @@
 package com.Project2.BackEnd.REST;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+
+
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
-
 import javax.ws.rs.core.UriInfo;
 
 import org.json.simple.JSONArray;
@@ -30,12 +27,6 @@ import com.Project2.BackEnd.Trees.BinaryTree;
 import com.Project2.BackEnd.UsersManagement.SaltedMD5;
 import com.Project2.BackEnd.UsersManagement.User;
 import com.Project2.BackEnd.UsersManagement.UsersJSON;
-
-import javax.servlet.ServletContext;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 
 @Path("/users")
 @Produces(MediaType.APPLICATION_JSON)
@@ -49,15 +40,17 @@ public class UsersResources implements RestResources {
 	private int age;
 	private UsersJSON usersJson;
 	private SaltedMD5 MD5;
-	
+
 	@POST
 	@Path("/load")
 	public Response load(JSONArray incomingData) {
 		System.out.println(incomingData);
 		usersJson = UsersJSON.getInstance(incomingData);
-		
+
 		return Response.status(201).entity("JSON recieved").build();
 	}
+
+	
 
 	/**
 	 * Searches by email and returns a specific user
