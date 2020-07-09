@@ -105,8 +105,8 @@ public class AdminRESTClient {
 	public static void main(String[] args) throws ParseException {
 		AdminRESTClient restClient = new AdminRESTClient();
 		// fire the post request on the server
-		// restClient.postRequest();
-		restClient.getRequest();
+		restClient.postRequest();
+		//restClient.getRequest();
 	}
 
 }

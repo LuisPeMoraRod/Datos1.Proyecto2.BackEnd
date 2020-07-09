@@ -24,7 +24,7 @@ import javax.ws.rs.core.UriInfo;
 import org.json.simple.JSONArray;
 
 import com.Project2.BackEnd.Trees.BinaryTree;
-import com.Project2.BackEnd.UsersManagement.SaltedMD5;
+import com.Project2.BackEnd.UsersManagement.MD5;
 import com.Project2.BackEnd.UsersManagement.User;
 import com.Project2.BackEnd.UsersManagement.UsersJSON;
 
@@ -39,7 +39,7 @@ public class UsersResources implements RestResources {
 	private String key, email = null, name = null, password = null;
 	private int age;
 	private UsersJSON usersJson;
-	private SaltedMD5 MD5;
+	private MD5 MD5;
 
 	@POST
 	@Path("/load")
@@ -109,7 +109,7 @@ public class UsersResources implements RestResources {
 				break;
 			case "password":
 				password = tokenizer.nextToken();
-				MD5 = new SaltedMD5(password);
+				MD5 = new MD5(password);
 				try {
 					password = MD5.getMD5();
 				} catch (NoSuchAlgorithmException | NoSuchProviderException e) {

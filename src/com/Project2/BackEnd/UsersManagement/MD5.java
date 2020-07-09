@@ -5,7 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
 
-public class SaltedMD5 
+public class MD5 
 {
 	/**
 	 * Public class. Creates encrypted password with MD5 algorithm
@@ -13,7 +13,7 @@ public class SaltedMD5
 	 * @version 8/7/2020
 	 */
 	private String password;
-	public SaltedMD5(String password) {
+	public MD5(String password) {
 		this.password = password;
 	}
 	
@@ -25,8 +25,7 @@ public class SaltedMD5
 	 */
     public String getMD5() throws NoSuchAlgorithmException, NoSuchProviderException 
     {
-        byte[] salt = getSalt();
-       String securePassword = getSecurePassword(password, salt);
+       String securePassword = getSecurePassword(password);
        return securePassword;
     }
      
@@ -36,14 +35,13 @@ public class SaltedMD5
      * @param salt : byte
      * @return generatedPassword
      */
-    private  String getSecurePassword(String passwordToHash, byte[] salt)
+    private  String getSecurePassword(String passwordToHash)
     {
         String generatedPassword = null;
         try {
             // Create MessageDigest instance for MD5
             MessageDigest md = MessageDigest.getInstance("MD5");
             //Add password bytes to digest
-            md.update(salt);
             //Get the hash's bytes 
             byte[] bytes = md.digest(passwordToHash.getBytes());
             //This bytes[] has bytes in decimal format;
@@ -62,21 +60,5 @@ public class SaltedMD5
         return generatedPassword;
     }
      
-   /**
-    * Add salt to hash password
-    * @return salt : byte
-    * @throws NoSuchAlgorithmException
-    * @throws NoSuchProviderException
-    */
-    private  byte[] getSalt() throws NoSuchAlgorithmException, NoSuchProviderException
-    {
-        //Always use a SecureRandom generator
-        SecureRandom sr = SecureRandom.getInstance("SHA1PRNG", "SUN");
-        //Create array for salt
-        byte[] salt = new byte[16];
-        //Get a random salt
-        sr.nextBytes(salt);
-        //return salt
-        return salt;
-    }
+  
 }
