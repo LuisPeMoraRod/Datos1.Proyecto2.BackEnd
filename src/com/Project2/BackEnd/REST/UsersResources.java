@@ -79,7 +79,7 @@ public class UsersResources implements RestResources {
 	@SuppressWarnings("unchecked")
 	@GET
 	public Response getAll() {
-		responseList = BT.getList();
+		responseList = BT.getTreeElements();
 		return Response.ok(responseList).build();
 	}
 

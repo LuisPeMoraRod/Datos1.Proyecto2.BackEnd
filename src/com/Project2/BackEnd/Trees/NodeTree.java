@@ -33,5 +33,9 @@ public class NodeTree<T extends Comparable<T>> {
         this.right = right;
         this.height = 1;
     }
+    
+    public T getElement() {
+    	return this.element;
+    }
 }
 

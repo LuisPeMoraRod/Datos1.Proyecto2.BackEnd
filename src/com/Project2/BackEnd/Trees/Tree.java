@@ -1,5 +1,7 @@
 package com.Project2.BackEnd.Trees;
 
+import java.util.ArrayList;
+
 /**
  * Abstract class used to create the shared methods of the Binary Search Tree, AVL Tree and Splay Tree
  * this way, duplicated code will be avoided.
@@ -9,12 +11,13 @@ package com.Project2.BackEnd.Trees;
 
 public abstract class Tree<T extends Comparable<T>> {
 
-    private NodeTree<T> root;
+    protected NodeTree<T> root;
 
     private boolean isBST;
     private boolean isAVL;
     private boolean isSplay;
-
+    
+    private ArrayList<T> listElements = new ArrayList<>();
 
     public boolean isEmpty(){
         return this.root == null;
@@ -450,11 +453,14 @@ public abstract class Tree<T extends Comparable<T>> {
 
         inOrder(node.left);
 
-        System.out.print(node.element + " ");
-
+        listElements.add(node.element);
+        
         inOrder(node.right);
     }
-
+    
+    public ArrayList<T> getTreeElements(){
+    	return this.listElements;
+    }
 
 
 }
