@@ -19,13 +19,11 @@ import org.json.simple.parser.JSONParser;
 public class UsersJSON {
 	private User user;
 	private BinaryTree<User> BT;
-	private JSONArray usersArray;
 	private static UsersJSON usersJson = null;
 
-	private UsersJSON(JSONArray usersArray) {
+	private UsersJSON() {
 		BT = BinaryTree.getInstance();
-		this.usersArray = usersArray;
-		addUsersToBT(usersArray);
+		
 	}
 
 	public BinaryTree<User> getBT() {
@@ -41,9 +39,9 @@ public class UsersJSON {
 	 * 
 	 * @return usersJson : UsersJSON
 	 */
-	public static synchronized UsersJSON getInstance(JSONArray usersArray) {
+	public static synchronized UsersJSON getInstance() {
 		if (usersJson == null) {
-			usersJson = new UsersJSON(usersArray);
+			usersJson = new UsersJSON();
 		}
 		return usersJson;
 	}
@@ -54,8 +52,7 @@ public class UsersJSON {
 	 */
 	@SuppressWarnings("unchecked")
 	public void addUsersToBT(JSONArray usersList) {
-		String email = null, name = null, password = null;
-		int age = 0;
+		String email = null, name = null, password = null, age = null;
 		System.out.println(usersList.getClass());
 		// usersList.forEach(user -> parseUser((JSONObject) user));
 		for (int i = 0; i < usersList.size(); i++) {
@@ -64,19 +61,15 @@ public class UsersJSON {
 				switch (mapTemp.getKey()) {
 				case "email":
 					email = mapTemp.getValue();
-					System.out.println(email);
 					break;
 				case "name":
 					name = mapTemp.getValue();
-					System.out.println(name);
 					break;
 				case "password":
 					password = mapTemp.getValue();
-					System.out.println(password);
 					break;
 				case "age":
-					age = Integer.parseInt(mapTemp.getValue());
-					System.out.println(age);
+					age = mapTemp.getValue();
 					break;
 				default:
 					break;

@@ -106,7 +106,7 @@ public class AdminRESTClient {
 		AdminRESTClient restClient = new AdminRESTClient();
 		// fire the post request on the server
 		restClient.postRequest();
-		//restClient.getRequest();
+		restClient.getRequest();
 	}
 
 }

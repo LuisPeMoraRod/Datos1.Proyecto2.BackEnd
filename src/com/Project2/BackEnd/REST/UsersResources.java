@@ -36,8 +36,7 @@ public class UsersResources implements RestResources {
 	private static BinaryTree<User> BT = BinaryTree.getInstance();
 	private ArrayList<User> responseList;
 	private User responseUser;
-	private String key, email = null, name = null, password = null;
-	private int age;
+	private String key, email = null, name = null, password = null,age = null;
 	private UsersJSON usersJson;
 	private MD5 MD5;
 
@@ -45,7 +44,8 @@ public class UsersResources implements RestResources {
 	@Path("/load")
 	public Response load(JSONArray incomingData) {
 		System.out.println(incomingData);
-		usersJson = UsersJSON.getInstance(incomingData);
+		usersJson = UsersJSON.getInstance();
+		usersJson.addUsersToBT(incomingData);
 
 		return Response.status(201).entity("JSON recieved").build();
 	}
@@ -105,7 +105,7 @@ public class UsersResources implements RestResources {
 				name = tokenizer.nextToken();
 				break;
 			case "age":
-				age = Integer.parseInt(tokenizer.nextToken());
+				age = tokenizer.nextToken();
 				break;
 			case "password":
 				password = tokenizer.nextToken();

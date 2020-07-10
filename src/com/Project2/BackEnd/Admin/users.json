@@ -1,35 +1,5 @@
 [
 	{
-		"password": "da871ac090610ce3ee2414a94d8c81bf",
-		"followers": null,
-		"usersFollowing": null,
-		"profilePic": null,
-		"profile": null,
-		"name": "Juan",
-		"email": "abelardon",
-		"age": 22
-	},
-	{
-		"password": "2877ec5ba49f5844c6384dcc67d483df",
-		"followers": null,
-		"usersFollowing": null,
-		"profilePic": null,
-		"profile": null,
-		"name": "Camila",
-		"email": "cmorales",
-		"age": 18
-	},
-	{
-		"password": "67f68b7a3f55dbc2ea3542f7db4e1702",
-		"followers": null,
-		"usersFollowing": null,
-		"profilePic": null,
-		"profile": null,
-		"name": "Irene",
-		"email": "igomez",
-		"age": 21
-	},
-	{
 		"password": "cd6f3c7bb0a7e272f0f72a82822ce02f",
 		"followers": null,
 		"usersFollowing": null,
@@ -37,7 +7,27 @@
 		"profile": null,
 		"name": "Luis",
 		"email": "lmorales",
-		"age": 21
+		"age": "21"
+	},
+	{
+		"password": "5d41402abc4b2a76b9719d911017c592",
+		"followers": null,
+		"usersFollowing": null,
+		"profilePic": null,
+		"profile": null,
+		"name": "Lucia",
+		"email": "lrodriguez",
+		"age": "52"
+	},
+	{
+		"password": "c21f969b5f03d33d43e04f8f136e7682",
+		"followers": null,
+		"usersFollowing": null,
+		"profilePic": null,
+		"profile": null,
+		"name": "Mario",
+		"email": "mmorales",
+		"age": "52"
 	},
 	{
 		"password": "81c9e69101737db37bbf7260a55d6236",
@@ -47,7 +37,7 @@
 		"profile": null,
 		"name": "Moni",
 		"email": "mwaterhouse",
-		"age": 23
+		"age": "23"
 	},
 	{
 		"password": "8c3f0cefc2c1c416e46a10dfa1c678d1",
@@ -56,7 +46,7 @@
 		"profilePic": null,
 		"profile": null,
 		"name": "Sofi",
-		"email": "sogonzalez",
-		"age": 28
+		"email": "sgonzalez",
+		"age": "28"
 	}
 ]

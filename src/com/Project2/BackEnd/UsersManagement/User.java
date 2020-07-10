@@ -13,7 +13,7 @@ public class User implements Comparable<User> {
 
 	private String email;
 	private String name;
-	private int age;
+	private String age;
 	private String password;
 	private MyMenu myMenu;
 	private BufferedImage profilePic;
@@ -48,11 +48,11 @@ public class User implements Comparable<User> {
 		this.name = name;
 	}
 
-	public int getAge() {
+	public String getAge() {
 		return age;
 	}
 
-	public void setAge(int age) {
+	public void setAge(String age) {
 		this.age = age;
 	}
 
@@ -103,7 +103,7 @@ public class User implements Comparable<User> {
 	public static class Builder {
 		private String email;
 		private String name;
-		private int age;
+		private String age;
 		private String password;
 		private MyMenu myMenu;
 		private BufferedImage profilePic;
@@ -124,7 +124,7 @@ public class User implements Comparable<User> {
 			return this;
 		}
 
-		public Builder withAge(int age) {
+		public Builder withAge(String age) {
 			this.age = age;
 			return this;
 		}

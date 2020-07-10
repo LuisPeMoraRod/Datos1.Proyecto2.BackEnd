@@ -39,10 +39,9 @@ public class AuthFilter implements Filter {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		String authorizationHeader = httpRequest.getHeader("Authorization");
 		String fromHeader = httpRequest.getHeader("From");
-		System.out.println(fromHeader);
 		if (authorizationHeader == null & fromHeader == null) {
 			chain.doFilter(request, response);
-			System.out.println("new user");
+			System.out.println("No headers: access without validation");
 		} else if (validateAuthorization(authorizationHeader,fromHeader)) {			
 			chain.doFilter(request, response);
 			System.out.println("Authorized client");
