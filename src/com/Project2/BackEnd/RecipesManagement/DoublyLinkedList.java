@@ -1,5 +1,7 @@
 package com.Project2.BackEnd.RecipesManagement;
 
+import java.util.Arrays;
+
 import com.Project2.BackEnd.Trees.Node;
 
 public class DoublyLinkedList {
@@ -142,9 +144,71 @@ public class DoublyLinkedList {
 		newNode.setRight(pointer);
 		size++;
 	}
+	
+	/**
+	 * Gets a recipe from an specific node
+	 * @param index of the node that is being accessed 
+	 * @return the recipe located in that index
+	 * 
+	 */
+	
+	 public Recipe getRecipe(int index){
+
+	    Node<Recipe> current = this.first;
+	        int reference = 0;
+
+	        while(current != null){
+
+	            if(reference == index){
+
+	                return current.getElement();
+	            }
+
+	            else if(index>getSize()-1){
+	                System.out.println("Index out of limits");
+	                return null;
+	            }
+
+	            else{
+	                reference++;
+	                current = current.getRight();
+	            }
+
+	        }
+	        return null;
+
+	    }
+	 
+	 public void modifyValue(Recipe r, int index){
+
+	        Node<Recipe> current = this.first;
+	        int reference = 0;
+
+	        while(current != null){
+
+	            if(reference == index){
+
+	                current.setElement(r);
+	                return;
+	            }
+
+	            else if(index>getSize()-1){
+	                System.out.println("Index out of limits");
+	                return;
+	            }
+
+	            else{
+	                reference++;
+	                current = current.getRight();
+	            }
+
+	        }
+	        return;
+
+	    }
 
 	/**
-	 * Sorts using bubblesort method
+	 * Sorts using bubble sort method
 	 */
 	public void Bubblesort() {
 		Node<Recipe> pointer = last.getRight();
@@ -212,7 +276,54 @@ public class DoublyLinkedList {
 		}
 
 	}
+	
+	/**
+     * Method that returns the maximum value of the elements of the list
+     * @return the maximum value found
+     */
 
+    public  int getMax(){
+        int max = this.getFirst().getElement().getDifficulty();
+        
+        for (int i = 1; i < this.getSize(); i++) {
+        	if(this.getRecipe(i).getDifficulty()>max) {
+        		max = this.getRecipe(i).getDifficulty();
+        	}
+        	
+        }
+
+        return max;
+    }
+
+    private void countSort(int exp){
+
+    	Recipe output[] = new Recipe[this.getSize()];
+        int count[] = new int[10];
+        Arrays.fill(count,0);
+
+        for (int i = 0; i < this.getSize(); i++)
+            count[ (this.getRecipe(i).getDifficulty()/exp)%10 ]++;
+
+        for (int i = 1; i < 10; i++)
+            count[i] += count[i - 1];
+
+        for (int i = this.getSize() - 1; i >= 0; i--)
+        {
+            output[count[ (this.getRecipe(i).getDifficulty()/exp)%10 ] - 1] = this.getRecipe(i);
+            count[ (this.getRecipe(i).getDifficulty()/exp)%10 ]--;
+        }
+
+        for (int i = 0; i < this.getSize(); i++)
+            this.modifyValue(output[i], i);
+    }
+    
+    public void radixSort() {
+        int max = getMax();
+
+        for (int exp = 1; max/exp > 0; exp *= 10)
+            countSort(exp);
+    }
+    
 	public void printList() {
 		Node<Recipe> temp = first;
 		String list = "";
