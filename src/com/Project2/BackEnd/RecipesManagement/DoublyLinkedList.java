@@ -294,6 +294,13 @@ public class DoublyLinkedList {
 
         return max;
     }
+    
+    /**
+     * This is an auxiliary method to implement the Radix sort algorithm
+     * It is used to create a counting array according to the digit represented in a certain position.
+     * 
+     * @param exp is used to select a digit from a specific position of a int value
+     */
 
     private void countSort(int exp){
 
@@ -317,6 +324,10 @@ public class DoublyLinkedList {
             this.modifyValue(output[i], i);
     }
     
+    /**
+     * This method is used to arrange the recipes according to its difficulty
+     */
+    
     public void radixSort() {
         int max = getMax();
 
@@ -324,6 +335,55 @@ public class DoublyLinkedList {
             countSort(exp);
     }
     
+    /**
+     * Quick sort algorithm is used to arrange the recipes according to its punctuation
+     */
+    
+    public void quickSort() {
+    	
+    	if (this.getSize()==0){
+    		return;
+    	}
+    	
+    	this.quickSort(0, this.getSize()-1);
+    	}
+    
+	private void quickSort(int low, int high) {
+		int i = low, j = high;
+		
+		int pivot = this.getRecipe(i +(j-i)/2).getPunctuation();
+		Recipe leftPivot;
+		Recipe rightPivot;
+		
+		while(i <= j) {
+			while(this.getRecipe(i).getPunctuation() < pivot) {
+				i++;
+			}
+			while(this.getRecipe(j).getPunctuation() > pivot) {
+				j--;
+			}
+			
+			if(i <= j) {
+				leftPivot = this.getRecipe(i);
+				rightPivot = this.getRecipe(j);
+				
+				this.modifyValue(leftPivot, j);
+				this.modifyValue(rightPivot, i);
+				
+				i++;
+				j--;
+			}
+			
+		}
+		
+		if(low < j) {
+			this.quickSort(low, j);
+		}
+		if(i < high) {
+			this.quickSort(i,high);
+		}
+	}
+
 	public void printList() {
 		Node<Recipe> temp = first;
 		String list = "";
