@@ -48,6 +48,7 @@ public class AuthFilter implements Filter {
 		} else {
 			HttpServletResponse httpResponse = (HttpServletResponse) response;
 			httpResponse.setStatus(401);
+			System.out.println("Unauthorized client");
 		}
 	}
 	
