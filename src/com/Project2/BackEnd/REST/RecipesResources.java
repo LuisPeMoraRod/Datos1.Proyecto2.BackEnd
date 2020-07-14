@@ -16,6 +16,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.Response.Status;
 
 import com.Project2.BackEnd.RecipesManagement.Recipe;
 import com.Project2.BackEnd.Trees.AVLTree;
@@ -36,9 +37,9 @@ public class RecipesResources {
 	private static AVLTree<Recipe> avl = AVLTree.getInstance();
 	private static BinaryTree<User> bt = BinaryTree.getInstance();
 	private String key, name = null, author = null, type = null, portions = null, cookingSpan = null, eatingTime = null,
-			tags = null, price = null, ingredients= null, steps = null;
+			tags = null, price = null, ingredients = null, steps = null;
 	private ArrayList<String> comments;
-	private Integer difficulty;
+	private int difficulty = 0, punctuation = 0;
 	private ArrayList<Recipe> responseList;
 	private User authorUser;
 
@@ -87,6 +88,11 @@ public class RecipesResources {
 			case "ingredients":
 				ingredients = tokenizer.nextToken();
 				break;
+			
+			case "punctuation":
+				String punct = tokenizer.nextToken();
+				punctuation = Integer.parseInt(punct);
+				break;
 
 			default:
 				break;
@@ -95,20 +101,44 @@ public class RecipesResources {
 
 		Recipe newRecipe = Recipe.builder().withName(name).withAuthor(author).withType(type).withPortions(portions)
 				.withEatingTime(eatingTime).withCookingSpan(cookingSpan).withDifficulty(difficulty).withTags(tags)
-				.withPrice(price).withSteps(steps).withIngredients(ingredients).build();
-		
+				.withPrice(price).withSteps(steps).withIngredients(ingredients).withPunctuation(punctuation).build();
 		avl.insert(newRecipe);
 		authorUser = bt.getUserByEmail(author);
-		
+		authorUser.addRecipe(newRecipe);
+
 		return Response.status(201).entity(newRecipe).build();
 	}
-	
+
+	@GET
+	@Path("/{userEmail}")
+	@SuppressWarnings("rawtypes")
+	public Response getMyMenu(@PathParam("userEmail") String userEmail, @Context UriInfo uriInfo) {
+		StringTokenizer tokenizer = null;
+		int sortingType;
+
+		for (Map.Entry entry : uriInfo.getQueryParameters().entrySet()) {
+			key = entry.getKey().toString();
+			tokenizer = new StringTokenizer(entry.getValue().toString(), "[ // ]");
+		}
+		String sortType =tokenizer.nextToken();
+		sortingType = Integer.parseInt(sortType);
+		authorUser = bt.getUserByEmail(userEmail);
+		if (authorUser != null) {
+			authorUser.setSortingType(sortingType);
+			responseList = authorUser.getRecipes();
+			return Response.status(Status.OK).entity(responseList).build();
+		}
+
+		else {
+			return Response.status(Status.NOT_FOUND).entity("User not found for: " + userEmail).build();
+		}
+
+	}
+
 	@GET
 	public Response getAllRecipes() {
 		responseList = avl.getList();
 		return Response.ok(responseList).build();
 	}
-	
-
 
 }

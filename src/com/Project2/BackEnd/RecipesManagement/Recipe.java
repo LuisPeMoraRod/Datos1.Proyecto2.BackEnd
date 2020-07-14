@@ -172,7 +172,7 @@ public class Recipe implements Comparable<Recipe>{
 		this.ingredients = builder.ingredients;
 		this.steps = builder.steps;
 		this.price = builder.price;
-		
+		this.punctuation = builder.punctuation;
 		
 	}
 	
@@ -194,6 +194,7 @@ public class Recipe implements Comparable<Recipe>{
 		private String ingredients;
 		private String steps;
 		private String price;
+		private int punctuation;
 		private Node<Recipe> pointerToNodeInList;
 		private String rate;
 		
@@ -264,6 +265,11 @@ public class Recipe implements Comparable<Recipe>{
 		
 		public Builder withPointer(Node<Recipe> pointerToNodeInList) {
 			this.pointerToNodeInList = pointerToNodeInList;
+			return this;
+		}
+		
+		public Builder withPunctuation(int punctuation) {
+			this.punctuation = punctuation;
 			return this;
 		}
 

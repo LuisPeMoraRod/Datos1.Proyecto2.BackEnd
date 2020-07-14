@@ -38,6 +38,7 @@ public class DoublyLinkedList {
 
 	/**
 	 * Inserts new node at the end of the list
+	 * 
 	 * @param newNode : Node<Recipe>
 	 */
 	public void insertEnd(Node<Recipe> newNode) {
@@ -56,6 +57,7 @@ public class DoublyLinkedList {
 	/**
 	 * 
 	 * Inserts node as the head of the list
+	 * 
 	 * @param newNode : Node<Recipe>
 	 * 
 	 */
@@ -97,7 +99,7 @@ public class DoublyLinkedList {
 				insert(newNode, pointer);
 			}
 		}
-		
+
 		else if (type == SORT_BY_DIFFICULTY) {
 			difficulty = newNode.getElement().getDifficulty();
 			if (difficulty < first.getElement().getDifficulty()) {
@@ -111,8 +113,7 @@ public class DoublyLinkedList {
 				}
 				insert(newNode, pointer);
 			}
-		}
-		else if (type == SORT_BY_PUNCTUATION) {
+		} else if (type == SORT_BY_PUNCTUATION) {
 			punctuation = newNode.getElement().getPunctuation();
 			if (punctuation < first.getElement().getPunctuation()) {
 				insertHead(newNode);
@@ -144,78 +145,80 @@ public class DoublyLinkedList {
 		newNode.setRight(pointer);
 		size++;
 	}
-	
+
 	/**
 	 * Gets a recipe from an specific node
-	 * @param index of the node that is being accessed 
+	 * 
+	 * @param index of the node that is being accessed
 	 * @return the recipe located in that index
 	 * 
 	 */
-	
-	 public Recipe getRecipe(int index){
 
-	    Node<Recipe> current = this.first;
-	        int reference = 0;
+	public Recipe getRecipe(int index) {
 
-	        while(current != null){
+		Node<Recipe> current = this.first;
+		int reference = 0;
 
-	            if(reference == index){
+		while (current != null) {
 
-	                return current.getElement();
-	            }
+			if (reference == index) {
 
-	            else if(index>getSize()-1){
-	                System.out.println("Index out of limits");
-	                return null;
-	            }
+				return current.getElement();
+			}
 
-	            else{
-	                reference++;
-	                current = current.getRight();
-	            }
+			else if (index > getSize() - 1) {
+				System.out.println("Index out of limits");
+				return null;
+			}
 
-	        }
-	        return null;
+			else {
+				reference++;
+				current = current.getRight();
+			}
 
-	    }
-	 
-	 public void modifyValue(Recipe r, int index){
+		}
+		return null;
 
-	        Node<Recipe> current = this.first;
-	        int reference = 0;
+	}
 
-	        while(current != null){
+	public void modifyValue(Recipe r, int index) {
 
-	            if(reference == index){
+		Node<Recipe> current = this.first;
+		int reference = 0;
 
-	                current.setElement(r);
-	                return;
-	            }
+		while (current != null) {
 
-	            else if(index>getSize()-1){
-	                System.out.println("Index out of limits");
-	                return;
-	            }
+			if (reference == index) {
 
-	            else{
-	                reference++;
-	                current = current.getRight();
-	            }
+				current.setElement(r);
+				return;
+			}
 
-	        }
-	        return;
+			else if (index > getSize() - 1) {
+				System.out.println("Index out of limits");
+				return;
+			}
 
-	    }
+			else {
+				reference++;
+				current = current.getRight();
+			}
+
+		}
+		return;
+
+	}
 
 	/**
 	 * Sorts using bubble sort method
 	 */
-	public void Bubblesort() {
+	public void bubblesort() {
 		Node<Recipe> pointer = last.getRight();
 		Node<Recipe> temp;
 		for (int i = 0; i < size; i++) {
 			temp = first;
 			while (temp != null) {
+				System.out.println(temp.getId()); //erase
 				try {
 					if (temp.getId() > temp.getRight().getId()) {
 						swap(temp, temp.getRight(), pointer);
@@ -236,6 +239,7 @@ public class DoublyLinkedList {
 
 	/**
 	 * Swaps the position of two consecutive nodes
+	 * 
 	 * @param pointer
 	 * @param nextPointer
 	 * @param stopReference
@@ -276,111 +280,117 @@ public class DoublyLinkedList {
 		}
 
 	}
-	
+
 	/**
-     * Method that returns the maximum value of the elements of the list
-     * @return the maximum value found
-     */
+	 * Method that returns the maximum value of the elements of the list
+	 * 
+	 * @return the maximum value found
+	 */
 
-    public int getMax(){
-        int max = this.getFirst().getElement().getDifficulty();
-        
-        for (int i = 1; i < this.getSize(); i++) {
-        	if(this.getRecipe(i).getDifficulty()>max) {
-        		max = this.getRecipe(i).getDifficulty();
-        	}
-        	
-        }
+	public int getMax() {
+		if (first != null) {
+			int max = this.getFirst().getElement().getDifficulty();
 
-        return max;
-    }
-    
-    /**
-     * This is an auxiliary method to implement the Radix sort algorithm
-     * It is used to create a counting array according to the digit represented in a certain position.
-     * 
-     * @param exp is used to select a digit from a specific position of a int value
-     */
+			for (int i = 1; i < this.getSize(); i++) {
+				if (this.getRecipe(i).getDifficulty() > max) {
+					max = this.getRecipe(i).getDifficulty();
+				}
+			}
 
-    private void countSort(int exp){
+			return max;
+		} else {
+			return 0;
 
-    	Recipe output[] = new Recipe[this.getSize()];
-        int count[] = new int[10];
-        Arrays.fill(count,0);
+		}
+	}
 
-        for (int i = 0; i < this.getSize(); i++)
-            count[ (this.getRecipe(i).getDifficulty()/exp)%10 ]++;
+	/**
+	 * This is an auxiliary method to implement the Radix sort algorithm It is used
+	 * to create a counting array according to the digit represented in a certain
+	 * position.
+	 * 
+	 * @param exp is used to select a digit from a specific position of a int value
+	 */
 
-        for (int i = 1; i < 10; i++)
-            count[i] += count[i - 1];
+	private void countSort(int exp) {
 
-        for (int i = this.getSize() - 1; i >= 0; i--)
-        {
-            output[count[ (this.getRecipe(i).getDifficulty()/exp)%10 ] - 1] = this.getRecipe(i);
-            count[ (this.getRecipe(i).getDifficulty()/exp)%10 ]--;
-        }
+		Recipe output[] = new Recipe[this.getSize()];
+		int count[] = new int[10];
+		Arrays.fill(count, 0);
 
-        for (int i = 0; i < this.getSize(); i++)
-            this.modifyValue(output[i], i);
-    }
-    
-    /**
-     * This method is used to arrange the recipes according to its difficulty
-     */
-    
-    public void radixSort() {
-        int max = getMax();
+		for (int i = 0; i < this.getSize(); i++)
+			count[(this.getRecipe(i).getDifficulty() / exp) % 10]++;
 
-        for (int exp = 1; max/exp > 0; exp *= 10)
-            countSort(exp);
-    }
-    
-    /**
-     * Quick sort algorithm is used to arrange the recipes according to its punctuation
-     */
-    
-    public void quickSort() {
-    	
-    	if (this.getSize()==0){
-    		return;
-    	}
-    	
-    	this.quickSort(0, this.getSize()-1);
-    	}
-    
+		for (int i = 1; i < 10; i++)
+			count[i] += count[i - 1];
+
+		for (int i = this.getSize() - 1; i >= 0; i--) {
+			output[count[(this.getRecipe(i).getDifficulty() / exp) % 10] - 1] = this.getRecipe(i);
+			count[(this.getRecipe(i).getDifficulty() / exp) % 10]--;
+		}
+
+		for (int i = 0; i < this.getSize(); i++)
+			this.modifyValue(output[i], i);
+	}
+
+	/**
+	 * This method is used to arrange the recipes according to its difficulty
+	 */
+
+	public void radixSort() {
+		int max = getMax();
+
+		for (int exp = 1; max / exp > 0; exp *= 10)
+			countSort(exp);
+	}
+
+	/**
+	 * Quick sort algorithm is used to arrange the recipes according to its
+	 * punctuation
+	 */
+
+	public void quickSort() {
+
+		if (this.getSize() == 0) {
+			return;
+		}
+
+		this.quickSort(0, this.getSize() - 1);
+	}
+
 	private void quickSort(int low, int high) {
 		int i = low, j = high;
-		
-		int pivot = this.getRecipe(i +(j-i)/2).getPunctuation();
+
+		int pivot = this.getRecipe(i + (j - i) / 2).getPunctuation();
 		Recipe leftPivot;
 		Recipe rightPivot;
-		
-		while(i <= j) {
-			while(this.getRecipe(i).getPunctuation() < pivot) {
+
+		while (i <= j) {
+			while (this.getRecipe(i).getPunctuation() < pivot) {
 				i++;
 			}
-			while(this.getRecipe(j).getPunctuation() > pivot) {
+			while (this.getRecipe(j).getPunctuation() > pivot) {
 				j--;
 			}
-			
-			if(i <= j) {
+
+			if (i <= j) {
 				leftPivot = this.getRecipe(i);
 				rightPivot = this.getRecipe(j);
-				
+
 				this.modifyValue(leftPivot, j);
 				this.modifyValue(rightPivot, i);
-				
+
 				i++;
 				j--;
 			}
-			
+
 		}
-		
-		if(low < j) {
+
+		if (low < j) {
 			this.quickSort(low, j);
 		}
-		if(i < high) {
-			this.quickSort(i,high);
+		if (i < high) {
+			this.quickSort(i, high);
 		}
 	}
 
@@ -393,7 +403,5 @@ public class DoublyLinkedList {
 		}
 		System.out.println(list);
 	}
-
-	
 
 }

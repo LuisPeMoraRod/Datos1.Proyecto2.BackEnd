@@ -13,7 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-
+import javax.ws.rs.PUT;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -156,6 +156,67 @@ public class UsersResources implements RestResources {
 			return Response.status(Status.CONFLICT).entity("Email already in use").build();
 		}
 
+	}
+	
+	@SuppressWarnings("rawtypes")
+	@PUT
+	@Path("/{userEmail}")
+	public Response editUser(@PathParam("userEmail") String userEmail, @Context UriInfo uriInfo) {
+		responseUser = BT.getUserByEmail(userEmail);
+		if (responseUser != null) {
+			for (Map.Entry entry : uriInfo.getQueryParameters().entrySet()) {
+				key = entry.getKey().toString();
+				StringTokenizer tokenizer = new StringTokenizer(entry.getValue().toString(), "[ // ]");
+
+				switch (key) {
+				case "email":
+					email = tokenizer.nextToken();
+					if (BT.getUserByEmail(email) == null) {
+						responseUser.setEmail(email);
+					}else {
+						 return Response.status(Status.CONFLICT).entity("Email not available: " + email).build();
+					}
+					break;
+				case "name":
+					name = tokenizer.nextToken();
+					responseUser.setName(name);
+					break;
+				case "age":
+					age = tokenizer.nextToken();
+					responseUser.setAge(age);
+					break;
+				case "password":
+					password = tokenizer.nextToken();
+					MD5 = new MD5(password);
+					try {
+						password = MD5.getMD5();
+						responseUser.setPassword(password);
+					} catch (NoSuchAlgorithmException | NoSuchProviderException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					break;
+				case "usersFollowing":
+					usersFollowing = tokenizer.nextToken();
+					responseUser.setUsersFollowing(usersFollowing);
+					break;
+				case "followers":
+					followers = tokenizer.nextToken();
+					responseUser.setFollowers(followers);
+					break;
+				case "profilePic":
+					profilePic = tokenizer.nextToken();
+					responseUser.setProfilePic(profilePic);
+					break;
+
+				default:
+					break;
+				}
+			}
+			return Response.ok(responseUser).build();
+		} else {
+			return Response.status(Status.NOT_FOUND).entity("User not found for: " + userEmail).build();
+		}
 	}
 
 }
