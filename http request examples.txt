@@ -1,0 +1,7 @@
+http://localhost:8080/CookTime.BackEnd/api/recipes?name=salad&author=lmorales&difficulty=8
+
+http://localhost:8080/CookTime.BackEnd/api/recipes/lmorales?sortingType=2
+
+http://localhost:8080/CookTime.BackEnd/api/users?email=lmorales&password=pass&name=Luis&age=21&profilePic=picture&usersFollowing=456&followers=23899
+
+http://localhost:8080/CookTime.BackEnd/api/users/lmorales?name=Pedro&followers=100

@@ -50,6 +50,7 @@ public class RecipesResources {
 		for (Map.Entry entry : uriInfo.getQueryParameters().entrySet()) {
 			key = entry.getKey().toString();
 			StringTokenizer tokenizer = new StringTokenizer(entry.getValue().toString(), "[ // ]");
+			tokenizer = new StringTokenizer(tokenizer.nextToken());
 
 			switch (key) {
 			case "name":
@@ -73,7 +74,6 @@ public class RecipesResources {
 			case "difficulty":
 				String dif = tokenizer.nextToken();
 				difficulty = Integer.parseInt(dif);
-
 				break;
 			case "tags":
 				tags = tokenizer.nextToken();
@@ -84,11 +84,9 @@ public class RecipesResources {
 			case "steps":
 				steps = tokenizer.nextToken();
 				break;
-
 			case "ingredients":
 				ingredients = tokenizer.nextToken();
 				break;
-			
 			case "punctuation":
 				String punct = tokenizer.nextToken();
 				punctuation = Integer.parseInt(punct);
@@ -99,14 +97,21 @@ public class RecipesResources {
 			}
 		}
 
-		Recipe newRecipe = Recipe.builder().withName(name).withAuthor(author).withType(type).withPortions(portions)
-				.withEatingTime(eatingTime).withCookingSpan(cookingSpan).withDifficulty(difficulty).withTags(tags)
-				.withPrice(price).withSteps(steps).withIngredients(ingredients).withPunctuation(punctuation).build();
-		avl.insert(newRecipe);
-		authorUser = bt.getUserByEmail(author);
-		authorUser.addRecipe(newRecipe);
+		if (author != null) {
+			Recipe newRecipe = Recipe.builder().withName(name).withAuthor(author).withType(type).withPortions(portions)
+					.withEatingTime(eatingTime).withCookingSpan(cookingSpan).withDifficulty(difficulty).withTags(tags)
+					.withPrice(price).withSteps(steps).withIngredients(ingredients).withPunctuation(punctuation)
+					.build();
+			avl.insert(newRecipe);
 
-		return Response.status(201).entity(newRecipe).build();
+			authorUser = bt.getUserByEmail(author);
+			authorUser.addRecipe(newRecipe);
+
+			return Response.status(201).entity(newRecipe).build();
+		}
+		else {
+			return Response.status(Status.NOT_FOUND).entity("User not found for: " + author).build();
+		}
 	}
 
 	@GET
@@ -119,8 +124,9 @@ public class RecipesResources {
 		for (Map.Entry entry : uriInfo.getQueryParameters().entrySet()) {
 			key = entry.getKey().toString();
 			tokenizer = new StringTokenizer(entry.getValue().toString(), "[ // ]");
+			tokenizer = new StringTokenizer(tokenizer.nextToken());
 		}
-		String sortType =tokenizer.nextToken();
+		String sortType = tokenizer.nextToken();
 		sortingType = Integer.parseInt(sortType);
 		authorUser = bt.getUserByEmail(userEmail);
 		if (authorUser != null) {

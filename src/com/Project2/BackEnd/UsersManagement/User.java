@@ -109,12 +109,15 @@ public class User implements Comparable<User> {
 		switch (sortingType) {
 		case 0:
 			myMenu.bubblesort();
+			myMenu.printList();
 			break;
 		case 1:
 			myMenu.quickSort();
+			myMenu.printList();
 			break;
 		case 2:
 			myMenu.radixSort();
+			myMenu.printList();
 			break;
 
 		default:
@@ -124,15 +127,12 @@ public class User implements Comparable<User> {
 		this.sortingType = sortingType;
 	}
 
-	public static Builder builder() {
-		return new Builder();
-	}
+	
 
 	public void addRecipe(Recipe newRecipe) {
 		Node<Recipe> node = new Node<Recipe>(newRecipe);
 		int id = myMenu.getSize();
-		node.setId(id);
-		System.out.println(node.getId());//erase
+		newRecipe.setId(id);
 		myMenu.sortedInsert(node, this.sortingType);
 	}
 
@@ -154,6 +154,9 @@ public class User implements Comparable<User> {
 		}
 	}
 
+	public static Builder builder() {
+		return new Builder();
+	}
 	public static class Builder {
 		private String email;
 		private String name;

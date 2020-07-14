@@ -1,62 +1,111 @@
 [
-	{
-		"password": "81dc9bdb52d04dc20036dbd8313ed055",
-		"followers": null,
-		"usersFollowing": null,
-		"profilePic": null,
-		"profile": null,
-		"name": "Luis",
-		"email": "lmorales",
-		"age": null
-	},
-	{
-		"password": "5d41402abc4b2a76b9719d911017c592",
-		"followers": null,
-		"usersFollowing": null,
-		"profilePic": null,
-		"profile": null,
-		"name": "Lucia",
-		"email": "lrodriguez",
-		"age": "52"
-	},
-	{
-		"password": "c21f969b5f03d33d43e04f8f136e7682",
-		"followers": null,
-		"usersFollowing": null,
-		"profilePic": null,
-		"profile": null,
-		"name": "Mario",
-		"email": "mmorales",
-		"age": "52"
-	},
-	{
-		"password": "81c9e69101737db37bbf7260a55d6236",
-		"followers": null,
-		"usersFollowing": null,
-		"profilePic": null,
-		"profile": null,
-		"name": "Moni",
-		"email": "mwaterhouse",
-		"age": "23"
-	},
-	{
-		"password": "81dc9bdb52d04dc20036dbd8313ed055",
-		"followers": null,
-		"usersFollowing": null,
-		"profilePic": null,
-		"profile": null,
-		"name": "Luis",
-		"email": "prod",
-		"age": null
-	},
-	{
-		"password": "8c3f0cefc2c1c416e46a10dfa1c678d1",
-		"followers": null,
-		"usersFollowing": null,
-		"profilePic": null,
-		"profile": null,
-		"name": "Sofi",
-		"email": "sgonzalez",
-		"age": "28"
-	}
+    {
+        "email": "lmorales",
+        "name": "Luis",
+        "age": "21",
+        "password": "1a1dc91c907325c69271ddf0c944bc72",
+        "profilePic": "picture",
+        "usersFollowing": "456",
+        "followers": "23899",
+        "recipes": [
+            {
+                "name": "salad",
+                "author": "lmorales",
+                "type": null,
+                "portions": null,
+                "cookingSpan": null,
+                "eatingTime": null,
+                "tags": null,
+                "image": null,
+                "ingredients": null,
+                "steps": null,
+                "comments": null,
+                "price": null,
+                "pointerToNodeInList": null,
+                "difficulty": 8,
+                "id": 0,
+                "punctuation": 4
+            },
+            {
+                "name": "lasagna",
+                "author": "lmorales",
+                "type": null,
+                "portions": null,
+                "cookingSpan": null,
+                "eatingTime": null,
+                "tags": null,
+                "image": null,
+                "ingredients": null,
+                "steps": null,
+                "comments": null,
+                "price": null,
+                "pointerToNodeInList": null,
+                "difficulty": 10,
+                "id": 1,
+                "punctuation": 5
+            },
+            {
+                "name": "wine",
+                "author": "lmorales",
+                "type": null,
+                "portions": null,
+                "cookingSpan": null,
+                "eatingTime": null,
+                "tags": null,
+                "image": null,
+                "ingredients": null,
+                "steps": null,
+                "comments": null,
+                "price": null,
+                "pointerToNodeInList": null,
+                "difficulty": 7,
+                "id": 2,
+                "punctuation": 1
+            }
+        ],
+        "sortingType": 0
+    },
+   
+    {
+        "email": "mwaterhouse",
+        "name": "Moni",
+        "age": "23",
+        "password": "81c9e69101737db37bbf7260a55d6236",
+        "profilePic": null,
+        "usersFollowing": null,
+        "followers": null,
+        "recipes": [],
+        "sortingType": 0
+    },
+   
+    {
+        "email": "sgonzalez",
+        "name": "Sofi",
+        "age": "22",
+        "password": "1a1dc91c907325c69271ddf0c944bc72",
+        "profilePic": "picture",
+        "usersFollowing": "200",
+        "followers": "10000",
+        "recipes": [
+            {
+                "name": "bread",
+                "author": "sgonzalez",
+                "type": null,
+                "portions": null,
+                "cookingSpan": null,
+                "eatingTime": null,
+                "tags": null,
+                "image": null,
+                "ingredients": null,
+                "steps": null,
+                "comments": null,
+                "price": null,
+                "pointerToNodeInList": null,
+                "difficulty": 7,
+                "id": 0,
+                "punctuation": 10
+            }
+        ],
+        "sortingType": 0
+    }
 ]

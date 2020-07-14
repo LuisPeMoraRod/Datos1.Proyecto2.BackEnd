@@ -86,14 +86,14 @@ public class DoublyLinkedList {
 			last = newNode;
 			size++;
 		} else if (type == SORT_BY_DATE) {
-			date = newNode.getId();
+			date = newNode.getElement().getId();
 			if (date < first.getId()) {
 				insertHead(newNode);
-			} else if (date > last.getId()) {
+			} else if (date > last.getElement().getId()) {
 				insertEnd(newNode);
 			} else {
 				Node<Recipe> pointer = first;
-				while (date > pointer.getId()) {
+				while (date > pointer.getElement().getId()) {
 					pointer = pointer.getRight();
 				}
 				insert(newNode, pointer);
@@ -218,9 +218,9 @@ public class DoublyLinkedList {
 		for (int i = 0; i < size; i++) {
 			temp = first;
 			while (temp != null) {
-				System.out.println(temp.getId()); //erase
+				System.out.println(temp.getElement().getId()); //erase
 				try {
-					if (temp.getId() > temp.getRight().getId()) {
+					if (temp.getElement().getId() > temp.getRight().getElement().getId()) {
 						swap(temp, temp.getRight(), pointer);
 					} else {
 						temp = temp.getRight();
@@ -403,5 +403,5 @@ public class DoublyLinkedList {
 		}
 		System.out.println(list);
 	}
-
+	
 }
