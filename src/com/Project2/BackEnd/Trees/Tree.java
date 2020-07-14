@@ -17,7 +17,7 @@ public abstract class Tree<T extends Comparable<T>> {
     private boolean isAVL;
     private boolean isSplay;
     
-    private ArrayList<T> listElements = new ArrayList<>();
+    private ArrayList<T> elementsList = new ArrayList<>();
 
     public boolean isEmpty(){
         return this.root == null;
@@ -437,30 +437,50 @@ public abstract class Tree<T extends Comparable<T>> {
         }
     }
 
-    /**
-     * Prints the elements of the tree in order
-     */
-
-    public void printInOrder(){
-        inOrder(this.root);
-        System.out.println(" ");
-    }
-
-    private void inOrder(NodeTree<T> node)
-    {
-        if (node == null)
-            return;
-
-        inOrder(node.left);
-
-        listElements.add(node.element);
-        
-        inOrder(node.right);
-    }
     
-    public ArrayList<T> getTreeElements(){
-    	return this.listElements;
-    }
+    
+    ////////////////////////////////////////////////////////
+    public ArrayList<T> getList() {
+		return inOrder();
+	}
+
+    /**
+     * Removes every element of the ListArray
+     */
+	public void setList() {
+		
+		while(!elementsList.isEmpty()) {
+			for (int i = 0 ; i<elementsList.size(); i++) {
+				elementsList.remove(i);
+			}
+		}
+	}
+	
+	/**
+	 * Public method that returns an array with all the elements of the binary tree in order (in terms of the users' email)
+	 * @return list : ArraList<T>
+	 */
+	public ArrayList<T> inOrder() {
+		setList();
+		inOrder(elementsList, this.root);
+		return elementsList;
+	}
+
+	/**
+	 * Recursive method used by inOrder method
+	 * @param list : ArrayList <T>
+	 * @param node : Node <T>
+	 * {@link #inOrder()}
+	 */
+	public void inOrder(ArrayList<T> list, NodeTree<T> node) {
+		if (node == null) {
+			return;
+		}
+		inOrder(list, node.left);
+		list.add(node.getElement());
+		inOrder(list, node.right);
+		
+	}
 
 
 }

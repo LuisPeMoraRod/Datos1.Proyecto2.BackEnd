@@ -14,7 +14,6 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 
-
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -23,6 +22,7 @@ import javax.ws.rs.core.UriInfo;
 
 import org.json.simple.JSONArray;
 
+import com.Project2.BackEnd.RecipesManagement.Recipe;
 import com.Project2.BackEnd.Trees.BinaryTree;
 import com.Project2.BackEnd.UsersManagement.MD5;
 import com.Project2.BackEnd.UsersManagement.User;
@@ -36,9 +36,26 @@ public class UsersResources implements RestResources {
 	private static BinaryTree<User> BT = BinaryTree.getInstance();
 	private ArrayList<User> responseList;
 	private User responseUser;
-	private String key, email = null, name = null, password = null,age = null;
+	private String key, email = null, name = null, password = null, age = null, usersFollowing = null, followers = null,
+			profilePic = null;
 	private UsersJSON usersJson;
 	private MD5 MD5;
+	private ArrayList<Recipe> myMenu;
+
+	@GET
+	@Path("/notif")
+	public Response notifications() {
+		try {
+			for (int i = 0; i < 60; i++) {
+				Thread.sleep(1000);
+				System.out.println(i);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return Response.status(200).entity("notification back").build();
+	}
 
 	@POST
 	@Path("/load")
@@ -49,8 +66,6 @@ public class UsersResources implements RestResources {
 
 		return Response.status(201).entity("JSON recieved").build();
 	}
-
-	
 
 	/**
 	 * Searches by email and returns a specific user
@@ -116,6 +131,15 @@ public class UsersResources implements RestResources {
 					e.printStackTrace();
 				}
 				break;
+			case "usersFollowing":
+				usersFollowing = tokenizer.nextToken();
+				break;
+			case "followers":
+				followers = tokenizer.nextToken();
+				break;
+			case "profilePic":
+				profilePic = tokenizer.nextToken();
+				break;
 
 			default:
 				break;
@@ -124,9 +148,9 @@ public class UsersResources implements RestResources {
 		if (email == null || name == null || password == null) {
 			return Response.status(Status.CONFLICT).entity("Email, name and password mustn't be empty").build();
 		} else if (BT.getUserByEmail(email) == null) {
-			newUser = User.builder().withEmail(email).withName(name).withAge(age).withPassword(password).build();
+			newUser = User.builder().withEmail(email).withName(name).withAge(age).withPassword(password)
+					.withFollowers(followers).withUsersFollowing(usersFollowing).withProfilePic(profilePic).build();
 			BT.insert(newUser);
-
 			return Response.status(201).entity(newUser).build();
 		} else {
 			return Response.status(Status.CONFLICT).entity("Email already in use").build();

@@ -1,6 +1,7 @@
 package com.Project2.BackEnd.RecipesManagement;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import com.Project2.BackEnd.Trees.Node;
 import com.Project2.BackEnd.UsersManagement.User;
@@ -18,15 +19,25 @@ public class Recipe implements Comparable<Recipe>{
 	private String portions;
 	private String cookingSpan;
 	private String eatingTime;
+	private String tags;
 	private BufferedImage image;
-	private String[] ingredients;
-	private String[] steps;
+	private String ingredients;
+	private String steps;
+	private ArrayList<String> comments;
 	private String price;
 	private Node<Recipe> pointerToNodeInList;
 	private int difficulty;
 	private int id;
 	private int punctuation;
 	
+	public ArrayList<String> getComments() {
+		return comments;
+	}
+
+	public void setComments(ArrayList<String> comments) {
+		this.comments = comments;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -91,6 +102,15 @@ public class Recipe implements Comparable<Recipe>{
 		this.eatingTime = eatingTime;
 	}
 
+	
+	public String getTags() {
+		return tags;
+	}
+
+	public void setTags(String tags) {
+		this.tags = tags;
+	}
+
 	public int getDifficulty() {
 		return difficulty;
 	}
@@ -107,19 +127,19 @@ public class Recipe implements Comparable<Recipe>{
 		this.image = image;
 	}
 
-	public String[] getIngredients() {
+	public String getIngredients() {
 		return ingredients;
 	}
 
-	public void setIngredients(String[] ingredients) {
+	public void setIngredients(String ingredients) {
 		this.ingredients = ingredients;
 	}
 
-	public String[] getSteps() {
+	public String getSteps() {
 		return steps;
 	}
 
-	public void setSteps(String[] steps) {
+	public void setSteps(String steps) {
 		this.steps = steps;
 	}
 
@@ -146,6 +166,7 @@ public class Recipe implements Comparable<Recipe>{
 		this.portions = builder.portions;
 		this.cookingSpan = builder.cookingSpan;
 		this.eatingTime = builder.eatingTime;
+		this.tags = builder.tags;
 		this.difficulty = builder.difficulty;
 		this.image = builder.image;
 		this.ingredients = builder.ingredients;
@@ -167,10 +188,11 @@ public class Recipe implements Comparable<Recipe>{
 		private String portions;
 		private String cookingSpan;
 		private String eatingTime;
+		private String tags;
 		private int difficulty;
 		private BufferedImage image;
-		private String[] ingredients;
-		private String[] steps;
+		private String ingredients;
+		private String steps;
 		private String price;
 		private Node<Recipe> pointerToNodeInList;
 		private String rate;
@@ -215,17 +237,22 @@ public class Recipe implements Comparable<Recipe>{
 			return this;
 		}
 		
+		public Builder withTags(String tags) {
+			this.tags = tags;
+			return this;
+		}
+		
 		public Builder withImage(BufferedImage image) {
 			this.image = image;
 			return this;
 		}
 		
-		public Builder withIngredients(String[] ingredients) {
+		public Builder withIngredients(String ingredients) {
 			this.ingredients = ingredients;
 			return this;
 		}
 		
-		public Builder withSteps(String[] steps) {
+		public Builder withSteps(String steps) {
 			this.steps = steps;
 			return this;
 		}
@@ -244,8 +271,10 @@ public class Recipe implements Comparable<Recipe>{
 
 	@Override
 	public int compareTo(Recipe o) {
-		// TODO Auto-generated method stub
-		return 0;
+		if (o == null) {
+			return -1;
+		}
+		return this.name.compareTo(o.name.toString());
 	}
 	
 	@Override

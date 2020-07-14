@@ -18,29 +18,16 @@ import com.Project2.BackEnd.UsersManagement.User;
 public class BinaryTree<T extends Comparable<T>> {
 
 	private Node<T> root;
-	private ArrayList<T> list;
+	private ArrayList<T> elementsList;
 	
 	
 	private static BinaryTree<User> BT = null;
 
 	private BinaryTree() {
 		this.root = null;
-		list = new ArrayList<T>();
+		elementsList = new ArrayList<T>();
 	}
 	
-	public ArrayList<T> getList() {
-		return inOrder();
-	}
-
-	public void setList() {
-		
-		while(!list.isEmpty()) {
-			for (int i = 0 ; i<list.size(); i++) {
-				list.remove(i);
-			}
-		}
-	}
-
 	/**
 	 * Public static method that returns the unique instance of the class. Uses
 	 * thread safetys
@@ -51,6 +38,21 @@ public class BinaryTree<T extends Comparable<T>> {
 		}
 		return BT;
 	}
+	
+	public ArrayList<T> getList() {
+		return inOrder();
+	}
+
+	public void setList() {
+		
+		while(!elementsList.isEmpty()) {
+			for (int i = 0 ; i<elementsList.size(); i++) {
+				elementsList.remove(i);
+			}
+		}
+	}
+
+	
 
 	public boolean isEmpty() {
 		return this.root == null;
@@ -272,8 +274,8 @@ public class BinaryTree<T extends Comparable<T>> {
 	 */
 	public ArrayList<T> inOrder() {
 		setList();
-		inOrder(list, this.root);
-		return list;
+		inOrder(elementsList, this.root);
+		return elementsList;
 	}
 
 	/**

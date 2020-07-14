@@ -8,7 +8,7 @@ public class DoublyLinkedList {
 	private Node<Recipe> first;
 	private Node<Recipe> last;
 	private int size;
-	private static final int SORT_BY_DATE = 0, SORT_BY_PUNCTUATION = 1, SORT_BY_DIFFICULTY = 2;
+	public static final int SORT_BY_DATE = 0, SORT_BY_PUNCTUATION = 1, SORT_BY_DIFFICULTY = 2;
 	private int date, punctuation, difficulty;
 
 	public DoublyLinkedList() {
@@ -51,13 +51,13 @@ public class DoublyLinkedList {
 			last = newNode;
 		}
 		size++;
-
 	}
 
 	/**
-	 * Inserts node as the head of the list
 	 * 
+	 * Inserts node as the head of the list
 	 * @param newNode : Node<Recipe>
+	 * 
 	 */
 	public void insertHead(Node<Recipe> newNode) {
 		if (size == 0) {
@@ -84,7 +84,7 @@ public class DoublyLinkedList {
 			last = newNode;
 			size++;
 		} else if (type == SORT_BY_DATE) {
-			int date = newNode.getId();
+			date = newNode.getId();
 			if (date < first.getId()) {
 				insertHead(newNode);
 			} else if (date > last.getId()) {
@@ -99,7 +99,7 @@ public class DoublyLinkedList {
 		}
 		
 		else if (type == SORT_BY_DIFFICULTY) {
-			int difficulty = newNode.getElement().getDifficulty();
+			difficulty = newNode.getElement().getDifficulty();
 			if (difficulty < first.getElement().getDifficulty()) {
 				insertHead(newNode);
 			} else if (difficulty > last.getElement().getDifficulty()) {
@@ -113,7 +113,7 @@ public class DoublyLinkedList {
 			}
 		}
 		else if (type == SORT_BY_PUNCTUATION) {
-			int punctuation = newNode.getElement().getPunctuation();
+			punctuation = newNode.getElement().getPunctuation();
 			if (punctuation < first.getElement().getPunctuation()) {
 				insertHead(newNode);
 			} else if (punctuation > last.getElement().getPunctuation()) {
@@ -282,7 +282,7 @@ public class DoublyLinkedList {
      * @return the maximum value found
      */
 
-    public  int getMax(){
+    public int getMax(){
         int max = this.getFirst().getElement().getDifficulty();
         
         for (int i = 1; i < this.getSize(); i++) {

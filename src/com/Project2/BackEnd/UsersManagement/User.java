@@ -1,6 +1,12 @@
 package com.Project2.BackEnd.UsersManagement;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
+import com.Project2.BackEnd.RecipesManagement.DoublyLinkedList;
+import com.Project2.BackEnd.RecipesManagement.Recipe;
+import com.Project2.BackEnd.Trees.Node;
+
 
 
 public class User implements Comparable<User> {
@@ -15,20 +21,21 @@ public class User implements Comparable<User> {
 	private String name;
 	private String age;
 	private String password;
-	private MyMenu myMenu;
-	private BufferedImage profilePic;
-	private User[] usersFollowing;
-	private String[] followers;
+	private String profilePic;
+	private String usersFollowing;
+	private String followers;
+	private ArrayList<Recipe> responseList;
+	private DoublyLinkedList myMenu;
 
 	public User(Builder builder) {
 		this.email = builder.email;
 		this.name = builder.name;
 		this.age = builder.age;
 		this.password = builder.password;
-		this.myMenu = builder.myMenu;
 		this.profilePic = builder.profilePic;
 		this.usersFollowing = builder.usersFollowing;
 		this.followers = builder.followers;
+		//this.myMenu = new DoublyLinkedList();
 	}
 
 	// Getters and setters
@@ -64,51 +71,58 @@ public class User implements Comparable<User> {
 		this.password = password;
 	}
 
-	public MyMenu getProfile() {
+	public DoublyLinkedList getProfile() {
 		return myMenu;
 	}
 
-	public void setProfile(MyMenu myMenu) {
+	public void setProfile(DoublyLinkedList myMenu) {
 		this.myMenu = myMenu;
 	}
 
-	public BufferedImage getProfilePic() {
+	public String getProfilePic() {
 		return profilePic;
 	}
 
-	public void setProfilePic(BufferedImage profilePic) {
+	public void setProfilePic(String profilePic) {
 		this.profilePic = profilePic;
 	}
 
-	public User[] getUsersFollowing() {
+	public String getUsersFollowing() {
 		return usersFollowing;
 	}
 
-	public void setUsersFollowing(User[] usersFollowing) {
+	public void setUsersFollowing(String usersFollowing) {
 		this.usersFollowing = usersFollowing;
 	}
 
-	public String[] getFollowers() {
+	public String getFollowers() {
 		return followers;
 	}
 
-	public void setFollowers(String[] followers) {
+	public void setFollowers(String followers) {
 		this.followers = followers;
 	}
 
 	public static Builder builder() {
 		return new Builder();
 	}
+	
+	public void addRecipe(Recipe newRecipe) {
+		Node<Recipe> node = new Node<Recipe>(newRecipe);
+		int id = myMenu.getSize();
+		node.setId(id);
+		myMenu.sortedInsert(node, DoublyLinkedList.SORT_BY_DATE);
+	}
+	
 
 	public static class Builder {
 		private String email;
 		private String name;
 		private String age;
 		private String password;
-		private MyMenu myMenu;
-		private BufferedImage profilePic;
-		private User[] usersFollowing;
-		private String[] followers;
+		private String profilePic;
+		private String usersFollowing;
+		private String followers;
 
 		public User build() {
 			return new User(this);
@@ -134,22 +148,18 @@ public class User implements Comparable<User> {
 			return this;
 		}
 
-		public Builder withMyMenu(MyMenu myMenu) {
-			this.myMenu = myMenu;
-			return this;
-		}
-
-		public Builder withProfilePic(BufferedImage profilePic) {
+		
+		public Builder withProfilePic(String profilePic) {
 			this.profilePic = profilePic;
 			return this;
 		}
 
-		public Builder withUsersFollowing(User[] usersFollowing) {
+		public Builder withUsersFollowing(String usersFollowing) {
 			this.usersFollowing = usersFollowing;
 			return this;
 		}
 
-		public Builder withFollowers(String[] followers) {
+		public Builder withFollowers(String followers) {
 			this.followers = followers;
 			return this;
 		}
