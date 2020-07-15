@@ -37,7 +37,7 @@ public class RecipesResources {
 	private static AVLTree<Recipe> avl = AVLTree.getInstance();
 	private static BinaryTree<User> bt = BinaryTree.getInstance();
 	private String key, name = null, author = null, type = null, portions = null, cookingSpan = null, eatingTime = null,
-			tags = null, price = null, ingredients = null, steps = null;
+			tags = null, price = null, ingredients = null, steps = null, picture = null;
 	private ArrayList<String> comments;
 	private int difficulty = 0, punctuation = 0;
 	private ArrayList<Recipe> responseList;
@@ -50,7 +50,6 @@ public class RecipesResources {
 		for (Map.Entry entry : uriInfo.getQueryParameters().entrySet()) {
 			key = entry.getKey().toString();
 			StringTokenizer tokenizer = new StringTokenizer(entry.getValue().toString(), "[ // ]");
-			tokenizer = new StringTokenizer(tokenizer.nextToken());
 
 			switch (key) {
 			case "name":
@@ -71,10 +70,6 @@ public class RecipesResources {
 			case "cookingSpan":
 				cookingSpan = tokenizer.nextToken();
 				break;
-			case "difficulty":
-				String dif = tokenizer.nextToken();
-				difficulty = Integer.parseInt(dif);
-				break;
 			case "tags":
 				tags = tokenizer.nextToken();
 				break;
@@ -87,9 +82,18 @@ public class RecipesResources {
 			case "ingredients":
 				ingredients = tokenizer.nextToken();
 				break;
+			case "picture":
+				picture = tokenizer.nextToken();
+				break;
 			case "punctuation":
+				tokenizer = new StringTokenizer(tokenizer.nextToken());
 				String punct = tokenizer.nextToken();
 				punctuation = Integer.parseInt(punct);
+				break;
+			case "difficulty":
+				tokenizer = new StringTokenizer(tokenizer.nextToken());
+				String dif = tokenizer.nextToken();
+				difficulty = Integer.parseInt(dif);
 				break;
 
 			default:
@@ -100,16 +104,15 @@ public class RecipesResources {
 		if (author != null) {
 			Recipe newRecipe = Recipe.builder().withName(name).withAuthor(author).withType(type).withPortions(portions)
 					.withEatingTime(eatingTime).withCookingSpan(cookingSpan).withDifficulty(difficulty).withTags(tags)
-					.withPrice(price).withSteps(steps).withIngredients(ingredients).withPunctuation(punctuation)
-					.build();
+					.withPrice(price).withSteps(steps).withPicture(picture).withIngredients(ingredients)
+					.withPunctuation(punctuation).build();
 			avl.insert(newRecipe);
 
 			authorUser = bt.getUserByEmail(author);
 			authorUser.addRecipe(newRecipe);
 
 			return Response.status(201).entity(newRecipe).build();
-		}
-		else {
+		} else {
 			return Response.status(Status.NOT_FOUND).entity("User not found for: " + author).build();
 		}
 	}

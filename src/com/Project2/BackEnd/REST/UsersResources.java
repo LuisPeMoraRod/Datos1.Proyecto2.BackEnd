@@ -121,6 +121,7 @@ public class UsersResources implements RestResources {
 			case "age":
 				age = tokenizer.nextToken();
 				break;
+
 			case "password":
 				password = tokenizer.nextToken();
 				MD5 = new MD5(password);
@@ -148,8 +149,10 @@ public class UsersResources implements RestResources {
 		if (email == null || name == null || password == null) {
 			return Response.status(Status.CONFLICT).entity("Email, name and password mustn't be empty").build();
 		} else if (BT.getUserByEmail(email) == null) {
+			ArrayList<Recipe> recipes = null;
 			newUser = User.builder().withEmail(email).withName(name).withAge(age).withPassword(password)
-					.withFollowers(followers).withUsersFollowing(usersFollowing).withProfilePic(profilePic).build();
+					.withFollowers(followers).withUsersFollowing(usersFollowing).withProfilePic(profilePic)
+					.withMyMenu(recipes).build();
 			BT.insert(newUser);
 			return Response.status(201).entity(newUser).build();
 		} else {
@@ -157,7 +160,7 @@ public class UsersResources implements RestResources {
 		}
 
 	}
-	
+
 	@SuppressWarnings("rawtypes")
 	@PUT
 	@Path("/{userEmail}")
@@ -173,8 +176,8 @@ public class UsersResources implements RestResources {
 					email = tokenizer.nextToken();
 					if (BT.getUserByEmail(email) == null) {
 						responseUser.setEmail(email);
-					}else {
-						 return Response.status(Status.CONFLICT).entity("Email not available: " + email).build();
+					} else {
+						return Response.status(Status.CONFLICT).entity("Email not available: " + email).build();
 					}
 					break;
 				case "name":

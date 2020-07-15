@@ -123,11 +123,9 @@ public class User implements Comparable<User> {
 		default:
 			break;
 		}
-		
+
 		this.sortingType = sortingType;
 	}
-
-	
 
 	public void addRecipe(Recipe newRecipe) {
 		Node<Recipe> node = new Node<Recipe>(newRecipe);
@@ -157,6 +155,7 @@ public class User implements Comparable<User> {
 	public static Builder builder() {
 		return new Builder();
 	}
+
 	public static class Builder {
 		private String email;
 		private String name;
@@ -210,25 +209,27 @@ public class User implements Comparable<User> {
 			this.followers = followers;
 			return this;
 		}
-		
+
 		public Builder withSortingType(String sortingType) {
 			this.sortingType = Integer.parseInt(sortingType);
 			return this;
 		}
-		
+
 		public Builder withMyMenu(ArrayList<Recipe> recipes) {
 			this.recipes = recipes;
 			this.myMenu = parseArrayToLinkedList(recipes);
 			return this;
-			
+
 		}
-		
+
 		private DoublyLinkedList parseArrayToLinkedList(ArrayList<Recipe> recipes) {
 			DoublyLinkedList myMenu = new DoublyLinkedList();
 			Node<Recipe> node;
-			for (Recipe recipe : recipes) {
-				node = new Node<Recipe>(recipe);
-				myMenu.sortedInsert(node, sortingType);
+			if (recipes != null) {
+				for (Recipe recipe : recipes) {
+					node = new Node<Recipe>(recipe);
+					myMenu.sortedInsert(node, sortingType);
+				}
 			}
 			return myMenu;
 		}

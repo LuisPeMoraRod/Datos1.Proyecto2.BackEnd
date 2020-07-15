@@ -1,7 +1,34 @@
-http://localhost:8080/CookTime.BackEnd/api/recipes?name=salad&author=lmorales&difficulty=8
+http://localhost:8080/CookTime.BackEnd/api/recipes?name=salad&author=lmorales&difficulty=8&punctuation=4&tag=veggie
+http://localhost:8080/CookTime.BackEnd/api/recipes?name=lasagna&author=lmorales&difficulty=10&punctuation=5&tag=veggie
+http://localhost:8080/CookTime.BackEnd/api/recipes?name=wine&author=lmorales&difficulty=7&punctuation=1&tag=veggie
 
 http://localhost:8080/CookTime.BackEnd/api/recipes/lmorales?sortingType=2
 
 http://localhost:8080/CookTime.BackEnd/api/users?email=lmorales&password=pass&name=Luis&age=21&profilePic=picture&usersFollowing=456&followers=23899
 
 http://localhost:8080/CookTime.BackEnd/api/users/lmorales?name=Pedro&followers=100
+
+public static void main(String[] args) {
+		int sortingType = 2;
+		DoublyLinkedList list = new DoublyLinkedList();
+		Recipe salad = Recipe.builder().withName("salad").withDifficulty(10).build();
+		Node<Recipe> node = new Node<Recipe>(salad);
+		int id = list.getSize();
+		node.setId(id);
+		list.sortedInsert(node, sortingType);
+		
+		Recipe lasagna = Recipe.builder().withName("lasagna").withDifficulty(8).build();
+		Node<Recipe> node1 = new Node<Recipe>(lasagna);
+		id = list.getSize();
+		node1.setId(id);
+		list.sortedInsert(node1, sortingType);
+		
+		Recipe rice = Recipe.builder().withName("rice").withDifficulty(6).build();
+		Node<Recipe> node2 = new Node<Recipe>(rice);
+		id = list.getSize();
+		node2.setId(id);
+		list.sortedInsert(node2, sortingType);
+		
+		list.bubblesort();
+		list.printList();
+	}

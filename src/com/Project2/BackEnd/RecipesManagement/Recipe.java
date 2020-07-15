@@ -26,6 +26,7 @@ public class Recipe implements Comparable<Recipe>{
 	private String steps;
 	private HashMap<String,String> comments;
 	private String price;
+	private String picture;
 	private int difficulty;
 	private int id;
 	private int punctuation;
@@ -150,7 +151,14 @@ public class Recipe implements Comparable<Recipe>{
 	public void setPrice(String price) {
 		this.price = price;
 	}
+	
+	public String getPicture() {
+		return picture;
+	}
 
+	public void setPicture(String picture) {
+		this.picture = picture;
+	}
 
 	public Recipe(Builder builder) {
 		this.name = builder.name;
@@ -168,6 +176,7 @@ public class Recipe implements Comparable<Recipe>{
 		this.punctuation = builder.punctuation;
 		this.comments = builder.comments;
 		this.id = builder.id;
+		this.picture = builder.picture;
 		
 	}
 	
@@ -188,6 +197,7 @@ public class Recipe implements Comparable<Recipe>{
 		private String ingredients;
 		private String steps;
 		private String price;
+		private String picture;
 		private int punctuation;
 		private int difficulty;
 		private int id;
@@ -271,6 +281,11 @@ public class Recipe implements Comparable<Recipe>{
 		
 		public Builder withId(int id) {
 			this.id = id;
+			return this;
+		}
+		
+		public Builder withPicture(String picture) {
+			this.picture = picture;
 			return this;
 		}
 
