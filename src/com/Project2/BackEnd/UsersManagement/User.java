@@ -34,9 +34,9 @@ public class User implements Comparable<User> {
 		this.profilePic = builder.profilePic;
 		this.usersFollowing = builder.usersFollowing;
 		this.followers = builder.followers;
-		this.myMenu = new DoublyLinkedList();
+		this.myMenu = builder.myMenu;
 		this.sortingType = 0;
-		recipes = new ArrayList<Recipe>();
+		this.recipes = builder.recipes;
 	}
 
 	// Getters and setters
@@ -165,8 +165,14 @@ public class User implements Comparable<User> {
 		private String profilePic;
 		private String usersFollowing;
 		private String followers;
+		private ArrayList<Recipe> recipes = null;
+		private DoublyLinkedList myMenu;
+		private int sortingType;
 
 		public User build() {
+			if (recipes == null) {
+				recipes = new ArrayList<Recipe>();
+			}
 			return new User(this);
 		}
 
@@ -203,6 +209,28 @@ public class User implements Comparable<User> {
 		public Builder withFollowers(String followers) {
 			this.followers = followers;
 			return this;
+		}
+		
+		public Builder withSortingType(String sortingType) {
+			this.sortingType = Integer.parseInt(sortingType);
+			return this;
+		}
+		
+		public Builder withMyMenu(ArrayList<Recipe> recipes) {
+			this.recipes = recipes;
+			this.myMenu = parseArrayToLinkedList(recipes);
+			return this;
+			
+		}
+		
+		private DoublyLinkedList parseArrayToLinkedList(ArrayList<Recipe> recipes) {
+			DoublyLinkedList myMenu = new DoublyLinkedList();
+			Node<Recipe> node;
+			for (Recipe recipe : recipes) {
+				node = new Node<Recipe>(recipe);
+				myMenu.sortedInsert(node, sortingType);
+			}
+			return myMenu;
 		}
 
 	}

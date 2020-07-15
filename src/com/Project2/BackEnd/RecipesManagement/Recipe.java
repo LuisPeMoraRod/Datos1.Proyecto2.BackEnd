@@ -2,6 +2,7 @@ package com.Project2.BackEnd.RecipesManagement;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.Project2.BackEnd.Trees.Node;
 import com.Project2.BackEnd.UsersManagement.User;
@@ -20,21 +21,20 @@ public class Recipe implements Comparable<Recipe>{
 	private String cookingSpan;
 	private String eatingTime;
 	private String tags;
-	private BufferedImage image;
+	private String image;
 	private String ingredients;
 	private String steps;
-	private ArrayList<String> comments;
+	private HashMap<String,String> comments;
 	private String price;
-	private Node<Recipe> pointerToNodeInList;
 	private int difficulty;
 	private int id;
 	private int punctuation;
 	
-	public ArrayList<String> getComments() {
+	public HashMap<String,String>  getComments() {
 		return comments;
 	}
 
-	public void setComments(ArrayList<String> comments) {
+	public void setComments(HashMap<String,String>  comments) {
 		this.comments = comments;
 	}
 
@@ -119,11 +119,11 @@ public class Recipe implements Comparable<Recipe>{
 		this.difficulty = difficulty;
 	}
 
-	public BufferedImage getImage() {
+	public String getImage() {
 		return image;
 	}
 
-	public void setImage(BufferedImage image) {
+	public void setImage(String image) {
 		this.image = image;
 	}
 
@@ -151,13 +151,6 @@ public class Recipe implements Comparable<Recipe>{
 		this.price = price;
 	}
 
-	public Node<Recipe> getPointerToNodeInList() {
-		return pointerToNodeInList;
-	}
-
-	public void setPointerToNodeInList(Node<Recipe>  pointerToNodeInList) {
-		this.pointerToNodeInList = pointerToNodeInList;
-	}
 
 	public Recipe(Builder builder) {
 		this.name = builder.name;
@@ -173,6 +166,8 @@ public class Recipe implements Comparable<Recipe>{
 		this.steps = builder.steps;
 		this.price = builder.price;
 		this.punctuation = builder.punctuation;
+		this.comments = builder.comments;
+		this.id = builder.id;
 		
 	}
 	
@@ -189,14 +184,14 @@ public class Recipe implements Comparable<Recipe>{
 		private String cookingSpan;
 		private String eatingTime;
 		private String tags;
-		private int difficulty;
-		private BufferedImage image;
+		private String image;
 		private String ingredients;
 		private String steps;
 		private String price;
 		private int punctuation;
-		private Node<Recipe> pointerToNodeInList;
-		private String rate;
+		private int difficulty;
+		private int id;
+		private HashMap<String,String> comments;
 		
 		
 		public Recipe build() {
@@ -243,7 +238,7 @@ public class Recipe implements Comparable<Recipe>{
 			return this;
 		}
 		
-		public Builder withImage(BufferedImage image) {
+		public Builder withImage(String image) {
 			this.image = image;
 			return this;
 		}
@@ -263,13 +258,19 @@ public class Recipe implements Comparable<Recipe>{
 			return this;
 		}
 		
-		public Builder withPointer(Node<Recipe> pointerToNodeInList) {
-			this.pointerToNodeInList = pointerToNodeInList;
-			return this;
-		}
 		
 		public Builder withPunctuation(int punctuation) {
 			this.punctuation = punctuation;
+			return this;
+		}
+		
+		public Builder withComments(HashMap<String,String> comments) {
+			this.comments = comments;
+			return this;
+		}
+		
+		public Builder withId(int id) {
+			this.id = id;
 			return this;
 		}
 

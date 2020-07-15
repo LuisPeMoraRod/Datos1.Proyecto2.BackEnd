@@ -60,7 +60,7 @@ public class UsersResources implements RestResources {
 	@POST
 	@Path("/load")
 	public Response load(JSONArray incomingData) {
-		System.out.println(incomingData);
+		System.out.println(incomingData.toJSONString());
 		usersJson = UsersJSON.getInstance();
 		usersJson.addUsersToBT(incomingData);
 
