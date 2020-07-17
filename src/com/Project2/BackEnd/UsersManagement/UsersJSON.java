@@ -56,8 +56,7 @@ public class UsersJSON {
 		ArrayList<Object> array = null;
 		ArrayList<Recipe> recipesArray = null;
 		String email = null, name = null, password = null, age = null, usersFollowing = null,
-				followers = null, sortingType = null, recipesString = null;
-		Byte[] profilePic = null;
+				followers = null, sortingType = null, recipesString = null,profilePic = null;
 		System.out.println(usersList.getClass());
 		// usersList.forEach(user -> parseUser((JSONObject) user));
 		for (int i = 0; i < usersList.size(); i++) {
@@ -77,7 +76,7 @@ public class UsersJSON {
 					age = (String) mapTemp.getValue();
 					break;
 				case "profilePic":
-					profilePic =  (Byte[]) mapTemp.getValue();
+					profilePic =  (String) mapTemp.getValue();
 					break;
 				case "usersFollowing":
 					usersFollowing = (String) mapTemp.getValue();
