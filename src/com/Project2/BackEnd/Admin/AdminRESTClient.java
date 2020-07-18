@@ -39,6 +39,7 @@ public class AdminRESTClient {
 	private String loadUrl = "http://localhost:8080/CookTime.BackEnd/api/users/load";
 	private String getUrl = "http://localhost:8080/CookTime.BackEnd/api/users";
 	private String jsonFileLoc = "src/com/Project2/BackEnd/Admin/users.json";
+	private String notifUrl= "http://localhost:8080/CookTime.BackEnd/api/users/get_notif?observerUser=lmorales";
 	private JSONParser parser;
 	
 	public AdminRESTClient() {
@@ -101,12 +102,29 @@ public class AdminRESTClient {
 
 		return usersArray.toJSONString();
 	}
+	
+	public void getNotif() {
+		WebResource webResource = client.resource(notifUrl);
+		//String inputData = getJsonFile();
+		ClientResponse response = webResource.type("application/json").get(ClientResponse.class);
+		if (response.getStatus() != 200) {
+			throw new RuntimeException("HTTP Error: " + response.getStatus());
+		}
+
+		String result = response.getEntity(String.class);
+		System.out.println("Response from the Server: ");
+		System.out.println(result);
+	}
 
 	public static void main(String[] args) throws ParseException {
 		AdminRESTClient restClient = new AdminRESTClient();
 		// fire the post request on the server
-		restClient.postRequest();
-		restClient.getRequest();
+		//restClient.postRequest();
+		//restClient.getRequest();
+		for (int i = 0; i < 5; i++) {
+			restClient.getNotif();
+		}
+	
 	}
 
 }

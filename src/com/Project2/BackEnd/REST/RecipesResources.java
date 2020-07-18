@@ -38,7 +38,6 @@ public class RecipesResources {
 	private static BinaryTree<User> bt = BinaryTree.getInstance();
 	private String key, name = null, author = null, type = null, portions = null, cookingSpan = null, eatingTime = null,
 			tags = null, price = null, ingredients = null, steps = null, picture = null;
-	private ArrayList<String> comments;
 	private int difficulty = 0, punctuation = 0;
 	private ArrayList<Recipe> responseList;
 	private User authorUser;
@@ -50,7 +49,7 @@ public class RecipesResources {
 		for (Map.Entry entry : uriInfo.getQueryParameters().entrySet()) {
 			key = entry.getKey().toString();
 			StringTokenizer tokenizer = new StringTokenizer(entry.getValue().toString(), "[ // ]");
-
+			tokenizer = new StringTokenizer(tokenizer.nextToken());
 			switch (key) {
 			case "name":
 				name = tokenizer.nextToken();
@@ -86,12 +85,10 @@ public class RecipesResources {
 				picture = tokenizer.nextToken();
 				break;
 			case "punctuation":
-				tokenizer = new StringTokenizer(tokenizer.nextToken());
 				String punct = tokenizer.nextToken();
 				punctuation = Integer.parseInt(punct);
 				break;
 			case "difficulty":
-				tokenizer = new StringTokenizer(tokenizer.nextToken());
 				String dif = tokenizer.nextToken();
 				difficulty = Integer.parseInt(dif);
 				break;

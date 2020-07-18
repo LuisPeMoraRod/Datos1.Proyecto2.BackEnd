@@ -4,12 +4,16 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.StringTokenizer;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -23,6 +27,7 @@ import javax.ws.rs.core.UriInfo;
 import org.json.simple.JSONArray;
 
 import com.Project2.BackEnd.RecipesManagement.Recipe;
+import com.Project2.BackEnd.Trees.AVLTree;
 import com.Project2.BackEnd.Trees.BinaryTree;
 import com.Project2.BackEnd.UsersManagement.MD5;
 import com.Project2.BackEnd.UsersManagement.User;
@@ -31,32 +36,125 @@ import com.Project2.BackEnd.UsersManagement.UsersJSON;
 @Path("/users")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class UsersResources implements RestResources {
+public class UsersResources implements RestResources, Observer {
 
-	private static BinaryTree<User> BT = BinaryTree.getInstance();
+	private static BinaryTree<User> bt = BinaryTree.getInstance();
+	private static AVLTree<Recipe> avl = AVLTree.getInstance();
 	private ArrayList<User> responseList;
 	private User responseUser;
-	private String key, email = null, name = null, password = null, age = null, usersFollowing = null, followers = null,
-			profilePic = null;
+	private String key, email = null, name = null, password = null, age = null, profilePic = null;
 	private UsersJSON usersJson;
 	private MD5 MD5;
 	private ArrayList<Recipe> myMenu;
-
-	@GET
-	@Path("/notif")
-	public Response notifications() {
-		try {
-			for (int i = 0; i < 10; i++) {
-				Thread.sleep(1000);
-				System.out.println(i);
-			}
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-		return Response.status(200).entity("notification back").build();
+	private static NotifObservable notifObservable;
+	private boolean sendNotif = false;
+	private Notification notification;
+	private String observerUser;
+	static {
+		notifObservable = new NotifObservable();
 	}
 
+	/**
+	 * Sets a new notification
+	 * 
+	 * @param uriInfo : UriInfo
+	 * @return Response
+	 */
+	@SuppressWarnings("rawtypes")
+	@POST
+	@Path("/new_notif")
+	public Response newNotification(@Context UriInfo uriInfo) {
+		String emisorUser = null, recieverUser = null, newComment = null, recipeName = null;
+		int notifType = 0;
+		Recipe recipe = null;
+		for (Map.Entry entry : uriInfo.getQueryParameters().entrySet()) {
+			key = entry.getKey().toString();
+			StringTokenizer tokenizer = new StringTokenizer(entry.getValue().toString(), "[ // ]");
+			tokenizer = new StringTokenizer(tokenizer.nextToken());
+			switch (key) {
+			case "emisorUser":
+				emisorUser = tokenizer.nextToken();
+				break;
+			case "recieverUser":
+				recieverUser = tokenizer.nextToken();
+				break;
+			case "notifType":
+				notifType = Integer.parseInt(tokenizer.nextToken());
+				break;
+			case "newComment":
+				String encoded = tokenizer.nextToken();
+				tokenizer = new StringTokenizer(encoded, "_");
+				newComment = "";
+				while (tokenizer.hasMoreTokens()) {
+					newComment += " " + tokenizer.nextToken();
+				}
+
+				break;
+			case "recipe":
+				recipeName = tokenizer.nextToken();
+				break;
+			default:
+				break;
+			}
+		}
+		notification = new Notification(emisorUser, recieverUser, notifType, newComment, recipeName);
+		User user = bt.getUserByEmail(emisorUser);
+
+		if (recipeName != null) {
+			recipe = avl.getRecipeByName(recipeName);
+		}
+
+		switch (notification.getNotifType()) {
+		case Notification.NEW_COMMENT:
+			recipe.addComment(emisorUser, newComment);
+			break;
+		case Notification.NEW_FOLLOWER:
+			user.addUserFollowing(recieverUser);
+			user = bt.getUserByEmail(recieverUser);
+			user.incrementFollowers();
+			break;
+		case Notification.NEW_LIKE:
+			recipe.incrementPunctuation();
+			break;
+		case Notification.NEW_SHARE:
+			user.addRecipe(recipe);
+			recipe.incrementShares();
+			break;
+		default:
+			break;
+		}
+		notifObservable.setNotification(notification); // change in observable subject
+		return Response.status(200).entity("notification setted").build();
+	}
+
+	/**
+	 * Sends a new notification as a response every time there is an update in the
+	 * Notification Observer
+	 * 
+	 * @param uriInfo
+	 * @return Response
+	 * @throws InterruptedException {@link NotifObservable}
+	 */
+	@GET
+	@Path("/get_notif")
+	public Response getNotification(@QueryParam("observerUser") String observerUser) throws InterruptedException {
+		this.observerUser = observerUser;
+		notifObservable.addObserver(this);
+		System.out.println("observer added");
+		while (!sendNotif) {
+			Thread.sleep(1);
+		}
+		notification = notifObservable.getNotification();
+		sendNotif = false;
+		return Response.status(200).entity(notification).build();
+	}
+
+	/**
+	 * Inserts every user in the JSONArray to the BT
+	 * 
+	 * @param incomingData
+	 * @return
+	 */
 	@POST
 	@Path("/load")
 	public Response load(JSONArray incomingData) {
@@ -76,7 +174,7 @@ public class UsersResources implements RestResources {
 	@GET
 	@Path("/{userEmail}")
 	public Response get(@PathParam("userEmail") String userEmail) {
-		responseUser = BT.getUserByEmail(userEmail);
+		responseUser = bt.getUserByEmail(userEmail);
 		if (responseUser != null) {
 			return Response.ok(responseUser).build();
 		} else {
@@ -93,7 +191,7 @@ public class UsersResources implements RestResources {
 	 */
 	@GET
 	public Response getAll() {
-		responseList = BT.getList();
+		responseList = bt.getList();
 		return Response.ok(responseList).build();
 	}
 
@@ -132,12 +230,7 @@ public class UsersResources implements RestResources {
 					e.printStackTrace();
 				}
 				break;
-			case "usersFollowing":
-				usersFollowing = tokenizer.nextToken();
-				break;
-			case "followers":
-				followers = tokenizer.nextToken();
-				break;
+
 			case "profilePic":
 				profilePic = tokenizer.nextToken();
 				break;
@@ -148,12 +241,11 @@ public class UsersResources implements RestResources {
 		}
 		if (email == null || name == null || password == null) {
 			return Response.status(Status.CONFLICT).entity("Email, name and password mustn't be empty").build();
-		} else if (BT.getUserByEmail(email) == null) {
+		} else if (bt.getUserByEmail(email) == null) {
 			ArrayList<Recipe> recipes = null;
 			newUser = User.builder().withEmail(email).withName(name).withAge(age).withPassword(password)
-					.withFollowers(followers).withUsersFollowing(usersFollowing).withProfilePic(profilePic)
-					.withMyMenu(recipes).build();
-			BT.insert(newUser);
+					.withProfilePic(profilePic).withMyMenu(recipes).build();
+			bt.insert(newUser);
 			return Response.status(201).entity(newUser).build();
 		} else {
 			return Response.status(Status.CONFLICT).entity("Email already in use").build();
@@ -161,11 +253,18 @@ public class UsersResources implements RestResources {
 
 	}
 
+	/**
+	 * Edits information of the user
+	 * 
+	 * @param userEmail
+	 * @param uriInfo
+	 * @return
+	 */
 	@SuppressWarnings("rawtypes")
 	@PUT
 	@Path("/{userEmail}")
 	public Response editUser(@PathParam("userEmail") String userEmail, @Context UriInfo uriInfo) {
-		responseUser = BT.getUserByEmail(userEmail);
+		responseUser = bt.getUserByEmail(userEmail);
 		if (responseUser != null) {
 			for (Map.Entry entry : uriInfo.getQueryParameters().entrySet()) {
 				key = entry.getKey().toString();
@@ -174,7 +273,7 @@ public class UsersResources implements RestResources {
 				switch (key) {
 				case "email":
 					email = tokenizer.nextToken();
-					if (BT.getUserByEmail(email) == null) {
+					if (bt.getUserByEmail(email) == null) {
 						responseUser.setEmail(email);
 					} else {
 						return Response.status(Status.CONFLICT).entity("Email not available: " + email).build();
@@ -199,14 +298,7 @@ public class UsersResources implements RestResources {
 						e.printStackTrace();
 					}
 					break;
-				case "usersFollowing":
-					usersFollowing = tokenizer.nextToken();
-					responseUser.setUsersFollowing(usersFollowing);
-					break;
-				case "followers":
-					followers = tokenizer.nextToken();
-					responseUser.setFollowers(followers);
-					break;
+
 				case "profilePic":
 					profilePic = tokenizer.nextToken();
 					responseUser.setProfilePic(profilePic);
@@ -219,6 +311,14 @@ public class UsersResources implements RestResources {
 			return Response.ok(responseUser).build();
 		} else {
 			return Response.status(Status.NOT_FOUND).entity("User not found for: " + userEmail).build();
+		}
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		if (notifObservable.getIsNewNotif() & notifObservable.getNotification().getRecieverUser().equals(observerUser)) {
+			this.sendNotif = true;
+			notifObservable.setIsNewNotif(false);
 		}
 	}
 

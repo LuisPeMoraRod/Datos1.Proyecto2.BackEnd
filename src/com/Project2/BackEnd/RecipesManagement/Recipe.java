@@ -30,6 +30,7 @@ public class Recipe implements Comparable<Recipe>{
 	private int difficulty;
 	private int id;
 	private int punctuation;
+	private int shares;
 	
 	public HashMap<String,String>  getComments() {
 		return comments;
@@ -37,6 +38,11 @@ public class Recipe implements Comparable<Recipe>{
 
 	public void setComments(HashMap<String,String>  comments) {
 		this.comments = comments;
+	}
+	
+	public void addComment(String user, String comment) {
+		
+		this.comments.put(user, comment);
 	}
 
 	public int getId() {
@@ -53,6 +59,10 @@ public class Recipe implements Comparable<Recipe>{
 
 	public void setPunctuation(int punctuation) {
 		this.punctuation = punctuation;
+	}
+	
+	public void incrementPunctuation() {
+		this.punctuation++;
 	}
 
 	public String getName() {
@@ -159,6 +169,18 @@ public class Recipe implements Comparable<Recipe>{
 	public void setPicture(String picture) {
 		this.picture = picture;
 	}
+	
+	public int getShares() {
+		return shares;
+	}
+
+	public void setShares(int shares) {
+		this.shares = shares;
+	}
+	
+	public void incrementShares() {
+		this.shares++;
+	}
 
 	public Recipe(Builder builder) {
 		this.name = builder.name;
@@ -174,10 +196,10 @@ public class Recipe implements Comparable<Recipe>{
 		this.steps = builder.steps;
 		this.price = builder.price;
 		this.punctuation = builder.punctuation;
-		this.comments = builder.comments;
 		this.id = builder.id;
 		this.picture = builder.picture;
-		
+		this.shares = builder.shares;
+		this.comments = new HashMap<String, String>();		
 	}
 	
 	public static Builder builder() {
@@ -201,6 +223,7 @@ public class Recipe implements Comparable<Recipe>{
 		private int punctuation;
 		private int difficulty;
 		private int id;
+		private int shares;
 		private HashMap<String,String> comments;
 		
 		
@@ -286,6 +309,11 @@ public class Recipe implements Comparable<Recipe>{
 		
 		public Builder withPicture(String picture) {
 			this.picture = picture;
+			return this;
+		}
+		
+		public Builder withShares(int shares) {
+			this.shares = shares;
 			return this;
 		}
 

@@ -2,10 +2,11 @@ package com.Project2.BackEnd.REST;
 
 public class Notification {
 	private String emisorUser;
-	private String observerUser;
+	private String recieverUser;
 	public static final int NEW_COMMENT = 0, NEW_FOLLOWER = 1, NEW_LIKE = 2, NEW_SHARE = 3;
 	private int notifType;
 	private String newComment;
+	private String recipe;
 
 	public String getEmisorUser() {
 		return emisorUser;
@@ -15,12 +16,12 @@ public class Notification {
 		this.emisorUser = emisorUser;
 	}
 
-	public String getObserverUser() {
-		return observerUser;
+	public String getRecieverUser() {
+		return recieverUser;
 	}
 
-	public void setObserverUser(String observerUser) {
-		this.observerUser = observerUser;
+	public void setRecieverUser(String recieverUser) {
+		this.recieverUser = recieverUser;
 	}
 
 	public int getNotifType() {
@@ -39,12 +40,21 @@ public class Notification {
 		this.newComment = newComment;
 	}
 
-	public Notification(String emisorUsr, String observerUser, int notifType, String newComment) {
-		this.emisorUser = emisorUsr;
-		this.observerUser = observerUser;
+	
+	public String getRecipe() {
+		return recipe;
+	}
+
+	public void setRecipe(String recipe) {
+		this.recipe = recipe;
+	}
+
+	public Notification(String emisorUser, String observerUser, int notifType, String newComment, String recipe) {
+		this.emisorUser = emisorUser;
+		this.recieverUser = observerUser;
 		this.notifType = notifType;
 		this.newComment = newComment;
-
+		this.recipe = recipe;
 	}
 
 }

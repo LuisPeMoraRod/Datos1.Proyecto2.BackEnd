@@ -40,6 +40,25 @@ public abstract class Tree<T extends Comparable<T>> {
             }
         }
     }
+    
+    public T getRecipeByName(String recipe) {
+    	return getRecipeByName(recipe,this.root);
+    }
+    
+    public T getRecipeByName(String recipe, NodeTree<T> node) {
+    	if (node == null) {
+			return null;
+		}
+		int comparisonResult = recipe.compareTo((node.getElement().toString()));
+		if (comparisonResult < 0) {
+			return getRecipeByName(recipe, node.left);
+		} else if (comparisonResult > 0) {
+			return getRecipeByName(recipe, node.right);
+		}else {
+			return node.getElement();
+		}
+    }
+    
 
     /**
      * Method that can be accessed by a user to search an element in the tree
@@ -81,6 +100,8 @@ public abstract class Tree<T extends Comparable<T>> {
             }
         }
     }
+    
+    
 
     /**
      * Finds the minimum value of the tree

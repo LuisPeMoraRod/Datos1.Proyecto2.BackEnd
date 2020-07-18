@@ -55,8 +55,10 @@ public class UsersJSON {
 		JSONParser parser = new JSONParser();
 		ArrayList<Object> array = null;
 		ArrayList<Recipe> recipesArray = null;
-		String email = null, name = null, password = null, age = null, usersFollowing = null,
-				followers = null, sortingType = null, recipesString = null,profilePic = null;
+		String email = null, name = null, password = null, age = null, sortingType = null,
+				recipesString = null, profilePic = null;
+		ArrayList<String> usersFollowing = null;
+		int followers = 0;
 		System.out.println(usersList.getClass());
 		// usersList.forEach(user -> parseUser((JSONObject) user));
 		for (int i = 0; i < usersList.size(); i++) {
@@ -76,13 +78,13 @@ public class UsersJSON {
 					age = (String) mapTemp.getValue();
 					break;
 				case "profilePic":
-					profilePic =  (String) mapTemp.getValue();
+					profilePic = (String) mapTemp.getValue();
 					break;
 				case "usersFollowing":
-					usersFollowing = (String) mapTemp.getValue();
+					usersFollowing = (ArrayList<String>) mapTemp.getValue();
 					break;
 				case "followers":
-					followers = (String) mapTemp.getValue();
+					followers = Integer.parseInt((String)mapTemp.getValue());
 					break;
 				case "sortingType":
 					sortingType = mapTemp.getValue().toString();
