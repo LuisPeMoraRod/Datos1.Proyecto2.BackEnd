@@ -124,7 +124,6 @@ public class AdminRESTClient {
 		for (int i = 0; i < 5; i++) {
 			restClient.getNotif();
 		}
-	
 	}
 
 }

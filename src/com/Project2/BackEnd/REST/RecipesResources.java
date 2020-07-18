@@ -98,17 +98,21 @@ public class RecipesResources {
 			}
 		}
 
-		if (author != null) {
-			Recipe newRecipe = Recipe.builder().withName(name).withAuthor(author).withType(type).withPortions(portions)
-					.withEatingTime(eatingTime).withCookingSpan(cookingSpan).withDifficulty(difficulty).withTags(tags)
-					.withPrice(price).withSteps(steps).withPicture(picture).withIngredients(ingredients)
-					.withPunctuation(punctuation).build();
-			avl.insert(newRecipe);
+		if (bt.getUserByEmail(author) != null) {
 
-			authorUser = bt.getUserByEmail(author);
-			authorUser.addRecipe(newRecipe);
+			if (avl.getRecipeByName(name) != null) {
+				Recipe newRecipe = Recipe.builder().withName(name).withAuthor(author).withType(type)
+						.withPortions(portions).withEatingTime(eatingTime).withCookingSpan(cookingSpan)
+						.withDifficulty(difficulty).withTags(tags).withPrice(price).withSteps(steps)
+						.withPicture(picture).withIngredients(ingredients).withPunctuation(punctuation).build();
+				avl.insert(newRecipe);
+				authorUser = bt.getUserByEmail(author);
+				authorUser.addRecipe(newRecipe);
+				return Response.status(201).entity(newRecipe).build();
+			} else {
+				return Response.status(Status.CONFLICT).entity("Recipe name already in use").build();
+			}
 
-			return Response.status(201).entity(newRecipe).build();
 		} else {
 			return Response.status(Status.NOT_FOUND).entity("User not found for: " + author).build();
 		}
