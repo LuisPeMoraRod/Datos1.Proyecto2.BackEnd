@@ -42,6 +42,11 @@ public class RecipesResources {
 	private ArrayList<Recipe> responseList;
 	private User authorUser;
 
+	/**
+	 * Adds new recipe to the AVL tree
+	 * @param uriInfo
+	 * @return Response
+	 */
 	@POST
 	@SuppressWarnings("rawtypes")
 	public Response registerRecipe(@Context UriInfo uriInfo) {
@@ -100,12 +105,13 @@ public class RecipesResources {
 
 		if (bt.getUserByEmail(author) != null) {
 
-			if (avl.getRecipeByName(name) != null) {
+			if (avl.getRecipeByName(name) == null) {
 				Recipe newRecipe = Recipe.builder().withName(name).withAuthor(author).withType(type)
 						.withPortions(portions).withEatingTime(eatingTime).withCookingSpan(cookingSpan)
 						.withDifficulty(difficulty).withTags(tags).withPrice(price).withSteps(steps)
 						.withPicture(picture).withIngredients(ingredients).withPunctuation(punctuation).build();
 				avl.insert(newRecipe);
+				avl.insertToNewsfeed(newRecipe);
 				authorUser = bt.getUserByEmail(author);
 				authorUser.addRecipe(newRecipe);
 				return Response.status(201).entity(newRecipe).build();
@@ -118,6 +124,12 @@ public class RecipesResources {
 		}
 	}
 
+	/**
+	 * Returns My Menu list of recipes of a certain user
+	 * @param userEmail : String
+	 * @param uriInfo : UriInfo
+	 * @return response : Response
+	 */
 	@GET
 	@Path("/{userEmail}")
 	@SuppressWarnings("rawtypes")
@@ -145,9 +157,13 @@ public class RecipesResources {
 
 	}
 
+	/**
+	 * Method that returns all the recipes registered in the AVL sorted chronologically so that it can be used in the newsfeed
+	 * @return Response
+	 */
 	@GET
 	public Response getAllRecipes() {
-		responseList = avl.getList();
+		responseList = avl.getNewsfeed();
 		return Response.ok(responseList).build();
 	}
 
