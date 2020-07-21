@@ -1,5 +1,8 @@
 package com.Project2.BackEnd.REST;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 
@@ -25,6 +28,8 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
 import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import com.Project2.BackEnd.RecipesManagement.Recipe;
 import com.Project2.BackEnd.Trees.AVLTree;
@@ -86,7 +91,7 @@ public class UsersResources implements RestResources, Observer {
 				tokenizer = new StringTokenizer(encoded, "_");
 				newComment = "";
 				while (tokenizer.hasMoreTokens()) {
-					newComment += " " + tokenizer.nextToken();
+					newComment += tokenizer.nextToken()+" ";
 				}
 
 				break;
@@ -98,7 +103,8 @@ public class UsersResources implements RestResources, Observer {
 			}
 		}
 		notification = new Notification(emisorUser, recieverUser, notifType, newComment, recipeName);
-		User user = bt.getUserByEmail(emisorUser);
+		User emisor = bt.getUserByEmail(emisorUser);
+		User reciever = bt.getUserByEmail(recieverUser);
 
 		if (recipeName != null) {
 			recipe = avl.getRecipeByName(recipeName);
@@ -109,15 +115,14 @@ public class UsersResources implements RestResources, Observer {
 			recipe.addComment(emisorUser, newComment);
 			break;
 		case Notification.NEW_FOLLOWER:
-			user.addUserFollowing(recieverUser);
-			user = bt.getUserByEmail(recieverUser);
-			user.incrementFollowers();
+			emisor.addUserFollowing(recieverUser);
+			reciever.addFollower(emisorUser);
 			break;
 		case Notification.NEW_LIKE:
 			recipe.incrementPunctuation();
 			break;
 		case Notification.NEW_SHARE:
-			user.addRecipe(recipe);
+			emisor.addRecipe(recipe);
 			recipe.incrementShares();
 			break;
 		default:
@@ -155,14 +160,35 @@ public class UsersResources implements RestResources, Observer {
 	 * @param incomingData
 	 * @return
 	 */
-	@POST
-	@Path("/load")
+	//@POST
+	//@Path("/load")
 	public Response load(JSONArray incomingData) {
 		System.out.println(incomingData.toJSONString());
 		usersJson = UsersJSON.getInstance();
 		usersJson.addUsersToBT(incomingData);
 
 		return Response.status(201).entity("JSON recieved").build();
+	}
+	
+	@POST
+	@Path("/load")
+	public Response load(InputStream incomingData) throws ParseException {
+		JSONParser parser = new JSONParser();
+		StringBuilder stringBuilder = new StringBuilder();
+		try {
+			BufferedReader in = new BufferedReader(new InputStreamReader(incomingData));
+			String line = null;
+			while ((line = in.readLine()) != null) {
+				stringBuilder.append(line);
+			}
+		} catch (Exception e) {
+			System.out.println("Error parsing");
+		}
+		
+		JSONArray json = (JSONArray) parser.parse(stringBuilder.toString());
+		usersJson = UsersJSON.getInstance();
+		usersJson.addUsersToBT(json);
+		return Response.status(201).entity(stringBuilder.toString()).build();
 	}
 
 	/**

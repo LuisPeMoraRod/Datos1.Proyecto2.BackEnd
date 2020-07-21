@@ -13,13 +13,21 @@ public abstract class Tree<T extends Comparable<T>> {
 
     protected NodeTree<T> root;
 
-    private boolean isBST;
-    private boolean isAVL;
-    private boolean isSplay;
-    
+    protected boolean isBST;
+    protected boolean isAVL;
+    protected boolean isSplay;
+    protected int size;
     private ArrayList<T> elementsList = new ArrayList<>();
+    
+    public int getSize() {
+		return size;
+	}
 
-    public boolean isEmpty(){
+	public void setSize(int size) {
+		this.size = size;
+	}
+
+	public boolean isEmpty(){
         return this.root == null;
     }
 
@@ -174,6 +182,7 @@ public abstract class Tree<T extends Comparable<T>> {
      */
 
     public void insert(T element){
+    	size++;
         this.root = this.insert(element, this.root);
         if(isSplay){
             this.root = this.splay(this.root,element);

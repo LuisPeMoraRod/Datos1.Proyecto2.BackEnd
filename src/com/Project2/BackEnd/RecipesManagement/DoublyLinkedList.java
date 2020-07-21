@@ -87,6 +87,7 @@ public class DoublyLinkedList {
 			size++;
 		} else if (type == SORT_BY_DATE) {
 			date = newNode.getElement().getId();
+			System.out.println(last.getElement().getId()+" "+date);
 			if (date < first.getId()) {
 				insertHead(newNode);
 			} else if (date > last.getElement().getId()) {

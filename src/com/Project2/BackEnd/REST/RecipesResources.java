@@ -106,10 +106,11 @@ public class RecipesResources {
 		if (bt.getUserByEmail(author) != null) {
 
 			if (avl.getRecipeByName(name) == null) {
+				int id = avl.getSize();
 				Recipe newRecipe = Recipe.builder().withName(name).withAuthor(author).withType(type)
 						.withPortions(portions).withEatingTime(eatingTime).withCookingSpan(cookingSpan)
 						.withDifficulty(difficulty).withTags(tags).withPrice(price).withSteps(steps)
-						.withPicture(picture).withIngredients(ingredients).withPunctuation(punctuation).build();
+						.withIngredients(ingredients).withPunctuation(punctuation).withId(id).build();
 				avl.insert(newRecipe);
 				avl.insertToNewsfeed(newRecipe);
 				authorUser = bt.getUserByEmail(author);

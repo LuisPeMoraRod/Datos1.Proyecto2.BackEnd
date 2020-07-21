@@ -120,10 +120,10 @@ public class AdminRESTClient {
 		AdminRESTClient restClient = new AdminRESTClient();
 		// fire the post request on the server
 		//restClient.postRequest();
-		//restClient.getRequest();
-		for (int i = 0; i < 5; i++) {
-			restClient.getNotif();
-		}
+		restClient.getRequest();
+		//for (int i = 0; i < 5; i++) {
+		//	restClient.getNotif();
+		//}
 	}
 
 }

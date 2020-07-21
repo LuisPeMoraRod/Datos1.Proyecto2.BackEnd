@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import com.Project2.BackEnd.RecipesManagement.DoublyLinkedList;
 import com.Project2.BackEnd.RecipesManagement.Recipe;
+import com.Project2.BackEnd.Trees.AVLTree;
 import com.Project2.BackEnd.Trees.Node;
 
 public class User implements Comparable<User> {
@@ -21,11 +22,12 @@ public class User implements Comparable<User> {
 	private String password;
 	private String profilePic;
 	private ArrayList<String> usersFollowing;
-	private int followers;
+	private ArrayList<String>  followers;
 	private ArrayList<Recipe> recipes;
 	private DoublyLinkedList myMenu;
 	private int sortingType;
 	private boolean chef;
+	private AVLTree<Recipe> avl;
 
 	public User(Builder builder) {
 		this.email = builder.email;
@@ -36,9 +38,9 @@ public class User implements Comparable<User> {
 		this.usersFollowing = builder.usersFollowing;
 		this.followers = builder.followers;
 		this.myMenu = builder.myMenu;
-		this.sortingType = 0;
+		this.sortingType = builder.sortingType;
 		this.recipes = builder.recipes;
-		this.usersFollowing = new ArrayList<String>();
+		this.avl = AVLTree.getInstance();
 	}
 
 	// Getters and setters
@@ -90,7 +92,7 @@ public class User implements Comparable<User> {
 	public ArrayList<String> getUsersFollowing() {
 		return usersFollowing;
 	}
-	
+
 	public void addUserFollowing(String newFollowing) {
 		this.usersFollowing.add(newFollowing);
 	}
@@ -99,16 +101,16 @@ public class User implements Comparable<User> {
 		this.usersFollowing = usersFollowing;
 	}
 
-	public int getFollowers() {
+	public ArrayList<String>  getFollowers() {
 		return followers;
 	}
 
-	public void setFollowers(int followers) {
+	public void setFollowers(ArrayList<String> followers) {
 		this.followers = followers;
 	}
-	
-	public void incrementFollowers() {
-		this.followers++;
+
+	public void addFollower(String follower) {
+		this.followers.add(follower);
 	}
 
 	public int getSortingType() {
@@ -137,7 +139,6 @@ public class User implements Comparable<User> {
 		this.sortingType = sortingType;
 	}
 
-	
 	public boolean isChef() {
 		return chef;
 	}
@@ -148,8 +149,6 @@ public class User implements Comparable<User> {
 
 	public void addRecipe(Recipe newRecipe) {
 		Node<Recipe> node = new Node<Recipe>(newRecipe);
-		int id = myMenu.getSize();
-		newRecipe.setId(id);
 		myMenu.sortedInsert(node, this.sortingType);
 	}
 
@@ -182,7 +181,7 @@ public class User implements Comparable<User> {
 		private String password;
 		private String profilePic;
 		private ArrayList<String> usersFollowing;
-		private int followers;
+		private ArrayList<String>  followers;
 		private ArrayList<Recipe> recipes = null;
 		private DoublyLinkedList myMenu;
 		private int sortingType;
@@ -190,6 +189,12 @@ public class User implements Comparable<User> {
 		public User build() {
 			if (recipes == null) {
 				recipes = new ArrayList<Recipe>();
+			}
+			if (usersFollowing == null) {
+				usersFollowing = new ArrayList<String>();
+			}
+			if (followers == null) {
+				followers = new ArrayList<String>();
 			}
 			return new User(this);
 		}
@@ -224,13 +229,13 @@ public class User implements Comparable<User> {
 			return this;
 		}
 
-		public Builder withFollowers(int followers) {
+		public Builder withFollowers(ArrayList<String>  followers) {
 			this.followers = followers;
 			return this;
 		}
 
-		public Builder withSortingType(String sortingType) {
-			this.sortingType = Integer.parseInt(sortingType);
+		public Builder withSortingType(int sortingType) {
+			this.sortingType = sortingType;
 			return this;
 		}
 

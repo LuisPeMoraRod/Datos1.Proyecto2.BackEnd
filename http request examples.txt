@@ -1,34 +1,23 @@
-http://localhost:8080/CookTime.BackEnd/api/recipes?name=salad&author=lmorales&difficulty=8&punctuation=4&tag=veggie
-http://localhost:8080/CookTime.BackEnd/api/recipes?name=lasagna&author=lmorales&difficulty=10&punctuation=5&tag=veggie
-http://localhost:8080/CookTime.BackEnd/api/recipes?name=wine&author=lmorales&difficulty=7&punctuation=1&tag=veggie
+Post new recipes (POST)
+http://localhost:8080/CookTime.BackEnd/api/recipes?name=Salad&author=lmorales&difficulty=3&punctuation=4&tag=veggie
+http://localhost:8080/CookTime.BackEnd/api/recipes?name=Lasagna&author=lmorales&difficulty=9&punctuation=5&tag=pasta
+http://localhost:8080/CookTime.BackEnd/api/recipes?name=Wine&author=lmorales&difficulty=7&punctuation=0&tag=drinks
 
+Organize myMenu (GET)
 http://localhost:8080/CookTime.BackEnd/api/recipes/lmorales?sortingType=2
 
-http://localhost:8080/CookTime.BackEnd/api/users?email=lmorales&password=pass&name=Luis&age=21&profilePic=picture&usersFollowing=456&followers=23899
+Register Users (POST)
+http://localhost:8080/CookTime.BackEnd/api/users?email=lmorales&password=pass&name=Luis&age=21&profilePic=picture
+http://localhost:8080/CookTime.BackEnd/api/users?email=sgonzalez&password=PASS&name=Sofi&age=28&profilePic=picture
+http://localhost:8080/CookTime.BackEnd/api/users?email=mwaterhouse&password=password&name=Moni&age=23&profilePic=picture
 
+Notifications (POST)
+http://localhost:8080/CookTime.BackEnd/api/users/new_notif?emisorUser=sgonzalez&recieverUser=lmorales&notifType=0&newComment=delicious_wine&recipe=Wine
+http://localhost:8080/CookTime.BackEnd/api/users/new_notif?emisorUser=sgonzalez&recieverUser=lmorales&notifType=1
+http://localhost:8080/CookTime.BackEnd/api/users/new_notif?emisorUser=sgonzalez&recieverUser=lmorales&notifType=2&recipe=Wine
+http://localhost:8080/CookTime.BackEnd/api/users/new_notif?emisorUser=sgonzalez&recieverUser=lmorales&notifType=3&recipe=Wine
+
+Edit User (PUT)
 http://localhost:8080/CookTime.BackEnd/api/users/lmorales?name=Pedro&followers=100
 
-public static void main(String[] args) {
-		int sortingType = 2;
-		DoublyLinkedList list = new DoublyLinkedList();
-		Recipe salad = Recipe.builder().withName("salad").withDifficulty(10).build();
-		Node<Recipe> node = new Node<Recipe>(salad);
-		int id = list.getSize();
-		node.setId(id);
-		list.sortedInsert(node, sortingType);
-		
-		Recipe lasagna = Recipe.builder().withName("lasagna").withDifficulty(8).build();
-		Node<Recipe> node1 = new Node<Recipe>(lasagna);
-		id = list.getSize();
-		node1.setId(id);
-		list.sortedInsert(node1, sortingType);
-		
-		Recipe rice = Recipe.builder().withName("rice").withDifficulty(6).build();
-		Node<Recipe> node2 = new Node<Recipe>(rice);
-		id = list.getSize();
-		node2.setId(id);
-		list.sortedInsert(node2, sortingType);
-		
-		list.bubblesort();
-		list.printList();
-	}
+

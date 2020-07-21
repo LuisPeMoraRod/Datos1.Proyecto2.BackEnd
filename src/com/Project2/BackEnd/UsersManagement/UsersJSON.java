@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import org.json.simple.parser.ParseException;
 
 import com.Project2.BackEnd.RecipesManagement.Recipe;
+import com.Project2.BackEnd.Trees.AVLTree;
 import com.Project2.BackEnd.Trees.BinaryTree;
 
 import org.json.simple.JSONArray;
@@ -18,20 +19,21 @@ import org.json.simple.parser.JSONParser;
 
 public class UsersJSON {
 	private User user;
-	private BinaryTree<User> BT;
+	private BinaryTree<User> bt;
+	private AVLTree<Recipe> avl;
 	private static UsersJSON usersJson = null;
 
 	private UsersJSON() {
-		BT = BinaryTree.getInstance();
-
+		bt = BinaryTree.getInstance();
+		avl = AVLTree.getInstance();
 	}
 
 	public BinaryTree<User> getBT() {
-		return BT;
+		return bt;
 	}
 
 	public void setBT(BinaryTree<User> bT) {
-		BT = bT;
+		bt = bT;
 	}
 
 	/**
@@ -55,11 +57,11 @@ public class UsersJSON {
 		JSONParser parser = new JSONParser();
 		ArrayList<Object> array = null;
 		ArrayList<Recipe> recipesArray = null;
-		String email = null, name = null, password = null, age = null, sortingType = null,
-				recipesString = null, profilePic = null;
-		ArrayList<String> usersFollowing = null;
-		int followers = 0;
-		System.out.println(usersList.getClass());
+		String email = null, name = null, password = null, age = null, profilePic = null;
+		ArrayList<String> usersFollowing = null, followers = null;
+		int sortingType = 0;
+		JSONArray jsonArray;
+		System.out.println(usersList);
 		// usersList.forEach(user -> parseUser((JSONObject) user));
 		for (int i = 0; i < usersList.size(); i++) {
 			HashMap<String, Object> passedValues = (HashMap<String, Object>) usersList.get(i);
@@ -81,13 +83,22 @@ public class UsersJSON {
 					profilePic = (String) mapTemp.getValue();
 					break;
 				case "usersFollowing":
-					usersFollowing = (ArrayList<String>) mapTemp.getValue();
+					usersFollowing = new ArrayList<String>();
+					jsonArray =(JSONArray) mapTemp.getValue();
+					for (int j = 0; j<jsonArray.size(); j++) {
+						usersFollowing.add((String) jsonArray.get(j));
+					}
 					break;
 				case "followers":
-					followers = Integer.parseInt((String)mapTemp.getValue());
+					followers = new ArrayList<String>();
+					jsonArray = (JSONArray) mapTemp.getValue();
+					for (int j = 0; j<jsonArray.size(); j++) {
+						followers.add((String) jsonArray.get(j));
+					}
 					break;
 				case "sortingType":
-					sortingType = mapTemp.getValue().toString();
+					long sort = (long) mapTemp.getValue();
+					sortingType = Integer.parseInt(Long.toString(sort));
 					break;
 				case "recipes":
 					array = (ArrayList<Object>) mapTemp.getValue();
@@ -100,8 +111,9 @@ public class UsersJSON {
 			}
 			this.user = User.builder().withEmail(email).withName(name).withPassword(password).withAge(age)
 					.withProfilePic(profilePic).withUsersFollowing(usersFollowing).withFollowers(followers)
-					.withMyMenu(recipesArray).build();
-			this.BT.insert(user);
+					.withMyMenu(recipesArray).withSortingType(sortingType).build();
+			
+			this.bt.insert(user);
 		}
 	}
 
@@ -150,16 +162,20 @@ public class UsersJSON {
 					price = (String) mapTemp.getValue();
 					break;
 				case "difficulty":
-					difficulty = (int) mapTemp.getValue();
+					long dif = (Long) mapTemp.getValue();
+					difficulty = Integer.parseInt(Long.toString(dif));
 					break;
 				case "id":
-					id = (int) mapTemp.getValue();
+					long idl = (Long) mapTemp.getValue();
+					id = Integer.parseInt(Long.toString(idl));
 					break;
 				case "punctuation":
-					punctuation = (int) mapTemp.getValue();
+					long punct = (Long) mapTemp.getValue();
+					punctuation = Integer.parseInt(Long.toString(punct));
 					break;
 				case "comments":
 					comments = (HashMap<String, String>) mapTemp.getValue();
+					System.out.println(mapTemp.getValue());
 					break;
 
 				default:
@@ -169,8 +185,10 @@ public class UsersJSON {
 			Recipe newRecipe = Recipe.builder().withName(name).withAuthor(author).withType(type).withPortions(portions)
 					.withCookingSpan(cookingSpan).withEatingTime(eatingTime).withTags(tags).withImage(image)
 					.withIngredients(ingredients).withSteps(steps).withPrice(price).withDifficulty(difficulty)
-					.withId(id).withComments(comments).build();
+					.withId(id).withComments(comments).withPunctuation(punctuation).build();
 			recipesArray.add(newRecipe);
+			avl.insert(newRecipe);
+			avl.insertToNewsfeed(newRecipe);
 		}
 
 		return recipesArray;
