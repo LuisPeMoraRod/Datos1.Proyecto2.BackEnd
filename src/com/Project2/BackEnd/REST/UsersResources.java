@@ -69,9 +69,10 @@ public class UsersResources implements RestResources, Observer {
 	@POST
 	@Path("/new_notif")
 	public Response newNotification(@Context UriInfo uriInfo) {
-		String emisorUser = null, recieverUser = null, newComment = null, recipeName = null;
+		String emisorUser = null, recieverUser = null, newComment = null, recipeName = null, entity = null;
 		int notifType = 0;
 		Recipe recipe = null;
+		//get notification parameters
 		for (Map.Entry entry : uriInfo.getQueryParameters().entrySet()) {
 			key = entry.getKey().toString();
 			StringTokenizer tokenizer = new StringTokenizer(entry.getValue().toString(), "[ // ]");
@@ -91,7 +92,7 @@ public class UsersResources implements RestResources, Observer {
 				tokenizer = new StringTokenizer(encoded, "_");
 				newComment = "";
 				while (tokenizer.hasMoreTokens()) {
-					newComment += tokenizer.nextToken()+" ";
+					newComment += tokenizer.nextToken() + " ";
 				}
 
 				break;
@@ -113,13 +114,36 @@ public class UsersResources implements RestResources, Observer {
 		switch (notification.getNotifType()) {
 		case Notification.NEW_COMMENT:
 			recipe.addComment(emisorUser, newComment);
+			entity="Comment added.";
 			break;
+			
 		case Notification.NEW_FOLLOWER:
-			emisor.addUserFollowing(recieverUser);
-			reciever.addFollower(emisorUser);
+			//if (!emisor.getUsersFollowing().contains(recieverUser)) {
+				emisor.addUserFollowing(recieverUser);
+				reciever.addFollower(emisorUser);
+				entity = "Follower added succesfully.";
+			//}else {
+				//return Response.status(Status.CONFLICT).entity("Error: "+emisorUser+" already follows "+recieverUser).build();
+			//}
 			break;
+			
+		case Notification.NEW_UNFOLLLOW:
+			if (emisor.getUsersFollowing().contains(recieverUser)) {
+				emisor.removeUserFollowing(recieverUser);
+				reciever.removeFollower(emisorUser);
+				entity = "User unfollowed succesfully.";
+			}else {
+				return Response.status(Status.CONFLICT).entity("Error: "+emisorUser+" doesn't follow "+recieverUser).build();
+			}
+			break;
+			
 		case Notification.NEW_LIKE:
 			recipe.incrementPunctuation();
+			
+			break;
+		
+		case Notification.NEW_UNLIKE:
+			recipe.decrementPunctuation();
 			break;
 		case Notification.NEW_SHARE:
 			emisor.addRecipe(recipe);
@@ -129,7 +153,7 @@ public class UsersResources implements RestResources, Observer {
 			break;
 		}
 		notifObservable.setNotification(notification); // change in observable subject
-		return Response.status(200).entity("notification setted").build();
+		return Response.status(200).entity(entity).build();
 	}
 
 	/**
@@ -160,16 +184,7 @@ public class UsersResources implements RestResources, Observer {
 	 * @param incomingData
 	 * @return
 	 */
-	//@POST
-	//@Path("/load")
-	public Response load(JSONArray incomingData) {
-		System.out.println(incomingData.toJSONString());
-		usersJson = UsersJSON.getInstance();
-		usersJson.addUsersToBT(incomingData);
 
-		return Response.status(201).entity("JSON recieved").build();
-	}
-	
 	@POST
 	@Path("/load")
 	public Response load(InputStream incomingData) throws ParseException {
@@ -184,7 +199,7 @@ public class UsersResources implements RestResources, Observer {
 		} catch (Exception e) {
 			System.out.println("Error parsing");
 		}
-		
+
 		JSONArray json = (JSONArray) parser.parse(stringBuilder.toString());
 		usersJson = UsersJSON.getInstance();
 		usersJson.addUsersToBT(json);
@@ -342,7 +357,8 @@ public class UsersResources implements RestResources, Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		if (notifObservable.getIsNewNotif() & notifObservable.getNotification().getRecieverUser().equals(observerUser)) {
+		if (notifObservable.getIsNewNotif()
+				& notifObservable.getNotification().getRecieverUser().equals(observerUser)) {
 			this.sendNotif = true;
 			notifObservable.setIsNewNotif(false);
 		}

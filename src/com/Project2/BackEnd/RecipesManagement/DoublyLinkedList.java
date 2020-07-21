@@ -87,7 +87,7 @@ public class DoublyLinkedList {
 			size++;
 		} else if (type == SORT_BY_DATE) {
 			date = newNode.getElement().getId();
-			System.out.println(last.getElement().getId()+" "+date);
+			System.out.println(last.getElement().getId() + " " + date);
 			if (date < first.getId()) {
 				insertHead(newNode);
 			} else if (date > last.getElement().getId()) {
@@ -145,6 +145,27 @@ public class DoublyLinkedList {
 		newNode.setLeft(prev);
 		newNode.setRight(pointer);
 		size++;
+	}
+
+	/**
+	 * Removes an element from the linked list
+	 * @param recipe : Recipe
+	 */
+	public void remove(Recipe recipe) {
+		Node<Recipe> pointer = this.first;
+		boolean deleted = false;
+		while (pointer != null | !deleted) {
+			Recipe tempRecipe = pointer.getElement();
+			if (recipe.equals(tempRecipe)) {
+				Node<Recipe> prev = pointer.getLeft();
+				Node<Recipe> next = pointer.getRight();
+				prev.setRight(next);
+				next.setLeft(prev);
+				deleted = true;
+			} else {
+				pointer = pointer.getRight();
+			}
+		}
 	}
 
 	/**
@@ -219,7 +240,7 @@ public class DoublyLinkedList {
 		for (int i = 0; i < size; i++) {
 			temp = first;
 			while (temp != null) {
-				System.out.println(temp.getElement().getId()); //erase
+				System.out.println(temp.getElement().getId()); // erase
 				try {
 					if (temp.getElement().getId() > temp.getRight().getElement().getId()) {
 						swap(temp, temp.getRight(), pointer);
@@ -404,5 +425,5 @@ public class DoublyLinkedList {
 		}
 		System.out.println(list);
 	}
-	
+
 }

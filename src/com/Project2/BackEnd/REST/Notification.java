@@ -3,7 +3,8 @@ package com.Project2.BackEnd.REST;
 public class Notification {
 	private String emisorUser;
 	private String recieverUser;
-	public static final int NEW_COMMENT = 0, NEW_FOLLOWER = 1, NEW_LIKE = 2, NEW_SHARE = 3;
+	public static final int NEW_COMMENT = 0, NEW_FOLLOWER = 1, NEW_UNFOLLLOW = 2, NEW_LIKE = 3, NEW_UNLIKE = 4,
+			NEW_SHARE = 5, NEW_UNSHARE = 6;
 	private int notifType;
 	private String newComment;
 	private String recipe;
@@ -40,7 +41,6 @@ public class Notification {
 		this.newComment = newComment;
 	}
 
-	
 	public String getRecipe() {
 		return recipe;
 	}

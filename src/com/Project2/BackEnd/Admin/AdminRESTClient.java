@@ -47,6 +47,10 @@ public class AdminRESTClient {
 		parser = new JSONParser();
 	}
 
+	/**
+	 * Receives all the users from the server as a JSONArray
+	 * @throws ParseException
+	 */
 	public void getRequest() throws ParseException {
 		WebResource webResource = client.resource(getUrl);
 		ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
@@ -118,12 +122,14 @@ public class AdminRESTClient {
 
 	public static void main(String[] args) throws ParseException {
 		AdminRESTClient restClient = new AdminRESTClient();
-		// fire the post request on the server
-		//restClient.postRequest();
+		restClient.postRequest(); //post request should be fired at the very beginning to upload the registered users from the .json file
+		
 		restClient.getRequest();
-		//for (int i = 0; i < 5; i++) {
-		//	restClient.getNotif();
-		//}
+		
+		//loop to receive 5 notifications
+		for (int i = 0; i < 5; i++) {
+			restClient.getNotif(); //waits till the server responses
+		}
 	}
 
 }

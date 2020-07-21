@@ -63,6 +63,10 @@ public class Recipe implements Comparable<Recipe>{
 	public void incrementPunctuation() {
 		this.punctuation++;
 	}
+	
+	public void decrementPunctuation() {
+		this.punctuation--;
+	}
 
 	public String getName() {
 		return name;

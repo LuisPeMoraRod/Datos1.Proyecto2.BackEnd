@@ -1,1 +1,30 @@
-[{"recipes":[],"password":"1a1dc91c907325c69271ddf0c944bc72","sortingType":0,"followers":["sgonzalez"],"usersFollowing":[],"profilePic":"picture","name":"Luis","chef":false,"email":"lmorales","age":"21"},{"recipes":[],"password":"7a95bf926a0333f57705aeac07a362a2","sortingType":0,"followers":[],"usersFollowing":["lmorales"],"profilePic":"picture","name":"Sofi","chef":false,"email":"sgonzalez","age":"28"}]
+[
+	{
+		"recipes": [],
+		"password": "1a1dc91c907325c69271ddf0c944bc72",
+		"sortingType": 0,
+		"followers": [
+			"sgonzalez"
+		],
+		"usersFollowing": [],
+		"profilePic": "picture",
+		"name": "Luis",
+		"chef": false,
+		"email": "lmorales",
+		"age": "21"
+	},
+	{
+		"recipes": [],
+		"password": "7a95bf926a0333f57705aeac07a362a2",
+		"sortingType": 0,
+		"followers": [],
+		"usersFollowing": [
+			"lmorales"
+		],
+		"profilePic": "picture",
+		"name": "Sofi",
+		"chef": false,
+		"email": "sgonzalez",
+		"age": "28"
+	}
+]

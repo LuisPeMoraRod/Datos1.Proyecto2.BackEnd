@@ -27,6 +27,7 @@ public class User implements Comparable<User> {
 	private DoublyLinkedList myMenu;
 	private int sortingType;
 	private boolean chef;
+	private boolean admin;
 	private AVLTree<Recipe> avl;
 
 	public User(Builder builder) {
@@ -40,6 +41,7 @@ public class User implements Comparable<User> {
 		this.myMenu = builder.myMenu;
 		this.sortingType = builder.sortingType;
 		this.recipes = builder.recipes;
+		this.admin = builder.admin;
 		this.avl = AVLTree.getInstance();
 	}
 
@@ -76,11 +78,7 @@ public class User implements Comparable<User> {
 		this.password = password;
 	}
 
-	public ArrayList<Recipe> getRecipes() {
-		setRecipes();
-		return recipes;
-	}
-
+	
 	public String getProfilePic() {
 		return profilePic;
 	}
@@ -95,6 +93,10 @@ public class User implements Comparable<User> {
 
 	public void addUserFollowing(String newFollowing) {
 		this.usersFollowing.add(newFollowing);
+	}
+	
+	public void removeUserFollowing(String user) {
+		this.usersFollowing.remove(user);
 	}
 
 	public void setUsersFollowing(ArrayList<String> usersFollowing) {
@@ -113,6 +115,9 @@ public class User implements Comparable<User> {
 		this.followers.add(follower);
 	}
 
+	public void removeFollower(String follower) {
+		this.followers.remove(follower);
+	}
 	public int getSortingType() {
 		return this.sortingType;
 	}
@@ -146,6 +151,14 @@ public class User implements Comparable<User> {
 	public void setChef(boolean chef) {
 		this.chef = chef;
 	}
+	
+	public boolean isAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
+	}
 
 	public void addRecipe(Recipe newRecipe) {
 		Node<Recipe> node = new Node<Recipe>(newRecipe);
@@ -169,6 +182,12 @@ public class User implements Comparable<User> {
 			pointer = pointer.getRight();
 		}
 	}
+	
+	public ArrayList<Recipe> getRecipes() {
+		setRecipes();
+		return recipes;
+	}
+
 
 	public static Builder builder() {
 		return new Builder();
@@ -184,6 +203,8 @@ public class User implements Comparable<User> {
 		private ArrayList<String>  followers;
 		private ArrayList<Recipe> recipes = null;
 		private DoublyLinkedList myMenu;
+		private boolean admin;
+		private boolean chef;
 		private int sortingType;
 
 		public User build() {
@@ -244,6 +265,16 @@ public class User implements Comparable<User> {
 			this.myMenu = parseArrayToLinkedList(recipes);
 			return this;
 
+		}
+		
+		public Builder withChef(boolean chef) {
+			this.chef = chef;
+			return this;
+		}
+		
+		public Builder withAdmin(boolean admin) {
+			this.admin = admin;
+			return this;
 		}
 
 		private DoublyLinkedList parseArrayToLinkedList(ArrayList<Recipe> recipes) {
