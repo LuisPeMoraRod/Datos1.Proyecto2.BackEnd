@@ -25,6 +25,7 @@ public class Recipe implements Comparable<Recipe>{
 	private String ingredients;
 	private String steps;
 	private HashMap<String,String> comments;
+	private ArrayList<String> likers;
 	private String price;
 	private int difficulty;
 	private int id;
@@ -50,6 +51,19 @@ public class Recipe implements Comparable<Recipe>{
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	
+	public ArrayList<String> getLikers() {
+		return likers;
+	}
+
+	public void addLiker(String liker) {
+		this.likers.add(liker);
+	}
+	
+	public void removeLiker(String liker) {
+		this.likers.remove(liker);
 	}
 
 	public int getPunctuation() {
@@ -176,7 +190,11 @@ public class Recipe implements Comparable<Recipe>{
 	public void incrementShares() {
 		this.shares++;
 	}
-
+	
+	public void decrementShares() {
+		this.shares--;
+	}
+	
 	public Recipe(Builder builder) {
 		this.name = builder.name;
 		this.author=builder.author;
@@ -194,6 +212,7 @@ public class Recipe implements Comparable<Recipe>{
 		this.id = builder.id;
 		this.shares = builder.shares;
 		this.comments = builder.comments;		
+		this.likers = builder.likers;
 	}
 	
 	public static Builder builder() {
@@ -218,11 +237,15 @@ public class Recipe implements Comparable<Recipe>{
 		private int id;
 		private int shares;
 		private HashMap<String,String> comments;
+		private ArrayList<String> likers;
 		
 		
 		public Recipe build() {
 			if (comments == null) {
 				comments = new HashMap<String, String>();
+			}
+			if (likers == null) {
+				likers = new ArrayList<String>();
 			}
 			return new Recipe(this);
 		}
@@ -306,6 +329,11 @@ public class Recipe implements Comparable<Recipe>{
 		
 		public Builder withShares(int shares) {
 			this.shares = shares;
+			return this;
+		}
+		
+		public Builder withLikers(ArrayList<String> likers) {
+			this.likers = likers;
 			return this;
 		}
 

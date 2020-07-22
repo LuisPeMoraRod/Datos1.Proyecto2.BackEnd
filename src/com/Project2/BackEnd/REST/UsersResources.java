@@ -109,6 +109,9 @@ public class UsersResources implements RestResources, Observer {
 
 		if (recipeName != null) {
 			recipe = avl.getRecipeByName(recipeName);
+			if (recipe == null) {
+				return Response.status(Status.CONFLICT).entity("Error: couldn't find recipe: "+recipeName).build();
+			}
 		}
 
 		switch (notification.getNotifType()) {
@@ -118,13 +121,13 @@ public class UsersResources implements RestResources, Observer {
 			break;
 			
 		case Notification.NEW_FOLLOWER:
-			//if (!emisor.getUsersFollowing().contains(recieverUser)) {
+			if (!emisor.getUsersFollowing().contains(recieverUser)) {
 				emisor.addUserFollowing(recieverUser);
 				reciever.addFollower(emisorUser);
-				entity = "Follower added succesfully.";
-			//}else {
-				//return Response.status(Status.CONFLICT).entity("Error: "+emisorUser+" already follows "+recieverUser).build();
-			//}
+				entity = "Follower added successfully.";
+			}else {
+				return Response.status(Status.CONFLICT).entity("Error: "+emisorUser+" already follows "+recieverUser).build();
+			}
 			break;
 			
 		case Notification.NEW_UNFOLLLOW:
@@ -138,16 +141,42 @@ public class UsersResources implements RestResources, Observer {
 			break;
 			
 		case Notification.NEW_LIKE:
-			recipe.incrementPunctuation();
-			
+			if (!recipe.getLikers().contains(emisorUser)) {
+				recipe.incrementPunctuation();	
+				recipe.addLiker(emisorUser);
+				entity = "Like added successfully.";
+			}else {
+				return Response.status(Status.CONFLICT).entity("Error: "+emisorUser+" already likes the recipe").build();
+			}
 			break;
 		
 		case Notification.NEW_UNLIKE:
-			recipe.decrementPunctuation();
+			if (recipe.getLikers().contains(emisorUser)){
+				recipe.decrementPunctuation();
+				recipe.removeLiker(emisorUser);
+				entity = "Like removed succesfully.";
+			}else {
+				return Response.status(Status.CONFLICT).entity("Error: "+emisorUser+" doesn't like the recipe").build();
+			}
 			break;
 		case Notification.NEW_SHARE:
-			emisor.addRecipe(recipe);
-			recipe.incrementShares();
+			if (!emisor.getRecipes().contains(recipe)) {
+				emisor.addRecipe(recipe);
+				recipe.incrementShares();
+				entity = "Recipe shared successfully.";
+			}else {
+				return Response.status(Status.CONFLICT).entity("Error: "+emisorUser+" had already shared this recipe.").build();
+			}
+			break;
+			
+		case Notification.NEW_UNSHARE:
+			if(emisor.getRecipes().contains(recipe)) {
+				emisor.removeRecipe(recipe);
+				recipe.decrementShares();
+				entity = "Recipe removed from MyMenu successfully"; 
+			}else {
+				return Response.status(Status.CONFLICT).entity("Error: "+emisorUser+" hasn't shared this recipe.").build();
+			}
 			break;
 		default:
 			break;

@@ -12,10 +12,23 @@ http://localhost:8080/CookTime.BackEnd/api/users?email=sgonzalez&password=PASS&n
 http://localhost:8080/CookTime.BackEnd/api/users?email=mwaterhouse&password=password&name=Moni&age=23&profilePic=picture
 
 Notifications (POST)
+0)New comment
 http://localhost:8080/CookTime.BackEnd/api/users/new_notif?emisorUser=sgonzalez&recieverUser=lmorales&notifType=0&newComment=delicious_wine&recipe=Wine
+
+1)New follow
 http://localhost:8080/CookTime.BackEnd/api/users/new_notif?emisorUser=sgonzalez&recieverUser=lmorales&notifType=1
-http://localhost:8080/CookTime.BackEnd/api/users/new_notif?emisorUser=sgonzalez&recieverUser=lmorales&notifType=2&recipe=Wine
+
+2)New unfollow
+
+3)New like
 http://localhost:8080/CookTime.BackEnd/api/users/new_notif?emisorUser=sgonzalez&recieverUser=lmorales&notifType=3&recipe=Wine
+
+4)New unlike
+
+5)New share
+http://localhost:8080/CookTime.BackEnd/api/users/new_notif?emisorUser=sgonzalez&recieverUser=lmorales&notifType=5&recipe=Wine
+
+6)New unshare
 
 Edit User (PUT)
 http://localhost:8080/CookTime.BackEnd/api/users/lmorales?name=Pedro&followers=100

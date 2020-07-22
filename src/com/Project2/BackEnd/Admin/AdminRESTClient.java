@@ -127,9 +127,9 @@ public class AdminRESTClient {
 		restClient.getRequest();
 		
 		//loop to receive 5 notifications
-		for (int i = 0; i < 5; i++) {
-			restClient.getNotif(); //waits till the server responses
-		}
+		//for (int i = 0; i < 5; i++) {
+			//restClient.getNotif(); //waits till the server responses
+		//}
 	}
 
 }

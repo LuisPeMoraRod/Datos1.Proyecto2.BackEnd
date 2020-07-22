@@ -41,6 +41,7 @@ public class User implements Comparable<User> {
 		this.myMenu = builder.myMenu;
 		this.sortingType = builder.sortingType;
 		this.recipes = builder.recipes;
+		this.chef = builder.chef;
 		this.admin = builder.admin;
 		this.avl = AVLTree.getInstance();
 	}
@@ -88,7 +89,7 @@ public class User implements Comparable<User> {
 	}
 
 	public ArrayList<String> getUsersFollowing() {
-		return usersFollowing;
+		return this.usersFollowing;
 	}
 
 	public void addUserFollowing(String newFollowing) {
@@ -163,6 +164,9 @@ public class User implements Comparable<User> {
 	public void addRecipe(Recipe newRecipe) {
 		Node<Recipe> node = new Node<Recipe>(newRecipe);
 		myMenu.sortedInsert(node, this.sortingType);
+	}
+	public void removeRecipe(Recipe recipe) {
+		myMenu.remove(recipe);
 	}
 
 	public void removeRecipes() {
