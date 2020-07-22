@@ -87,8 +87,9 @@ public class DoublyLinkedList {
 			size++;
 		} else if (type == SORT_BY_DATE) {
 			date = newNode.getElement().getId();
+			
 			System.out.println(first.getElement().getId() + " " + date);
-			if (date < first.getElement().getId()) {
+			if (date <= first.getElement().getId()) {
 				insertHead(newNode);
 			} else if (date > last.getElement().getId()) {
 				insertEnd(newNode);
@@ -103,7 +104,7 @@ public class DoublyLinkedList {
 
 		else if (type == SORT_BY_DIFFICULTY) {
 			difficulty = newNode.getElement().getDifficulty();
-			if (difficulty < first.getElement().getDifficulty()) {
+			if (difficulty <= first.getElement().getDifficulty()) {
 				insertHead(newNode);
 			} else if (difficulty > last.getElement().getDifficulty()) {
 				insertEnd(newNode);
@@ -116,7 +117,7 @@ public class DoublyLinkedList {
 			}
 		} else if (type == SORT_BY_PUNCTUATION) {
 			punctuation = newNode.getElement().getPunctuation();
-			if (punctuation < first.getElement().getPunctuation()) {
+			if (punctuation <= first.getElement().getPunctuation()) {
 				insertHead(newNode);
 			} else if (punctuation > last.getElement().getPunctuation()) {
 				insertEnd(newNode);

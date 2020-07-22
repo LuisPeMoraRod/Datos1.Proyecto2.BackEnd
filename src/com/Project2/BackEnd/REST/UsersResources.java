@@ -165,7 +165,7 @@ public class UsersResources implements RestResources, Observer {
 				recipe.incrementShares();
 				entity = "Recipe shared successfully.";
 			}else {
-				return Response.status(Status.CONFLICT).entity("Error: "+emisorUser+" had already shared this recipe.").build();
+				return Response.status(Status.CONFLICT).entity("Error: "+emisorUser+" has already shared this recipe.").build();
 			}
 			break;
 			
@@ -197,14 +197,17 @@ public class UsersResources implements RestResources, Observer {
 	@Path("/get_notif")
 	public Response getNotification(@QueryParam("observerUser") String observerUser) throws InterruptedException {
 		this.observerUser = observerUser;
+		User user = bt.getUserByEmail(observerUser);
 		notifObservable.addObserver(this);
 		System.out.println("observer added");
 		while (!sendNotif) {
 			Thread.sleep(1);
 		}
 		notification = notifObservable.getNotification();
+		user.addNotification(notification);
+		ArrayList<Notification> notificationsList = user.getNotifications();
 		sendNotif = false;
-		return Response.status(200).entity(notification).build();
+		return Response.status(200).entity(notificationsList).build();
 	}
 
 	/**

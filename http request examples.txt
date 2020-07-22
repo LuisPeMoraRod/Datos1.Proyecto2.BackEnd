@@ -1,7 +1,7 @@
 Post new recipes (POST)
-http://localhost:8080/CookTime.BackEnd/api/recipes?name=Salad&author=lmorales&difficulty=3&punctuation=4&tag=veggie
-http://localhost:8080/CookTime.BackEnd/api/recipes?name=Lasagna&author=lmorales&difficulty=9&punctuation=5&tag=pasta
-http://localhost:8080/CookTime.BackEnd/api/recipes?name=Wine&author=lmorales&difficulty=7&punctuation=0&tag=drinks
+http://localhost:8080/CookTime.BackEnd/api/recipes?name=Salad&author=lmorales&difficulty=3&punctuation=4&tags=veggie
+http://localhost:8080/CookTime.BackEnd/api/recipes?name=Lasagna&author=lmorales&difficulty=9&punctuation=5&tags=pasta
+http://localhost:8080/CookTime.BackEnd/api/recipes?name=Wine&author=lmorales&difficulty=7&punctuation=0&tags=drinks
 
 Organize myMenu (GET)
 http://localhost:8080/CookTime.BackEnd/api/recipes/lmorales?sortingType=2
@@ -19,16 +19,19 @@ http://localhost:8080/CookTime.BackEnd/api/users/new_notif?emisorUser=sgonzalez&
 http://localhost:8080/CookTime.BackEnd/api/users/new_notif?emisorUser=sgonzalez&recieverUser=lmorales&notifType=1
 
 2)New unfollow
+http://localhost:8080/CookTime.BackEnd/api/users/new_notif?emisorUser=sgonzalez&recieverUser=lmorales&notifType=2
 
 3)New like
 http://localhost:8080/CookTime.BackEnd/api/users/new_notif?emisorUser=sgonzalez&recieverUser=lmorales&notifType=3&recipe=Wine
 
 4)New unlike
+http://localhost:8080/CookTime.BackEnd/api/users/new_notif?emisorUser=sgonzalez&recieverUser=lmorales&notifType=4&recipe=Wine
 
 5)New share
 http://localhost:8080/CookTime.BackEnd/api/users/new_notif?emisorUser=sgonzalez&recieverUser=lmorales&notifType=5&recipe=Wine
 
 6)New unshare
+http://localhost:8080/CookTime.BackEnd/api/users/new_notif?emisorUser=sgonzalez&recieverUser=lmorales&notifType=6&recipe=Wine
 
 Edit User (PUT)
 http://localhost:8080/CookTime.BackEnd/api/users/lmorales?name=Pedro&followers=100

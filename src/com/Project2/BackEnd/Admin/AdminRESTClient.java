@@ -31,7 +31,7 @@ public class AdminRESTClient {
 	/**
 	 * Creates a client for rest api services. Sends JSON
 	 * 
-	 * @autohor Luis Pedro Morales Rodriguez
+	 * @author Luis Pedro Morales Rodriguez
 	 * @version 6/7/2020
 	 */
 
@@ -124,12 +124,12 @@ public class AdminRESTClient {
 		AdminRESTClient restClient = new AdminRESTClient();
 		restClient.postRequest(); //post request should be fired at the very beginning to upload the registered users from the .json file
 		
-		restClient.getRequest();
+		//restClient.getRequest();
 		
 		//loop to receive 5 notifications
-		//for (int i = 0; i < 5; i++) {
-			//restClient.getNotif(); //waits till the server responses
-		//}
+		for (int i = 0; i < 5; i++) {
+			restClient.getNotif(); //waits till the server responses
+		}
 	}
 
 }
