@@ -397,7 +397,7 @@ public class UsersResources implements RestResources, Observer {
 	@Path("/profilePic")
 	public Response editProfilePic(JSONObject jsonObject) {
 		String userName = (String) jsonObject.get("user");
-		String picture = (String) jsonObject.get("picture");
+		String picture = (String) jsonObject.get("image");
 		User user = bt.getUserByEmail(userName);
 		if (user != null) {
 			user.setProfilePic(picture);
