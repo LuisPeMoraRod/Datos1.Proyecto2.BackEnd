@@ -11,11 +11,14 @@ import java.util.StringTokenizer;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-
+import javax.ws.rs.PUT;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+
+import org.json.simple.JSONObject;
+
 import javax.ws.rs.core.Response.Status;
 
 import com.Project2.BackEnd.RecipesManagement.Recipe;
@@ -156,6 +159,21 @@ public class RecipesResources {
 			return Response.status(Status.NOT_FOUND).entity("User not found for: " + userEmail).build();
 		}
 
+	}
+	
+	@PUT
+	@Path("/image")
+	public Response editImage(JSONObject jsonObject) {
+		String recipeName = (String) jsonObject.get("recipeName");
+		String image = (String) jsonObject.get("image");
+		Recipe recipe = avl.getRecipeByName(recipeName);
+		if (recipe != null) {
+			recipe.setImage(image);
+			return Response.status(Status.OK).entity("Recipe image updated successfull.").build();
+		}else {
+			return Response.status(Status.CONFLICT).entity("Error: no recipe registered as "+recipeName).build();
+		}
+		
 	}
 
 	/**

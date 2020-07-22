@@ -28,6 +28,7 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -383,8 +384,29 @@ public class UsersResources implements RestResources, Observer {
 			}
 			return Response.ok(responseUser).build();
 		} else {
-			return Response.status(Status.NOT_FOUND).entity("User not found for: " + userEmail).build();
+			return Response.status(Status.NOT_FOUND).entity("Error: user not found for: " + userEmail).build();
 		}
+	}
+	
+	/**
+	 * Edits base64 string for users' profile picture
+	 * @param jsonObject : JSONObject
+	 * @return Response
+	 */
+	@PUT
+	@Path("/profilePic")
+	public Response editProfilePic(JSONObject jsonObject) {
+		String userName = (String) jsonObject.get("user");
+		String picture = (String) jsonObject.get("picture");
+		User user = bt.getUserByEmail(userName);
+		if (user != null) {
+			user.setProfilePic(picture);
+			return Response.status(Status.OK).entity("Profile picture updated successfully.").build();
+		}else {
+			return Response.status(Status.CONFLICT).entity("Error: user not found for:"+userName).build();
+		}
+		
+		
 	}
 
 	@Override
