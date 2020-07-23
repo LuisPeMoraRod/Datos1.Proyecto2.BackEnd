@@ -240,6 +240,9 @@ public class User implements Comparable<User> {
 			if (notifications == null) {
 				notifications = new ArrayList<Notification>();
 			}
+			if (myMenu == null) {
+				myMenu = new DoublyLinkedList();
+			}
 			return new User(this);
 		}
 

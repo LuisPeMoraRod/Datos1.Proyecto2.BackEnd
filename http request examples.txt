@@ -44,11 +44,9 @@ http://localhost:8080/CookTime.BackEnd/api/users/profilePic
 }
 
 Edit recipe picture (PUT): must send JSON object
-http://localhost:8080/CookTime.BackEnd/api/recipes
+http://localhost:8080/CookTime.BackEnd/api/recipes/image
 {
     "recipeName":"Wine",
     "image":"base64 string"
 }
-
-
 

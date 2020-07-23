@@ -181,7 +181,7 @@ public class RecipesResources {
 	 * @return Response
 	 */
 	@GET
-	public Response getAllRecipes() {
+	public Response getAll() {
 		responseList = avl.getNewsfeed();
 		return Response.ok(responseList).build();
 	}

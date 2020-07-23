@@ -337,7 +337,7 @@ public class UsersResources implements RestResources, Observer {
 	@SuppressWarnings("rawtypes")
 	@PUT
 	@Path("/{userEmail}")
-	public Response editUser(@PathParam("userEmail") String userEmail, @Context UriInfo uriInfo) {
+	public Response edit(@PathParam("userEmail") String userEmail, @Context UriInfo uriInfo) {
 		responseUser = bt.getUserByEmail(userEmail);
 		if (responseUser != null) {
 			for (Map.Entry entry : uriInfo.getQueryParameters().entrySet()) {
@@ -395,7 +395,7 @@ public class UsersResources implements RestResources, Observer {
 	 */
 	@PUT
 	@Path("/profilePic")
-	public Response editProfilePic(JSONObject jsonObject) {
+	public Response editImage(JSONObject jsonObject) {
 		String userName = (String) jsonObject.get("user");
 		String picture = (String) jsonObject.get("image");
 		User user = bt.getUserByEmail(userName);
