@@ -4,7 +4,7 @@ public class Notification {
 	private String emisorUser;
 	private String recieverUser;
 	public static final int NEW_COMMENT = 0, NEW_FOLLOWER = 1, NEW_UNFOLLLOW = 2, NEW_LIKE = 3, NEW_UNLIKE = 4,
-			NEW_SHARE = 5, NEW_UNSHARE = 6;
+			NEW_SHARE = 5, NEW_UNSHARE = 6, NEW_LIKE_COMPANY = 7, NEW_UNLIKE_COMPANY=8;
 	private int notifType;
 	private String newComment;
 	private String recipe;
@@ -57,25 +57,31 @@ public class Notification {
 	public void setMessageType(int notifType) {
 		switch (notifType) {
 		case NEW_COMMENT:
-			this.messageType = " commented a recipe.";
+			this.messageType = "commented a recipe.";
 			break;
 		case NEW_FOLLOWER:
-			this.messageType = " followed you.";
+			this.messageType = "followed you.";
 			break;
 		case NEW_UNFOLLLOW:
-			this.messageType = " unfollowed you.";
+			this.messageType = "unfollowed you.";
 			break;
 		case NEW_LIKE:
-			this.messageType = " liked a recipe.";
+			this.messageType = "liked a recipe.";
 			break;
 		case NEW_UNLIKE:
-			this.messageType = " disliked a recipe.";
+			this.messageType = "unliked a recipe.";
 			break;
 		case NEW_SHARE:
-			this.messageType = " shared a recipe.";
+			this.messageType = "shared a recipe.";
 			break;
 		case NEW_UNSHARE:
-			this.messageType = " unshared a recipe.";
+			this.messageType = "unshared a recipe.";
+			break;
+		case NEW_LIKE_COMPANY:
+			this.messageType = "liked your company.";
+			break;
+		case NEW_UNLIKE_COMPANY:
+			this.messageType = "unliked your company.";
 			break;
 		default:
 			break;

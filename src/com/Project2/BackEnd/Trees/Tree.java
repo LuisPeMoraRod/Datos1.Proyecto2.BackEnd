@@ -49,19 +49,30 @@ public abstract class Tree<T extends Comparable<T>> {
         }
     }
     
-    public T getRecipeByName(String recipe) {
-    	return getRecipeByName(recipe,this.root);
+    /**
+     * Searches and returns an element in the tree
+     * @param name : String
+     * @return T 
+     */
+    public T get(String name) {
+    	return get(name,this.root);
     }
     
-    public T getRecipeByName(String recipe, NodeTree<T> node) {
+    /**
+     * Recursive method to find and return an element in the tree
+     * @param name : String
+     * @param node : NodeTree<T> 
+     * @return T
+     */ 
+    public T get(String name, NodeTree<T> node) {
     	if (node == null) {
 			return null;
 		}
-		int comparisonResult = recipe.compareTo((node.getElement().toString()));
+		int comparisonResult = name.compareTo((node.getElement().toString()));
 		if (comparisonResult < 0) {
-			return getRecipeByName(recipe, node.left);
+			return get(name, node.left);
 		} else if (comparisonResult > 0) {
-			return getRecipeByName(recipe, node.right);
+			return get(name, node.right);
 		}else {
 			return node.getElement();
 		}
@@ -184,6 +195,7 @@ public abstract class Tree<T extends Comparable<T>> {
     public void insert(T element){
     	size++;
         this.root = this.insert(element, this.root);
+        
         if(isSplay){
             this.root = this.splay(this.root,element);
         }
@@ -469,7 +481,6 @@ public abstract class Tree<T extends Comparable<T>> {
 
     
     
-    ////////////////////////////////////////////////////////
     public ArrayList<T> getList() {
 		return inOrder();
 	}

@@ -15,13 +15,14 @@ public class Company implements Comparable<Company>{
 	private String image;
 	private String serviceSchedule;
 	private String location;
-	private ArrayList<String> admins;
 	private int punctuation;
+	private int sortingType;
+	private DoublyLinkedList myMenu;
+	private ArrayList<String> admins;
 	private ArrayList<String> usersFollowing;
 	private ArrayList<String>  followers;
+	private ArrayList<String> likers;
 	private ArrayList<Recipe> recipes;
-	private DoublyLinkedList myMenu;
-	private int sortingType;
 	private ArrayList<Notification> notifications;
 	
 	public Company(Builder builder) {
@@ -36,11 +37,11 @@ public class Company implements Comparable<Company>{
 		this.punctuation = builder.punctuation;
 		this.usersFollowing = builder.usersFollowing;
 		this.followers = builder.followers;
+		this.likers = builder.likers;
 		this.recipes = builder.recipes;
 		this.myMenu = builder.myMenu;
 		this.sortingType = builder.sortingType;
 		this.notifications = builder.notifications;
-		
 	}
 	
 	public String getName() {
@@ -91,6 +92,9 @@ public class Company implements Comparable<Company>{
 	public void setAdmins(ArrayList<String> admins) {
 		this.admins = admins;
 	}
+	public void addAdmin(String newAdmin) {
+		this.admins.add(newAdmin);
+	}
 	public int getPunctuation() {
 		return punctuation;
 	}
@@ -131,6 +135,25 @@ public class Company implements Comparable<Company>{
 		this.followers.remove(follower);
 	}
 
+	
+	public ArrayList<String> getLikers() {
+		return likers;
+	}
+
+	public void setLikers(ArrayList<String> likers) {
+		this.likers = likers;
+	}
+	
+	public void addLiker(String newLiker) {
+		this.likers.add(newLiker);
+		this.punctuation++;
+	}
+	
+	public void removeLiker(String liker) {
+		this.likers.remove(liker);
+		this.punctuation--;
+	}
+
 	public void addRecipe(Recipe newRecipe) {
 		Node<Recipe> node = new Node<Recipe>(newRecipe);
 		myMenu.sortedInsert(node, this.sortingType);
@@ -162,13 +185,6 @@ public class Company implements Comparable<Company>{
 		return recipes;
 	}
 
-	public DoublyLinkedList getMyMenu() {
-		return myMenu;
-	}
-
-	public void setMyMenu(DoublyLinkedList myMenu) {
-		this.myMenu = myMenu;
-	}
 
 	public int getSortingType() {
 		return sortingType;
@@ -221,13 +237,14 @@ public class Company implements Comparable<Company>{
 		private String image;
 		private String serviceSchedule;
 		private String location;
-		private ArrayList<String> admins;
 		private int punctuation;
+		private int sortingType;
+		private DoublyLinkedList myMenu;
+		private ArrayList<String> admins;
 		private ArrayList<String> usersFollowing;
 		private ArrayList<String>  followers;
+		private ArrayList<String> likers;
 		private ArrayList<Recipe> recipes;
-		private DoublyLinkedList myMenu;
-		private int sortingType;
 		private ArrayList<Notification> notifications;
 		
 		public Company build() {
@@ -242,6 +259,9 @@ public class Company implements Comparable<Company>{
 			}
 			if (followers == null) {
 				followers = new ArrayList<String>();
+			}
+			if (likers == null) {
+				likers = new ArrayList<String>();
 			}
 			
 			if (notifications == null) {
@@ -307,6 +327,10 @@ public class Company implements Comparable<Company>{
 			this.followers = followers;
 			return this;
 		}
+		public Builder withLikers(ArrayList<String> likers) {
+			this.likers = likers;
+			return this;
+		}
 
 		public Builder withSortingType(int sortingType) {
 			this.sortingType = sortingType;
@@ -344,6 +368,12 @@ public class Company implements Comparable<Company>{
 		if (o == null) {
 			return -1;
 		}
-		return this.email.compareTo(o.email.toString());
+		
+		return this.email.compareTo(o.email);
+	}
+	
+	@Override 
+	public String toString() {
+		return this.email;
 	}
 }

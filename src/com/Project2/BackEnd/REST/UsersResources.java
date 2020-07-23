@@ -32,9 +32,11 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.Project2.BackEnd.CompaniesManagement.Company;
 import com.Project2.BackEnd.RecipesManagement.Recipe;
 import com.Project2.BackEnd.Trees.AVLTree;
 import com.Project2.BackEnd.Trees.BinaryTree;
+import com.Project2.BackEnd.Trees.SplayTree;
 import com.Project2.BackEnd.UsersManagement.MD5;
 import com.Project2.BackEnd.UsersManagement.User;
 import com.Project2.BackEnd.UsersManagement.UsersJSON;
@@ -46,13 +48,14 @@ public class UsersResources implements RestResources, Observer {
 
 	private static BinaryTree<User> bt = BinaryTree.getInstance();
 	private static AVLTree<Recipe> avl = AVLTree.getInstance();
+	private static SplayTree<Company> splay = SplayTree.getInstance();
 	private ArrayList<User> responseList;
 	private User responseUser;
 	private String key, email = null, name = null, password = null, age = null, profilePic = null;
 	private UsersJSON usersJson;
-	private MD5 MD5;
+	private MD5 md5;
 	private ArrayList<Recipe> myMenu;
-	private static NotifObservable notifObservable;
+	public static NotifObservable notifObservable;
 	private boolean sendNotif = false;
 	private Notification notification;
 	private String observerUser;
@@ -106,15 +109,16 @@ public class UsersResources implements RestResources, Observer {
 		}
 		notification = new Notification(emisorUser, recieverUser, notifType, newComment, recipeName);
 		User emisor = bt.getUserByEmail(emisorUser);
-		User reciever = bt.getUserByEmail(recieverUser);
-
+		Company emisorComp = splay.get(emisorUser);
 		if (recipeName != null) {
-			recipe = avl.getRecipeByName(recipeName);
+			recipe = avl.get(recipeName);
 			if (recipe == null) {
 				return Response.status(Status.CONFLICT).entity("Error: couldn't find recipe: " + recipeName).build();
 			}
 		}
 
+		User reciever = bt.getUserByEmail(recieverUser);
+		Company company = splay.get(recieverUser);
 		switch (notification.getNotifType()) {
 		case Notification.NEW_COMMENT:
 			recipe.addComment(emisorUser, newComment);
@@ -122,24 +126,46 @@ public class UsersResources implements RestResources, Observer {
 			break;
 
 		case Notification.NEW_FOLLOWER:
-			if (!emisor.getUsersFollowing().contains(recieverUser)) {
-				emisor.addUserFollowing(recieverUser);
-				reciever.addFollower(emisorUser);
-				entity = "Follower added successfully.";
+			if (emisor != null) {
+				if (!emisor.getUsersFollowing().contains(recieverUser)) {
+					emisor.addUserFollowing(recieverUser);
+					follow(recieverUser, emisorUser);
+					entity = "Follower added successfully.";
+				} else {
+					return Response.status(Status.CONFLICT)
+							.entity("Error: " + emisorUser + " already follows " + recieverUser).build();
+				}
 			} else {
-				return Response.status(Status.CONFLICT)
-						.entity("Error: " + emisorUser + " already follows " + recieverUser).build();
+				if (!emisorComp.getUsersFollowing().contains(recieverUser)) {
+					emisorComp.addUserFollowing(recieverUser);
+					follow(recieverUser, emisorUser);
+					entity = "Follower added successfully.";
+				} else {
+					return Response.status(Status.CONFLICT)
+							.entity("Error: " + emisorUser + " already follows " + recieverUser).build();
+				}
 			}
 			break;
 
 		case Notification.NEW_UNFOLLLOW:
-			if (emisor.getUsersFollowing().contains(recieverUser)) {
-				emisor.removeUserFollowing(recieverUser);
-				reciever.removeFollower(emisorUser);
-				entity = "User unfollowed succesfully.";
-			} else {
-				return Response.status(Status.CONFLICT)
-						.entity("Error: " + emisorUser + " doesn't follow " + recieverUser).build();
+			if (emisor != null) {
+				if (emisor.getUsersFollowing().contains(recieverUser)) {
+					emisor.removeUserFollowing(recieverUser);
+					unfollow(recieverUser, emisorUser);
+					entity = "User unfollowed succesfully.";
+				} else {
+					return Response.status(Status.CONFLICT)
+							.entity("Error: " + emisorUser + " doesn't follow " + recieverUser).build();
+				}
+			}else {
+				if (emisorComp.getUsersFollowing().contains(recieverUser)) {
+					emisorComp.removeUserFollowing(recieverUser);
+					unfollow(recieverUser, emisorUser);
+					entity = "User unfollowed succesfully.";
+				} else {
+					return Response.status(Status.CONFLICT)
+							.entity("Error: " + emisorUser + " doesn't follow " + recieverUser).build();
+				}
 			}
 			break;
 
@@ -185,11 +211,48 @@ public class UsersResources implements RestResources, Observer {
 						.build();
 			}
 			break;
+		case Notification.NEW_LIKE_COMPANY:
+			if (!company.getLikers().contains(emisorUser)) {
+				company.addLiker(emisorUser);
+				entity="New like to company added successfully";
+			}else {
+				return Response.status(Status.CONFLICT).entity("Error: "+emisorUser+" already likes "+recieverUser).build();
+			}
+			break;
+		case Notification.NEW_UNLIKE_COMPANY:
+			if (company.getLikers().contains(emisorUser)) {
+				company.removeLiker(emisorUser);
+				entity="Like to company removed successfully";
+			}else {
+				return Response.status(Status.CONFLICT).entity("Error: "+emisorUser+" doesn't like "+recieverUser).build();
+			}
 		default:
 			break;
 		}
+
 		notifObservable.setNotification(notification); // change in observable subject
 		return Response.status(200).entity(entity).build();
+
+	}
+
+	public void follow(String recieverUser, String emisorUser) {
+		User reciever = bt.getUserByEmail(recieverUser);
+		Company company = splay.get(recieverUser);
+		if (reciever != null) {
+			reciever.addFollower(emisorUser);
+		} else {
+			company.addFollower(emisorUser);
+		}
+	}
+
+	public void unfollow(String recieverUser, String emisorUser) {
+		User reciever = bt.getUserByEmail(recieverUser);
+		Company company = splay.get(recieverUser);
+		if (reciever != null) {
+			reciever.removeFollower(emisorUser);
+		} else {
+			company.removeFollower(emisorUser);
+		}
 	}
 
 	/**
@@ -208,7 +271,7 @@ public class UsersResources implements RestResources, Observer {
 		notifObservable.addObserver(this);
 		System.out.println("observer added");
 		int cont = 0;
-		while (!sendNotif & cont<40000) {
+		while (!sendNotif & cont < 40000) {
 			Thread.sleep(1);
 			cont++;
 		}
@@ -218,7 +281,7 @@ public class UsersResources implements RestResources, Observer {
 			ArrayList<Notification> notificationsList = user.getNotifications();
 			sendNotif = false;
 			return Response.status(Status.OK).entity(notificationsList).build();
-		}else {
+		} else {
 			return Response.status(Status.NO_CONTENT).entity("Timed out.").build();
 		}
 	}
@@ -308,9 +371,9 @@ public class UsersResources implements RestResources, Observer {
 
 			case "password":
 				password = tokenizer.nextToken();
-				MD5 = new MD5(password);
+				md5 = new MD5(password);
 				try {
-					password = MD5.getMD5();
+					password = md5.getMD5();
 				} catch (NoSuchAlgorithmException | NoSuchProviderException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -327,7 +390,7 @@ public class UsersResources implements RestResources, Observer {
 		}
 		if (email == null || name == null || password == null) {
 			return Response.status(Status.CONFLICT).entity("Email, name and password mustn't be empty").build();
-		} else if (bt.getUserByEmail(email) == null) {
+		} else if (bt.getUserByEmail(email) == null & splay.get(email) == null) {
 			ArrayList<Recipe> recipes = null;
 			newUser = User.builder().withEmail(email).withName(name).withAge(age).withPassword(password)
 					.withProfilePic(profilePic).withMyMenu(recipes).build();
@@ -375,9 +438,9 @@ public class UsersResources implements RestResources, Observer {
 					break;
 				case "password":
 					password = tokenizer.nextToken();
-					MD5 = new MD5(password);
+					md5 = new MD5(password);
 					try {
-						password = MD5.getMD5();
+						password = md5.getMD5();
 						responseUser.setPassword(password);
 					} catch (NoSuchAlgorithmException | NoSuchProviderException e) {
 						// TODO Auto-generated catch block

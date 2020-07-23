@@ -50,3 +50,5 @@ http://localhost:8080/CookTime.BackEnd/api/recipes/image
     "image":"base64 string"
 }
 
+Register Companies (POST):
+http://localhost:8080/CookTime.BackEnd/api/companies?email=mcdonalds&password=pass&name=McDonald's&location=SanJose&contact=Facebook:_McDonalds_Costa_Rica&serviceSchedule=24-7

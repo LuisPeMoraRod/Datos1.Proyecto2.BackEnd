@@ -21,9 +21,11 @@ import org.json.simple.JSONObject;
 
 import javax.ws.rs.core.Response.Status;
 
+import com.Project2.BackEnd.CompaniesManagement.Company;
 import com.Project2.BackEnd.RecipesManagement.Recipe;
 import com.Project2.BackEnd.Trees.AVLTree;
 import com.Project2.BackEnd.Trees.BinaryTree;
+import com.Project2.BackEnd.Trees.SplayTree;
 import com.Project2.BackEnd.UsersManagement.User;
 
 @Path("/recipes")
@@ -39,14 +41,17 @@ public class RecipesResources {
 
 	private static AVLTree<Recipe> avl = AVLTree.getInstance();
 	private static BinaryTree<User> bt = BinaryTree.getInstance();
+	private static SplayTree<Company> splay = SplayTree.getInstance();
 	private String key, name = null, author = null, type = null, portions = null, cookingSpan = null, eatingTime = null,
 			tags = null, price = null, ingredients = null, steps = null, picture = null;
 	private int difficulty = 0, punctuation = 0;
 	private ArrayList<Recipe> responseList;
 	private User authorUser;
+	private Company authorCompany;
 
 	/**
 	 * Adds new recipe to the AVL tree
+	 * 
 	 * @param uriInfo
 	 * @return Response
 	 */
@@ -106,9 +111,9 @@ public class RecipesResources {
 			}
 		}
 
-		if (bt.getUserByEmail(author) != null) {
+		if (bt.getUserByEmail(author) != null | splay.get(author) != null) {
 
-			if (avl.getRecipeByName(name) == null) {
+			if (avl.get(name) == null) {
 				int id = avl.getSize();
 				Recipe newRecipe = Recipe.builder().withName(name).withAuthor(author).withType(type)
 						.withPortions(portions).withEatingTime(eatingTime).withCookingSpan(cookingSpan)
@@ -116,22 +121,28 @@ public class RecipesResources {
 						.withIngredients(ingredients).withPunctuation(punctuation).withId(id).build();
 				avl.insert(newRecipe);
 				avl.insertToNewsfeed(newRecipe);
-				authorUser = bt.getUserByEmail(author);
-				authorUser.addRecipe(newRecipe);
+				if (bt.getUserByEmail(author) != null) {
+					authorUser = bt.getUserByEmail(author);
+					authorUser.addRecipe(newRecipe);
+				}else {
+					authorCompany = splay.get(author);
+					authorCompany.addRecipe(newRecipe);
+				}
 				return Response.status(201).entity(newRecipe).build();
 			} else {
 				return Response.status(Status.CONFLICT).entity("Recipe name already in use").build();
 			}
 
 		} else {
-			return Response.status(Status.NOT_FOUND).entity("User not found for: " + author).build();
+			return Response.status(Status.NOT_FOUND).entity("User or company not found for: " + author).build();
 		}
 	}
 
 	/**
 	 * Returns My Menu list of recipes of a certain user
+	 * 
 	 * @param userEmail : String
-	 * @param uriInfo : UriInfo
+	 * @param uriInfo   : UriInfo
 	 * @return response : Response
 	 */
 	@GET
@@ -149,35 +160,42 @@ public class RecipesResources {
 		String sortType = tokenizer.nextToken();
 		sortingType = Integer.parseInt(sortType);
 		authorUser = bt.getUserByEmail(userEmail);
+		authorCompany = splay.get(userEmail);
 		if (authorUser != null) {
 			authorUser.setSortingType(sortingType);
 			responseList = authorUser.getRecipes();
 			return Response.status(Status.OK).entity(responseList).build();
+		}else if (authorCompany != null) {
+			authorCompany.setSortingType(sortingType);
+			responseList = authorCompany.getRecipes();
+			return Response.status(Status.OK).entity(responseList).build();
 		}
 
 		else {
-			return Response.status(Status.NOT_FOUND).entity("User not found for: " + userEmail).build();
+			return Response.status(Status.NOT_FOUND).entity("User or company not found for: " + userEmail).build();
 		}
 
 	}
-	
+
 	@PUT
 	@Path("/image")
 	public Response editImage(JSONObject jsonObject) {
 		String recipeName = (String) jsonObject.get("recipeName");
 		String image = (String) jsonObject.get("image");
-		Recipe recipe = avl.getRecipeByName(recipeName);
+		Recipe recipe = avl.get(recipeName);
 		if (recipe != null) {
 			recipe.setImage(image);
 			return Response.status(Status.OK).entity("Recipe image updated successfull.").build();
-		}else {
-			return Response.status(Status.CONFLICT).entity("Error: no recipe registered as "+recipeName).build();
+		} else {
+			return Response.status(Status.CONFLICT).entity("Error: no recipe registered as " + recipeName).build();
 		}
-		
+
 	}
 
 	/**
-	 * Method that returns all the recipes registered in the AVL sorted chronologically so that it can be used in the newsfeed
+	 * Method that returns all the recipes registered in the AVL sorted
+	 * chronologically so that it can be used in the newsfeed
+	 * 
 	 * @return Response
 	 */
 	@GET
