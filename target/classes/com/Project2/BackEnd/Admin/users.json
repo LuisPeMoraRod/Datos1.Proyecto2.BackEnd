@@ -3,164 +3,69 @@
 		"recipes": [
 			{
 				"image": null,
-				"comments": {
-					"sgonzalez": "delicious wine "
-				},
+				"comments": [
+					{
+						"mwaterhouse": "Nice!! "
+					},
+					{
+						"sgonzalez": "delicious wine "
+					}
+				],
 				"author": "lmorales",
 				"type": null,
 				"cookingSpan": null,
 				"steps": null,
 				"tags": "drinks",
 				"difficulty": 7,
-				"shares": 1,
+				"shares": 0,
 				"eatingTime": null,
 				"price": null,
 				"name": "Wine",
-				"punctuation": 1,
+				"punctuation": 0,
 				"ingredients": null,
 				"id": 0,
-				"likers": [
-					"sgonzalez"
-				],
-				"portions": null
-			},
-			{
-				"image": null,
-				"comments": {
-					
-				},
-				"author": "lmorales",
-				"type": null,
-				"cookingSpan": null,
-				"steps": null,
-				"tags": "veggie",
-				"difficulty": 3,
-				"shares": 0,
-				"eatingTime": null,
-				"price": null,
-				"name": "Salad",
-				"punctuation": 0,
-				"ingredients": null,
-				"id": 2,
-				"likers": [],
-				"portions": null
-			},
-			{
-				"image": null,
-				"comments": {
-					
-				},
-				"author": "lmorales",
-				"type": null,
-				"cookingSpan": null,
-				"steps": null,
-				"tags": "drinks",
-				"difficulty": 7,
-				"shares": 0,
-				"eatingTime": null,
-				"price": null,
-				"name": "Beans",
-				"punctuation": 0,
-				"ingredients": null,
-				"id": 4,
 				"likers": [],
 				"portions": null
 			}
 		],
 		"password": "1a1dc91c907325c69271ddf0c944bc72",
 		"sortingType": 0,
-		"followers": [
-			"sgonzalez"
-		],
+		"followers": [],
 		"usersFollowing": [],
 		"profilePic": "picture",
 		"name": "Luis",
 		"chef": false,
 		"admin": false,
 		"email": "lmorales",
-		"age": "21"
+		"age": "21",
+		"notifications": []
 	},
 	{
-		"recipes": [
-			{
-				"image": null,
-				"comments": {
-					"sgonzalez": "delicious wine "
-				},
-				"author": "lmorales",
-				"type": null,
-				"cookingSpan": null,
-				"steps": null,
-				"tags": "drinks",
-				"difficulty": 7,
-				"shares": 1,
-				"eatingTime": null,
-				"price": null,
-				"name": "Wine",
-				"punctuation": 1,
-				"ingredients": null,
-				"id": 0,
-				"likers": [
-					"sgonzalez"
-				],
-				"portions": null
-			},
-			{
-				"image": null,
-				"comments": {
-					
-				},
-				"author": "sgonzalez",
-				"type": null,
-				"cookingSpan": null,
-				"steps": null,
-				"tags": "pasta",
-				"difficulty": 9,
-				"shares": 0,
-				"eatingTime": null,
-				"price": null,
-				"name": "Lasagna",
-				"punctuation": 1,
-				"ingredients": null,
-				"id": 1,
-				"likers": [
-					"lmorales"
-				],
-				"portions": null
-			},
-			{
-				"image": null,
-				"comments": {
-					
-				},
-				"author": "sgonzalez",
-				"type": null,
-				"cookingSpan": null,
-				"steps": null,
-				"tags": "veggie",
-				"difficulty": 3,
-				"shares": 0,
-				"eatingTime": null,
-				"price": null,
-				"name": "Rice",
-				"punctuation": 0,
-				"ingredients": null,
-				"id": 3,
-				"likers": [],
-				"portions": null
-			}
-		],
+		"recipes": [],
+		"password": "5f4dcc3b5aa765d61d8327deb882cf99",
+		"sortingType": 0,
+		"followers": [],
+		"usersFollowing": [],
+		"profilePic": "picture",
+		"name": "Moni",
+		"chef": false,
+		"admin": false,
+		"email": "mwaterhouse",
+		"age": "23",
+		"notifications": []
+	},
+	{
+		"recipes": [],
 		"password": "7a95bf926a0333f57705aeac07a362a2",
 		"sortingType": 0,
 		"followers": [],
-		"usersFollowing": [
-			"lmorales"
-		],
+		"usersFollowing": [],
 		"profilePic": "picture",
 		"name": "Sofi",
 		"chef": false,
 		"admin": false,
 		"email": "sgonzalez",
-		"age": "28"
+		"age": "28",
+		"notifications": []
 	}
 ]
