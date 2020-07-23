@@ -219,7 +219,7 @@ public class User implements Comparable<User> {
 		private String profilePic;
 		private ArrayList<String> usersFollowing;
 		private ArrayList<String>  followers;
-		private ArrayList<Recipe> recipes = null;
+		private ArrayList<Recipe> recipes;
 		private DoublyLinkedList myMenu;
 		private boolean admin;
 		private boolean chef;

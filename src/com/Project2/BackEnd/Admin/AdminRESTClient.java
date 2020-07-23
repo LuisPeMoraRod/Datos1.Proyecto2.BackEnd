@@ -122,7 +122,7 @@ public class AdminRESTClient {
 
 	public static void main(String[] args) throws ParseException {
 		AdminRESTClient restClient = new AdminRESTClient();
-		restClient.postRequest(); //post request should be fired at the very beginning to upload the registered users from the .json file
+		//restClient.postRequest(); //post request should be fired at the very beginning to upload the registered users from the .json file
 		
 		//restClient.getRequest();
 		

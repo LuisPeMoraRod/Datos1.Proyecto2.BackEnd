@@ -73,7 +73,7 @@ public class UsersResources implements RestResources, Observer {
 		String emisorUser = null, recieverUser = null, newComment = null, recipeName = null, entity = null;
 		int notifType = 0;
 		Recipe recipe = null;
-		//get notification parameters
+		// get notification parameters
 		for (Map.Entry entry : uriInfo.getQueryParameters().entrySet()) {
 			key = entry.getKey().toString();
 			StringTokenizer tokenizer = new StringTokenizer(entry.getValue().toString(), "[ // ]");
@@ -111,53 +111,57 @@ public class UsersResources implements RestResources, Observer {
 		if (recipeName != null) {
 			recipe = avl.getRecipeByName(recipeName);
 			if (recipe == null) {
-				return Response.status(Status.CONFLICT).entity("Error: couldn't find recipe: "+recipeName).build();
+				return Response.status(Status.CONFLICT).entity("Error: couldn't find recipe: " + recipeName).build();
 			}
 		}
 
 		switch (notification.getNotifType()) {
 		case Notification.NEW_COMMENT:
 			recipe.addComment(emisorUser, newComment);
-			entity="Comment added.";
+			entity = "Comment added.";
 			break;
-			
+
 		case Notification.NEW_FOLLOWER:
 			if (!emisor.getUsersFollowing().contains(recieverUser)) {
 				emisor.addUserFollowing(recieverUser);
 				reciever.addFollower(emisorUser);
 				entity = "Follower added successfully.";
-			}else {
-				return Response.status(Status.CONFLICT).entity("Error: "+emisorUser+" already follows "+recieverUser).build();
+			} else {
+				return Response.status(Status.CONFLICT)
+						.entity("Error: " + emisorUser + " already follows " + recieverUser).build();
 			}
 			break;
-			
+
 		case Notification.NEW_UNFOLLLOW:
 			if (emisor.getUsersFollowing().contains(recieverUser)) {
 				emisor.removeUserFollowing(recieverUser);
 				reciever.removeFollower(emisorUser);
 				entity = "User unfollowed succesfully.";
-			}else {
-				return Response.status(Status.CONFLICT).entity("Error: "+emisorUser+" doesn't follow "+recieverUser).build();
+			} else {
+				return Response.status(Status.CONFLICT)
+						.entity("Error: " + emisorUser + " doesn't follow " + recieverUser).build();
 			}
 			break;
-			
+
 		case Notification.NEW_LIKE:
 			if (!recipe.getLikers().contains(emisorUser)) {
-				recipe.incrementPunctuation();	
+				recipe.incrementPunctuation();
 				recipe.addLiker(emisorUser);
 				entity = "Like added successfully.";
-			}else {
-				return Response.status(Status.CONFLICT).entity("Error: "+emisorUser+" already likes the recipe").build();
+			} else {
+				return Response.status(Status.CONFLICT).entity("Error: " + emisorUser + " already likes the recipe")
+						.build();
 			}
 			break;
-		
+
 		case Notification.NEW_UNLIKE:
-			if (recipe.getLikers().contains(emisorUser)){
+			if (recipe.getLikers().contains(emisorUser)) {
 				recipe.decrementPunctuation();
 				recipe.removeLiker(emisorUser);
 				entity = "Like removed succesfully.";
-			}else {
-				return Response.status(Status.CONFLICT).entity("Error: "+emisorUser+" doesn't like the recipe").build();
+			} else {
+				return Response.status(Status.CONFLICT).entity("Error: " + emisorUser + " doesn't like the recipe")
+						.build();
 			}
 			break;
 		case Notification.NEW_SHARE:
@@ -165,18 +169,20 @@ public class UsersResources implements RestResources, Observer {
 				emisor.addRecipe(recipe);
 				recipe.incrementShares();
 				entity = "Recipe shared successfully.";
-			}else {
-				return Response.status(Status.CONFLICT).entity("Error: "+emisorUser+" has already shared this recipe.").build();
+			} else {
+				return Response.status(Status.CONFLICT)
+						.entity("Error: " + emisorUser + " has already shared this recipe.").build();
 			}
 			break;
-			
+
 		case Notification.NEW_UNSHARE:
-			if(emisor.getRecipes().contains(recipe)) {
+			if (emisor.getRecipes().contains(recipe)) {
 				emisor.removeRecipe(recipe);
 				recipe.decrementShares();
-				entity = "Recipe removed from MyMenu successfully"; 
-			}else {
-				return Response.status(Status.CONFLICT).entity("Error: "+emisorUser+" hasn't shared this recipe.").build();
+				entity = "Recipe removed from MyMenu successfully";
+			} else {
+				return Response.status(Status.CONFLICT).entity("Error: " + emisorUser + " hasn't shared this recipe.")
+						.build();
 			}
 			break;
 		default:
@@ -201,14 +207,20 @@ public class UsersResources implements RestResources, Observer {
 		User user = bt.getUserByEmail(observerUser);
 		notifObservable.addObserver(this);
 		System.out.println("observer added");
-		while (!sendNotif) {
+		int cont = 0;
+		while (!sendNotif & cont<40000) {
 			Thread.sleep(1);
+			cont++;
 		}
-		notification = notifObservable.getNotification();
-		user.addNotification(notification);
-		ArrayList<Notification> notificationsList = user.getNotifications();
-		sendNotif = false;
-		return Response.status(200).entity(notificationsList).build();
+		if (sendNotif) {
+			notification = notifObservable.getNotification();
+			user.addNotification(notification);
+			ArrayList<Notification> notificationsList = user.getNotifications();
+			sendNotif = false;
+			return Response.status(Status.OK).entity(notificationsList).build();
+		}else {
+			return Response.status(Status.NO_CONTENT).entity("Timed out.").build();
+		}
 	}
 
 	/**
@@ -387,9 +399,10 @@ public class UsersResources implements RestResources, Observer {
 			return Response.status(Status.NOT_FOUND).entity("Error: user not found for: " + userEmail).build();
 		}
 	}
-	
+
 	/**
 	 * Edits base64 string for users' profile picture
+	 * 
 	 * @param jsonObject : JSONObject
 	 * @return Response
 	 */
@@ -402,11 +415,10 @@ public class UsersResources implements RestResources, Observer {
 		if (user != null) {
 			user.setProfilePic(picture);
 			return Response.status(Status.OK).entity("Profile picture updated successfully.").build();
-		}else {
-			return Response.status(Status.CONFLICT).entity("Error: user not found for:"+userName).build();
+		} else {
+			return Response.status(Status.CONFLICT).entity("Error: user not found for:" + userName).build();
 		}
-		
-		
+
 	}
 
 	@Override

@@ -7,7 +7,7 @@ import com.Project2.BackEnd.RecipesManagement.DoublyLinkedList;
 import com.Project2.BackEnd.RecipesManagement.Recipe;
 import com.Project2.BackEnd.Trees.Node;
 
-public class Company {
+public class Company implements Comparable<Company>{
 	private String name;
 	private String email;
 	private String password;
@@ -34,6 +34,13 @@ public class Company {
 		this.location = builder.location;
 		this.admins = builder.admins;
 		this.punctuation = builder.punctuation;
+		this.usersFollowing = builder.usersFollowing;
+		this.followers = builder.followers;
+		this.recipes = builder.recipes;
+		this.myMenu = builder.myMenu;
+		this.sortingType = builder.sortingType;
+		this.notifications = builder.notifications;
+		
 	}
 	
 	public String getName() {
@@ -216,10 +223,32 @@ public class Company {
 		private String location;
 		private ArrayList<String> admins;
 		private int punctuation;
+		private ArrayList<String> usersFollowing;
+		private ArrayList<String>  followers;
+		private ArrayList<Recipe> recipes;
+		private DoublyLinkedList myMenu;
+		private int sortingType;
+		private ArrayList<Notification> notifications;
 		
 		public Company build() {
 			if (admins == null) {
 				admins = new ArrayList<String>();
+			}
+			if (recipes == null) {
+				recipes = new ArrayList<Recipe>();
+			}
+			if (usersFollowing == null) {
+				usersFollowing = new ArrayList<String>();
+			}
+			if (followers == null) {
+				followers = new ArrayList<String>();
+			}
+			
+			if (notifications == null) {
+				notifications = new ArrayList<Notification>();
+			}
+			if (myMenu == null) {
+				myMenu = new DoublyLinkedList();
 			}
 			return new Company(this);
 		}
@@ -269,5 +298,52 @@ public class Company {
 			return this;
 		}
 		
+		public Builder withUsersFollowing(ArrayList<String> usersFollowing) {
+			this.usersFollowing = usersFollowing;
+			return this;
+		}
+
+		public Builder withFollowers(ArrayList<String>  followers) {
+			this.followers = followers;
+			return this;
+		}
+
+		public Builder withSortingType(int sortingType) {
+			this.sortingType = sortingType;
+			return this;
+		}
+
+		public Builder withMyMenu(ArrayList<Recipe> recipes) {
+			this.recipes = recipes;
+			this.myMenu = parseArrayToLinkedList(recipes);
+			return this;
+
+		}
+		public Builder withNotifications(ArrayList<Notification> notifications) {
+			this.notifications = notifications;
+			return this;
+		}
+		
+
+		private DoublyLinkedList parseArrayToLinkedList(ArrayList<Recipe> recipes) {
+			DoublyLinkedList myMenu = new DoublyLinkedList();
+			Node<Recipe> node;
+			if (recipes != null) {
+				for (Recipe recipe : recipes) {
+					node = new Node<Recipe>(recipe);
+					myMenu.sortedInsert(node, sortingType);
+				}
+			}
+			return myMenu;
+		}
+		
+	}
+
+	@Override
+	public int compareTo(Company o) {
+		if (o == null) {
+			return -1;
+		}
+		return this.email.compareTo(o.email.toString());
 	}
 }
