@@ -42,7 +42,8 @@ public class Recipe implements Comparable<Recipe>{
 	
 	public void addComment(String user, String comment) {
 		HashMap<String,String> commentHM = new HashMap<String,String>();
-		commentHM.put(user,comment);
+		commentHM.put("user",user);
+		commentHM.put("comment",comment);
 		this.comments.add(0,commentHM);
 	}
 

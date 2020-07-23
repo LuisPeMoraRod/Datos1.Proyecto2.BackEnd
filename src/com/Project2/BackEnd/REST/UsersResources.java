@@ -117,7 +117,6 @@ public class UsersResources implements RestResources, Observer {
 			}
 		}
 
-		User reciever = bt.getUserByEmail(recieverUser);
 		Company company = splay.get(recieverUser);
 		switch (notification.getNotifType()) {
 		case Notification.NEW_COMMENT:
