@@ -24,7 +24,7 @@ public class Recipe implements Comparable<Recipe>{
 	private String image;
 	private String ingredients;
 	private String steps;
-	private HashMap<String,String> comments;
+	private ArrayList<HashMap<String,String>> comments;
 	private ArrayList<String> likers;
 	private String price;
 	private int difficulty;
@@ -32,17 +32,18 @@ public class Recipe implements Comparable<Recipe>{
 	private int punctuation;
 	private int shares;
 	
-	public HashMap<String,String>  getComments() {
+	public ArrayList<HashMap<String,String>> getComments() {
 		return comments;
 	}
 
-	public void setComments(HashMap<String,String>  comments) {
+	public void setComments( ArrayList<HashMap<String,String>> comments) {
 		this.comments = comments;
 	}
 	
 	public void addComment(String user, String comment) {
-		
-		this.comments.put(user, comment);
+		HashMap<String,String> commentHM = new HashMap<String,String>();
+		commentHM.put(user,comment);
+		this.comments.add(0,commentHM);
 	}
 
 	public int getId() {
@@ -236,13 +237,13 @@ public class Recipe implements Comparable<Recipe>{
 		private int difficulty;
 		private int id;
 		private int shares;
-		private HashMap<String,String> comments;
+		private  ArrayList<HashMap<String,String>> comments;
 		private ArrayList<String> likers;
 		
 		
 		public Recipe build() {
 			if (comments == null) {
-				comments = new HashMap<String, String>();
+				comments = new  ArrayList<HashMap<String,String>>();
 			}
 			if (likers == null) {
 				likers = new ArrayList<String>();
@@ -316,7 +317,7 @@ public class Recipe implements Comparable<Recipe>{
 			return this;
 		}
 		
-		public Builder withComments(HashMap<String,String> comments) {
+		public Builder withComments( ArrayList<HashMap<String,String>> comments) {
 			this.comments = comments;
 			return this;
 		}

@@ -170,7 +170,8 @@ public class UsersJSON {
 		String name = null, author = null, type = null, portions = null, cookingSpan = null, eatingTime = null,
 				tags = null, image = null, ingredients = null, steps = null, price = null;
 		int difficulty = 0, id = 0, punctuation = 0, shares = 0;
-		HashMap<String, String> comments = null;
+		ArrayList<HashMap<String,String>> comments = null;
+		JSONArray jsonArray;
 		for (int i = 0; i < array.size(); i++) {
 			HashMap<String, Object> passedValues = (HashMap<String, Object>) array.get(i);
 			for (Entry<String, Object> mapTemp : passedValues.entrySet()) {
@@ -225,11 +226,16 @@ public class UsersJSON {
 					shares = Integer.parseInt(Long.toString(shr));
 					break;
 				case "comments":
-					comments = (HashMap<String, String>) mapTemp.getValue();
+					//comments = (HashMap<String, String>) mapTemp.getValue();
+					comments = new ArrayList<HashMap<String,String>>();
+					jsonArray = (JSONArray) mapTemp.getValue();
+					for (int j = 0; j < jsonArray.size(); j++) {
+						comments.add((HashMap<String,String>) jsonArray.get(j));
+					}
 					break;
 				case "likers":
 					likers = new ArrayList<String>();
-					JSONArray jsonArray = (JSONArray) mapTemp.getValue();
+					jsonArray = (JSONArray) mapTemp.getValue();
 					for (int j = 0; j < jsonArray.size(); j++) {
 						likers.add((String) jsonArray.get(j));
 					}
