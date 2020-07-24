@@ -40,6 +40,7 @@ import com.Project2.BackEnd.Trees.SplayTree;
 import com.Project2.BackEnd.UsersManagement.MD5;
 import com.Project2.BackEnd.UsersManagement.User;
 import com.Project2.BackEnd.UsersManagement.UsersJSON;
+import com.sun.xml.bind.util.Which;
 
 @Path("/users")
 @Produces(MediaType.APPLICATION_JSON)
@@ -156,7 +157,7 @@ public class UsersResources implements RestResources, Observer {
 					return Response.status(Status.CONFLICT)
 							.entity("Error: " + emisorUser + " doesn't follow " + recieverUser).build();
 				}
-			}else {
+			} else {
 				if (emisorComp.getUsersFollowing().contains(recieverUser)) {
 					emisorComp.removeUserFollowing(recieverUser);
 					unfollow(recieverUser, emisorUser);
@@ -213,18 +214,31 @@ public class UsersResources implements RestResources, Observer {
 		case Notification.NEW_LIKE_COMPANY:
 			if (!company.getLikers().contains(emisorUser)) {
 				company.addLiker(emisorUser);
-				entity="New like to company added successfully";
-			}else {
-				return Response.status(Status.CONFLICT).entity("Error: "+emisorUser+" already likes "+recieverUser).build();
+				entity = "New like to company added successfully";
+			} else {
+				return Response.status(Status.CONFLICT)
+						.entity("Error: " + emisorUser + " already likes " + recieverUser).build();
 			}
 			break;
 		case Notification.NEW_UNLIKE_COMPANY:
 			if (company.getLikers().contains(emisorUser)) {
 				company.removeLiker(emisorUser);
-				entity="Like to company removed successfully";
-			}else {
-				return Response.status(Status.CONFLICT).entity("Error: "+emisorUser+" doesn't like "+recieverUser).build();
+				entity = "Like to company removed successfully";
+			} else {
+				return Response.status(Status.CONFLICT).entity("Error: " + emisorUser + " doesn't like " + recieverUser)
+						.build();
 			}
+		case Notification.CHEF_ACCEPTED:
+			User chef = bt.getUserByEmail(recieverUser);
+			chef.setChef(true);
+			entity = "Chef request accepted.";
+			
+			break;
+		case Notification.CHEF_DENIED:
+			User user = bt.getUserByEmail(recieverUser);
+			user.setChef(false);
+			entity = "Chef request denied.";
+			break;
 		default:
 			break;
 		}
@@ -251,6 +265,49 @@ public class UsersResources implements RestResources, Observer {
 			reciever.removeFollower(emisorUser);
 		} else {
 			company.removeFollower(emisorUser);
+		}
+	}
+
+	/**
+	 * Sets a new chef request which is going to be sent to the administrators' client
+	 * @param request : JSONObject
+	 * @return Response
+	 */
+	@POST
+	@Path("/chef_request")
+	public Response newChefRequest(JSONObject request) {
+		String userEmail = (String) request.get("user");
+		User user = bt.getUserByEmail(userEmail);
+		if (user != null) {
+			if (!user.isChef()) {
+				notifObservable.setChefRequest(request);
+				return Response.status(Status.OK).entity("Request sent successfully.").build();
+			}else {
+				return Response.status(Status.CONFLICT).entity("Error: user is a verified chef already.").build();
+			}
+		}else {
+			return Response.status(Status.CONFLICT).entity("Error: couldn't find user for "+userEmail).build();
+		}
+		
+	}
+	
+	@GET
+	@Path("/get_chef_request")
+	public Response getChefRequest() throws InterruptedException {
+		this.observerUser = "admin";
+		notifObservable.addObserver(this);
+		System.out.println("observer for chef request added");
+		int cont = 0;
+		while (!sendNotif & cont < 40000) {
+			Thread.sleep(1);
+			cont++;
+		}
+		if (sendNotif) {
+			JSONObject chefRequest = notifObservable.getChefRequest();
+			sendNotif = false;
+			return Response.status(Status.OK).entity(chefRequest).build();
+		}else {
+			return Response.status(Status.NO_CONTENT).entity("Timed out.").build();
 		}
 	}
 
@@ -485,10 +542,14 @@ public class UsersResources implements RestResources, Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		if (notifObservable.getIsNewNotif()
+		if (notifObservable.isNewChefRequest() & observerUser.equals("admin")) {
+			this.sendNotif = true;
+			notifObservable.setNewChefRequest(false);
+		}
+		else if (notifObservable.isNewNotif()
 				& notifObservable.getNotification().getRecieverUser().equals(observerUser)) {
 			this.sendNotif = true;
-			notifObservable.setIsNewNotif(false);
+			notifObservable.setNewNotif(false);
 		}
 	}
 

@@ -41,6 +41,7 @@ public class AdminRESTClient {
 	private String jsonFileLoc = "src/com/Project2/BackEnd/Admin/users.json";
 	private String getNotifUser= "http://localhost:8080/CookTime.BackEnd/api/users/get_notif?observerUser=lmorales";
 	private String getNotifComp= "http://localhost:8080/CookTime.BackEnd/api/companies/get_notif?observerCompany=mcdonalds";
+	private String getChefReq = "http://localhost:8080/CookTime.BackEnd/api/users/get_chef_request";
 	private JSONParser parser;
 	
 	public AdminRESTClient() {
@@ -109,7 +110,7 @@ public class AdminRESTClient {
 	}
 	
 	public void getNotif() {
-		WebResource webResource = client.resource(getNotifComp);
+		WebResource webResource = client.resource(getNotifUser);
 		//String inputData = getJsonFile();
 		ClientResponse response = webResource.type("application/json").get(ClientResponse.class);
 		if (response.getStatus() != 200) {

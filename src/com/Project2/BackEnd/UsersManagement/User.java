@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import com.Project2.BackEnd.REST.Notification;
+import com.Project2.BackEnd.REST.RecipesResources;
 import com.Project2.BackEnd.RecipesManagement.DoublyLinkedList;
 import com.Project2.BackEnd.RecipesManagement.Recipe;
 import com.Project2.BackEnd.Trees.AVLTree;
@@ -23,7 +24,7 @@ public class User implements Comparable<User> {
 	private String password;
 	private String profilePic;
 	private ArrayList<String> usersFollowing;
-	private ArrayList<String>  followers;
+	private ArrayList<String> followers;
 	private ArrayList<Recipe> recipes;
 	private DoublyLinkedList myMenu;
 	private int sortingType;
@@ -82,7 +83,6 @@ public class User implements Comparable<User> {
 		this.password = password;
 	}
 
-	
 	public String getProfilePic() {
 		return profilePic;
 	}
@@ -98,7 +98,7 @@ public class User implements Comparable<User> {
 	public void addUserFollowing(String newFollowing) {
 		this.usersFollowing.add(newFollowing);
 	}
-	
+
 	public void removeUserFollowing(String user) {
 		this.usersFollowing.remove(user);
 	}
@@ -107,7 +107,7 @@ public class User implements Comparable<User> {
 		this.usersFollowing = usersFollowing;
 	}
 
-	public ArrayList<String>  getFollowers() {
+	public ArrayList<String> getFollowers() {
 		return followers;
 	}
 
@@ -122,6 +122,7 @@ public class User implements Comparable<User> {
 	public void removeFollower(String follower) {
 		this.followers.remove(follower);
 	}
+
 	public int getSortingType() {
 		return this.sortingType;
 	}
@@ -155,7 +156,7 @@ public class User implements Comparable<User> {
 	public void setChef(boolean chef) {
 		this.chef = chef;
 	}
-	
+
 	public boolean isAdmin() {
 		return admin;
 	}
@@ -168,6 +169,7 @@ public class User implements Comparable<User> {
 		Node<Recipe> node = new Node<Recipe>(newRecipe);
 		myMenu.sortedInsert(node, this.sortingType);
 	}
+
 	public void removeRecipe(Recipe recipe) {
 		myMenu.remove(recipe);
 	}
@@ -185,16 +187,20 @@ public class User implements Comparable<User> {
 		Node<Recipe> pointer = myMenu.getFirst();
 		while (pointer != null) {
 			Recipe recipe = pointer.getElement();
-			recipes.add(recipe);
+			if (this.sortingType == DoublyLinkedList.SORT_BY_DATE) {
+				recipes.add(0, recipe);
+			} else {
+				recipes.add(recipe);
+			}
 			pointer = pointer.getRight();
 		}
 	}
-	
+
 	public ArrayList<Recipe> getRecipes() {
 		setRecipes();
 		return recipes;
 	}
-	
+
 	public ArrayList<Notification> getNotifications() {
 		return notifications;
 	}
@@ -202,7 +208,7 @@ public class User implements Comparable<User> {
 	public void setNotifications(ArrayList<Notification> notifications) {
 		this.notifications = notifications;
 	}
-	
+
 	public void addNotification(Notification notification) {
 		this.notifications.add(0, notification);
 	}
@@ -218,7 +224,7 @@ public class User implements Comparable<User> {
 		private String password;
 		private String profilePic;
 		private ArrayList<String> usersFollowing;
-		private ArrayList<String>  followers;
+		private ArrayList<String> followers;
 		private ArrayList<Recipe> recipes;
 		private DoublyLinkedList myMenu;
 		private boolean admin;
@@ -236,7 +242,7 @@ public class User implements Comparable<User> {
 			if (followers == null) {
 				followers = new ArrayList<String>();
 			}
-			
+
 			if (notifications == null) {
 				notifications = new ArrayList<Notification>();
 			}
@@ -276,7 +282,7 @@ public class User implements Comparable<User> {
 			return this;
 		}
 
-		public Builder withFollowers(ArrayList<String>  followers) {
+		public Builder withFollowers(ArrayList<String> followers) {
 			this.followers = followers;
 			return this;
 		}
@@ -292,22 +298,21 @@ public class User implements Comparable<User> {
 			return this;
 
 		}
-		
+
 		public Builder withChef(boolean chef) {
 			this.chef = chef;
 			return this;
 		}
-		
+
 		public Builder withAdmin(boolean admin) {
 			this.admin = admin;
 			return this;
 		}
-		
+
 		public Builder withNotifications(ArrayList<Notification> notifications) {
 			this.notifications = notifications;
 			return this;
 		}
-		
 
 		private DoublyLinkedList parseArrayToLinkedList(ArrayList<Recipe> recipes) {
 			DoublyLinkedList myMenu = new DoublyLinkedList();

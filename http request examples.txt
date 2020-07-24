@@ -33,6 +33,17 @@ http://localhost:8080/CookTime.BackEnd/api/users/new_notif?emisorUser=sgonzalez&
 6)New unshare
 http://localhost:8080/CookTime.BackEnd/api/users/new_notif?emisorUser=sgonzalez&recieverUser=lmorales&notifType=6&recipe=Wine
 
+7)New like to company
+http://localhost:8080/CookTime.BackEnd/api/users/new_notif?emisorUser=sgonzalez&recieverUser=mcdonalds&notifType=7
+
+8)New unlike to company
+http://localhost:8080/CookTime.BackEnd/api/users/new_notif?emisorUser=sgonzalez&recieverUser=mcdonalds&notifType=8
+
+
+Get notification (GET):
+http://localhost:8080/CookTime.BackEnd/api/users/get_notif?observerUser=lmorales
+http://localhost:8080/CookTime.BackEnd/api/companies/get_notif?observerCompany=mcdonalds
+
 Edit User (PUT)
 http://localhost:8080/CookTime.BackEnd/api/users/lmorales?name=Pedro&followers=100
 
@@ -50,5 +61,41 @@ http://localhost:8080/CookTime.BackEnd/api/recipes/image
     "image":"base64 string"
 }
 
+Edit company's profile picture (PUT):
+http://localhost:8080/CookTime.BackEnd/api/companies/profilePic
+{
+    "company":"mcdonalds",
+    "image":"base64 string"
+}
+
 Register Companies (POST):
 http://localhost:8080/CookTime.BackEnd/api/companies?email=mcdonalds&password=pass&name=McDonald's&location=SanJose&contact=Facebook:_McDonalds_Costa_Rica&serviceSchedule=24-7
+http://localhost:8080/CookTime.BackEnd/api/companies?email=pizzahut&password=pass&name=Pizza_Hut&location=SanJose&contact=Facebook:_PizzaHut_Costa_Rica&serviceSchedule=24-7
+
+Add new admin (POST):
+http://localhost:8080/CookTime.BackEnd/api/companies/mcdonalds?email=lmorales
+
+Edit company (PUT):
+http://localhost:8080/CookTime.BackEnd/api/companies/mcdonalds?password=pass&name=McDonald's&location=SanJose&contact=Facebook:_McDonalds_Costa_Rica&serviceSchedule=24-7
+
+Get all companies (GET):
+http://localhost:8080/CookTime.BackEnd/api/companies
+
+Get specific company (GET):
+http://localhost:8080/CookTime.BackEnd/api/companies/mcdonalds
+
+Send new chef request (POST):
+http://localhost:8080/CookTime.BackEnd/api/users/chef_request
+{
+    "user":"lmorales",
+    "text":"akjdfkjdfljf"
+}
+
+Get chef request (administration):
+http://localhost:8080/CookTime.BackEnd/api/users/get_chef_request
+
+Administration accepts chef request (POST):
+http://localhost:8080/CookTime.BackEnd/api/users/new_notif?emisorUser=CookTimeAdministration&recieverUser=lmorales&notifType=9
+
+Administration denies chef request (POST):
+http://localhost:8080/CookTime.BackEnd/api/users/new_notif?emisorUser=CookTimeAdministration&recieverUser=lmorales&notifType=10

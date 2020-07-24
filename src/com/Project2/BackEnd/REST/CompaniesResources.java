@@ -273,10 +273,10 @@ public class CompaniesResources implements RestResources,Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		if (UsersResources.notifObservable.getIsNewNotif()
+		if (UsersResources.notifObservable.isNewNotif()
 				& UsersResources.notifObservable.getNotification().getRecieverUser().equals(observerCompany)) {
 			this.sendNotif = true;
-			UsersResources.notifObservable.setIsNewNotif(false);
+			UsersResources.notifObservable.setNewNotif(false);
 		}
 		
 	}

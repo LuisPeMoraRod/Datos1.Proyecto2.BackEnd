@@ -4,7 +4,7 @@ public class Notification {
 	private String emisorUser;
 	private String recieverUser;
 	public static final int NEW_COMMENT = 0, NEW_FOLLOWER = 1, NEW_UNFOLLLOW = 2, NEW_LIKE = 3, NEW_UNLIKE = 4,
-			NEW_SHARE = 5, NEW_UNSHARE = 6, NEW_LIKE_COMPANY = 7, NEW_UNLIKE_COMPANY=8;
+			NEW_SHARE = 5, NEW_UNSHARE = 6, NEW_LIKE_COMPANY = 7, NEW_UNLIKE_COMPANY=8, CHEF_ACCEPTED =9, CHEF_DENIED = 10;
 	private int notifType;
 	private String newComment;
 	private String recipe;
@@ -83,6 +83,11 @@ public class Notification {
 		case NEW_UNLIKE_COMPANY:
 			this.messageType = "unliked your company.";
 			break;
+		case CHEF_ACCEPTED:
+			this.messageType = "accepted your chef request";
+			break;
+		case CHEF_DENIED:
+			this.messageType = "denied your chef request";
 		default:
 			break;
 		}
