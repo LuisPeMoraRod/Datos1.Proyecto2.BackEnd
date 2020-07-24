@@ -126,7 +126,7 @@ public class CompaniesResources implements RestResources,Observer {
 				break;
 			}
 		}
-		if (bt.getUserByEmail(email) == null & splay.get(email) == null) {
+		if (splay.get(email) == null) {
 			ArrayList<Recipe> recipes = null;
 			Company newCompany = Company.builder().withEmail(email).withPassword(password).withName(name)
 					.withContact(contact).withServiceSchedule(serviceSchedule).withLocation(location)

@@ -449,7 +449,7 @@ public class UsersResources implements RestResources, Observer {
 		}
 		if (email == null || name == null || password == null) {
 			return Response.status(Status.CONFLICT).entity("Email, name and password mustn't be empty").build();
-		} else if (bt.getUserByEmail(email) == null & splay.get(email) == null) {
+		} else if (bt.getUserByEmail(email) == null) {
 			ArrayList<Recipe> recipes = null;
 			newUser = User.builder().withEmail(email).withName(name).withAge(age).withPassword(password)
 					.withProfilePic(profilePic).withMyMenu(recipes).withCompany(company).build();
