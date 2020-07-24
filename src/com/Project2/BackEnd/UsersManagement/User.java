@@ -30,6 +30,7 @@ public class User implements Comparable<User> {
 	private int sortingType;
 	private boolean chef;
 	private boolean admin;
+	private boolean company;
 	private ArrayList<Notification> notifications;
 	private AVLTree<Recipe> avl;
 
@@ -46,6 +47,7 @@ public class User implements Comparable<User> {
 		this.recipes = builder.recipes;
 		this.chef = builder.chef;
 		this.admin = builder.admin;
+		this.company = builder.company;
 		this.notifications = builder.notifications;
 		this.avl = AVLTree.getInstance();
 	}
@@ -165,6 +167,14 @@ public class User implements Comparable<User> {
 		this.admin = admin;
 	}
 
+	public boolean isCompany() {
+		return company;
+	}
+
+	public void setCompany(boolean company) {
+		this.company = company;
+	}
+
 	public void addRecipe(Recipe newRecipe) {
 		Node<Recipe> node = new Node<Recipe>(newRecipe);
 		myMenu.sortedInsert(node, this.sortingType);
@@ -229,6 +239,7 @@ public class User implements Comparable<User> {
 		private DoublyLinkedList myMenu;
 		private boolean admin;
 		private boolean chef;
+		private boolean company;
 		private int sortingType;
 		private ArrayList<Notification> notifications;
 
@@ -306,6 +317,11 @@ public class User implements Comparable<User> {
 
 		public Builder withAdmin(boolean admin) {
 			this.admin = admin;
+			return this;
+		}
+		
+		public Builder withCompany(boolean company) {
+			this.company = company;
 			return this;
 		}
 

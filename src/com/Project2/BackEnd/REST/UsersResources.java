@@ -53,6 +53,7 @@ public class UsersResources implements RestResources, Observer {
 	private ArrayList<User> responseList;
 	private User responseUser;
 	private String key, email = null, name = null, password = null, age = null, profilePic = null;
+	private boolean company;
 	private UsersJSON usersJson;
 	private MD5 md5;
 	private ArrayList<Recipe> myMenu;
@@ -439,7 +440,9 @@ public class UsersResources implements RestResources, Observer {
 			case "profilePic":
 				profilePic = tokenizer.nextToken();
 				break;
-
+			case "company":
+				company = Boolean.parseBoolean(tokenizer.nextToken());
+				break;
 			default:
 				break;
 			}
@@ -449,7 +452,7 @@ public class UsersResources implements RestResources, Observer {
 		} else if (bt.getUserByEmail(email) == null & splay.get(email) == null) {
 			ArrayList<Recipe> recipes = null;
 			newUser = User.builder().withEmail(email).withName(name).withAge(age).withPassword(password)
-					.withProfilePic(profilePic).withMyMenu(recipes).build();
+					.withProfilePic(profilePic).withMyMenu(recipes).withCompany(company).build();
 			bt.insert(newUser);
 			return Response.status(201).entity(newUser).build();
 		} else {
