@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="776.0" prefWidth="1280.0" stylesheets="@adminStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="admin.Controller">
+   <children>
+      <Pane layoutX="586.0" layoutY="-2.0" prefHeight="777.0" prefWidth="695.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="600.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox alignment="CENTER" layoutX="81.0" layoutY="244.0" spacing="50.0">
+               <children>
+                  <HBox alignment="TOP_CENTER" prefHeight="46.0" prefWidth="489.0" spacing="20.0" style="-fx-border-color: WHITE; -fx-border-width: 0px 0px 2px 0px;">
+                     <children>
+                        <FontAwesomeIcon fill="WHITE" fontSmoothingType="LCD" glyphName="USER" size="2EM" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets top="10.0" />
+                           </HBox.margin>
+                        </FontAwesomeIcon>
+                        <TextField prefHeight="46.0" prefWidth="471.0" promptText="username" style="-fx-background-color: transparent; -fx-text-fill: WHITE;" HBox.hgrow="ALWAYS" />
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox alignment="TOP_CENTER" prefHeight="46.0" prefWidth="489.0" spacing="20.0" style="-fx-border-color: WHITE; -fx-border-width: 0px 0px 2px 0px;">
+                     <children>
+                        <FontAwesomeIcon fill="WHITE" fontSmoothingType="LCD" glyphName="KEY" size="2EM" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets top="10.0" />
+                           </HBox.margin>
+                        </FontAwesomeIcon>
+                        <TextField prefHeight="46.0" prefWidth="471.0" promptText="password" style="-fx-background-color: transparent; -fx-text-fill: WHITE;" HBox.hgrow="ALWAYS" />
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </HBox>
+                  <Button fx:id="btnLogIn" mnemonicParsing="false" onAction="#logIn" prefHeight="47.0" prefWidth="346.0" style="-fx-background-color: #71C1BE; -fx-background-radius: 100; -fx-text-fill: WHITE; -fx-font-size: 1.5em; -fx-font-family: Quicksand;" text="Log in" textAlignment="CENTER">
+                     <VBox.margin>
+                        <Insets top="50.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+               <padding>
+                  <Insets bottom="20.0" top="20.0" />
+               </padding>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </VBox>
+            <Text layoutX="331.0" layoutY="124.0" strokeWidth="0.0" style="-fx-font-family: Quicksand; -fx-font-weight: bolder; -fx-font-size: 2.0em;" text="ADMINISTRATOR" textAlignment="CENTER" wrappingWidth="221.6475606360492">
+               <fill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop color="#45959a" />
+                        <Stop color="#459399" offset="0.3360089412720992" />
+                        <Stop color="#7c90d7" offset="1.0" />
+                     </stops>
+                  </LinearGradient>
+               </fill>
+            </Text>
+            <ImageView id="logo" fitHeight="129.0" fitWidth="291.0" layoutX="69.0" layoutY="68.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/cookTimeWL.png" />
+               </image>
+            </ImageView>
+            <HBox fx:id="btnClose" alignment="CENTER" layoutX="549.0" layoutY="714.0" onMouseClicked="#close" spacing="10.0">
+               <children>
+                  <FontAwesomeIcon fill="WHITE" glyphName="CLOSE" size="2em" />
+                  <Text fill="#c9548b" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 1.5em; -fx-font-family: bold;" text="CLOSE" />
+               </children>
+               <opaqueInsets>
+                  <Insets right="30.0" />
+               </opaqueInsets>
+            </HBox>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
