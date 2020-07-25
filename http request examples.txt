@@ -92,7 +92,7 @@ http://localhost:8080/CookTime.BackEnd/api/users/chef_request
 }
 
 Get chef request (administration):
-http://localhost:8080/CookTime.BackEnd/api/users/get_chef_request
+http://localhost:8080/CookTime.BackEnd/api/users/get_chef_request/admin
 
 Administration accepts chef request (POST):
 http://localhost:8080/CookTime.BackEnd/api/users/new_notif?emisorUser=CookTimeAdministration&recieverUser=lmorales&notifType=9
