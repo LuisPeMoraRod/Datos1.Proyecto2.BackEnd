@@ -142,7 +142,6 @@ public class CompaniesResources implements RestResources,Observer {
 
 	@POST
 	@Path("/{companyEmail}")
-	@SuppressWarnings("rawtypes")
 	public Response addAdmin(@PathParam("companyEmail") String companyEmail, @QueryParam("email") String email) {
 		Company company = splay.get(companyEmail);
 		if (company != null) {

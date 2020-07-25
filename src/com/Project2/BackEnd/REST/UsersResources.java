@@ -56,7 +56,6 @@ public class UsersResources implements RestResources, Observer {
 	private boolean company;
 	private UsersJSON usersJson;
 	private MD5 md5;
-	private ArrayList<Recipe> myMenu;
 	public static NotifObservable notifObservable;
 	private boolean sendNotif = false;
 	private Notification notification;
@@ -293,7 +292,7 @@ public class UsersResources implements RestResources, Observer {
 	}
 	
 	@GET
-	@Path("/get_chef_request")
+	@Path("/get_chef_request/admin")
 	public Response getChefRequest() throws InterruptedException {
 		this.observerUser = "admin";
 		notifObservable.addObserver(this);
