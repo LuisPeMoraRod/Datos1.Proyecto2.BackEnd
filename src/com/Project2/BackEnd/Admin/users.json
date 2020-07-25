@@ -35,7 +35,7 @@
 		"profilePic": "picture",
 		"name": "Luis",
 		"chef": false,
-		"admin": false,
+		"admin": true,
 		"email": "lmorales",
 		"age": "21",
 		"notifications": []
@@ -49,9 +49,9 @@
 		"profilePic": "picture",
 		"name": "Moni",
 		"chef": false,
-		"admin": false,
+		"admin": true,
 		"email": "mwaterhouse",
-		"age": "23",
+		"age": "22",
 		"notifications": []
 	},
 	{
