@@ -14,7 +14,7 @@ public class Company implements Comparable<Company>{
 	private String contact;
 	private String image;
 	private String serviceSchedule;
-	private String location;
+	private ArrayList<Double> location;
 	private int punctuation;
 	private int sortingType;
 	private DoublyLinkedList myMenu;
@@ -80,10 +80,10 @@ public class Company implements Comparable<Company>{
 	public void setServiceSchedule(String serviceSchedule) {
 		this.serviceSchedule = serviceSchedule;
 	}
-	public String getLocation() {
+	public ArrayList<Double> getLocation() {
 		return location;
 	}
-	public void setLocation(String location) {
+	public void setLocation(ArrayList<Double> location) {
 		this.location = location;
 	}
 	public ArrayList<String> getAdmins() {
@@ -236,7 +236,7 @@ public class Company implements Comparable<Company>{
 		private String contact;
 		private String image;
 		private String serviceSchedule;
-		private String location;
+		private ArrayList<Double> location;
 		private int punctuation;
 		private int sortingType;
 		private DoublyLinkedList myMenu;
@@ -303,7 +303,7 @@ public class Company implements Comparable<Company>{
 			return this;
 		}
 		
-		public Builder withLocation(String location) {
+		public Builder withLocation(ArrayList<Double> location) {
 			this.location = location;
 			return this;
 		}

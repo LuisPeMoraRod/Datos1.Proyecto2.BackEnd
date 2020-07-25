@@ -41,7 +41,8 @@ public class CompaniesResources implements RestResources,Observer {
 	private static AVLTree<Recipe> avl = AVLTree.getInstance();
 	private static SplayTree<Company> splay = SplayTree.getInstance();
 	private String key, name = null, email = null, password = null, contact = null, image = null,
-			serviceSchedule = null, location = null;
+			serviceSchedule = null;
+	ArrayList<Double> location = null;
 	private ArrayList<String> admins = null, usersFollowing = null, followers = null;
 	private int punctuation = 0, sortingType = 0;
 	private ArrayList<Recipe> recipes = null;
@@ -120,7 +121,13 @@ public class CompaniesResources implements RestResources,Observer {
 				serviceSchedule = value;
 				break;
 			case "location":
-				location = value;
+				//location = value;
+				location = new ArrayList<Double>();
+				tokenizer = new StringTokenizer(encoded,",");
+				while(tokenizer.hasMoreElements()) {
+					Double loc = Double.parseDouble(tokenizer.nextToken());
+					location.add(loc);
+				}
 				break;
 			default:
 				break;
@@ -226,7 +233,7 @@ public class CompaniesResources implements RestResources,Observer {
 					company.setServiceSchedule(serviceSchedule);
 					break;
 				case "location":
-					location = value;
+					//location = value;
 					company.setLocation(location);
 					break;
 				default:
