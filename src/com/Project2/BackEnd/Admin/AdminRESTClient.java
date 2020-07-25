@@ -41,7 +41,7 @@ public class AdminRESTClient {
 	private String jsonFileLoc = "src/com/Project2/BackEnd/Admin/users.json";
 	private String getNotifUser= "http://localhost:8080/CookTime.BackEnd/api/users/get_notif?observerUser=lmorales";
 	private String getNotifComp= "http://localhost:8080/CookTime.BackEnd/api/companies/get_notif?observerCompany=mcdonalds";
-	private String getChefReq = "http://localhost:8080/CookTime.BackEnd/api/users/get_chef_request";
+	private String getChefReq = "http://localhost:8080/CookTime.BackEnd/api/users/get_chef_request/admin";
 	private JSONParser parser;
 	
 	public AdminRESTClient() {
@@ -110,7 +110,7 @@ public class AdminRESTClient {
 	}
 	
 	public void getNotif() {
-		WebResource webResource = client.resource(getNotifUser);
+		WebResource webResource = client.resource(getChefReq);
 		//String inputData = getJsonFile();
 		ClientResponse response = webResource.type("application/json").get(ClientResponse.class);
 		if (response.getStatus() != 200) {
@@ -124,9 +124,9 @@ public class AdminRESTClient {
 
 	public static void main(String[] args) throws ParseException {
 		AdminRESTClient restClient = new AdminRESTClient();
-		//restClient.postRequest(); //post request should be fired at the very beginning to upload the registered users from the .json file
+		restClient.postRequest(); //post request should be fired at the very beginning to upload the registered users from the .json file
 		
-		//restClient.getRequest();
+		restClient.getRequest();
 		
 		//loop to receive 5 notifications
 		for (int i = 0; i < 5; i++) {
